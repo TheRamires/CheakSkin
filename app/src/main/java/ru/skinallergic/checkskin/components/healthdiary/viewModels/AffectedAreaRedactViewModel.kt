@@ -78,9 +78,8 @@ class AffectedAreaRedactViewModel@Inject constructor(
     fun addReport(date: Long, files: List<File>){
         val fieldsIsEmpty=!checkReportField(files)
         if (fieldsIsEmpty) {toastyManager.toastyyyy(
-                "Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавь описание:"
+                "Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
         );return}
-
 
         val newArea: RequestBody =multipartManager.createPartFromString(getNewArea()!!)
         val newView: RequestBody =multipartManager.createPartFromString(getNewView()!!)
@@ -137,7 +136,6 @@ class AffectedAreaRedactViewModel@Inject constructor(
         if (temp==null){
             map[area] = hashMapOf(0 to AreaEntity(), 1 to AreaEntity())
         }
-
         Loger.log("area "+getNewArea())
         Loger.log("area "+area)
 

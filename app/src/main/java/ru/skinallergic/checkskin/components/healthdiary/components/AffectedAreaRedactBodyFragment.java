@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -36,6 +37,7 @@ import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
@@ -82,7 +84,6 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         FragmentAffectedAreaRedactBodyBinding binding=FragmentAffectedAreaRedactBodyBinding.inflate(inflater);
         binding.setFragment(this);
         view=binding.getRoot();
@@ -103,6 +104,7 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         viewModel.getNewAreaLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                completionAreaText(integer, binding);
                 clearKindsAndImageViews();
                 Loger.log("getNewAreaLive "+integer);
                 if (integer==null){
@@ -116,6 +118,8 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         viewModel.getNewViewLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
+                completionAreaText(viewModel.getNewArea(), binding);
+                completionViewText(integer, binding);
                 if (integer==null){return;}
                 clearKindsAndImageViews();
                 showAreaEntity();
@@ -149,11 +153,16 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewModel.getNewAreaLive().setValue(null);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = null;
         if (resultCode == RESULT_OK) {
-
 
             switch (requestCode) {
                 case GALLERY_REQUEST:
@@ -170,7 +179,6 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
                     bitmap = (Bitmap) extras.get("data");
                     break;
             }
-
 
             Bitmap finalBitmap = PhotoController.cropToSquare(bitmap);
             if (finalBitmap!=null){
@@ -343,6 +351,29 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
             toggle.setOnCheckedChangeListener(this);
         }
     }
+    private void completionAreaText(Integer id,FragmentAffectedAreaRedactBodyBinding binding){
+        TextView textView=binding.area;
+        if (id==null){
+            textView.setText("");
+        } else {
+            int view=viewModel.getNewView();
+            String text=AreaManager.INSTANCE.getTitle(id, view);
+            textView.setText(text);
+        }
+    }
+    private void completionViewText(Integer id,FragmentAffectedAreaRedactBodyBinding binding){
+        TextView textView=binding.view;
+        String text="";
+        if (id==null){
+            text="";
+        } else {
+            int view=viewModel.getNewView();
+            if (view==0){
+                text="Спереди";
+            } else text="Сзади";
+        }
+        textView.setText(text);
+    }
 
     public void showAreaEntity(){
         List<Bitmap> bitmaps=viewModel.getPhotosFromMap();
@@ -360,13 +391,6 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
             for (int id: kinds){
                 kindButtonsArray[id].setChecked(true);
             }
-            /*
-            for (int i=0;i<kinds.size();i++){
-                Integer kind=kinds.get(i);
-                if (kind!=null){
-                    kindButtonsArray[i].setChecked(true);
-                }
-            }*/
         }
     }
     public void clearKindsAndImageViews(){

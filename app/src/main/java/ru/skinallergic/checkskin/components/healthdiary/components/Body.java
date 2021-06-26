@@ -27,6 +27,7 @@ import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
 import ru.skinallergic.checkskin.databinding.BodyManBinding;
 import ru.skinallergic.checkskin.databinding.BodyWomanBinding;
@@ -98,12 +99,13 @@ public class Body extends Fragment{
         View view=binding.getRoot();
         imageView=view.findViewById(R.id.body);
 
-        ToggleButton bodyCenter=view.findViewById(R.id.toggle_body_center);
-        ToggleButton head=view.findViewById(R.id.toggle_head);
-        ToggleButton hand1=view.findViewById(R.id.toggle_hand_1);
-        ToggleButton hand2=view.findViewById(R.id.toggle_hand_2);
-        ToggleButton leg1=view.findViewById(R.id.toggle_leg_1);
-        ToggleButton leg2=view.findViewById(R.id.toggle_leg_2);
+        AreaManager areaManager=AreaManager.INSTANCE;
+        ToggleButton bodyCenter=view.findViewById(areaManager.getBodyCenter());
+        ToggleButton head=view.findViewById(areaManager.getHead());
+        ToggleButton hand1=view.findViewById(areaManager.getHand01());
+        ToggleButton hand2=view.findViewById(areaManager.getHand02());
+        ToggleButton leg1=view.findViewById(areaManager.getLeg01());
+        ToggleButton leg2=view.findViewById(areaManager.getLeg02());
 
         toggles.add(bodyCenter); toggles.add(head); toggles.add(hand1);
         toggles.add(hand2);toggles.add(leg1); toggles.add(leg2);
@@ -174,27 +176,8 @@ public class Body extends Fragment{
                 if (isChecked){
                     Loger.log(toggleButton.getId());
                     clearAllToggles(toggleButton.getId());
-                    Integer area=null;
-                    switch (buttonView.getId()){
-                        case R.id.toggle_body_center:
-                            area=3;
-                            break;
-                        case R.id.toggle_head:
-                            area=0;
-                            break;
-                        case R.id.toggle_hand_1:
-                            area=1;
-                            break;
-                        case R.id.toggle_hand_2:
-                            area=2;
-                            break;
-                        case R.id.toggle_leg_1:
-                            area=4;
-                            break;
-                        case R.id.toggle_leg_2:
-                            area=5;
-                            break;
-                    }
+                    Integer area=
+                            AreaManager.INSTANCE.getIdOfArea(buttonView.getId());
                     viewModel.getNewAreaLive().setValue(area);
                 }else if (nonChecked()){
                     viewModel.getNewAreaLive().setValue(null);
