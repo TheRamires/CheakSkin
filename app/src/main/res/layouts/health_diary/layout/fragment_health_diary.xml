@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.HealthDiaryFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.HealthDiaryFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".components.fooddiary.FoodDiaryFragment"
+            android:background="@color/gray">
+
+            <RelativeLayout
+                android:layout_alignParentTop="true"
+                android:background="@color/white"
+                android:id="@+id/title_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:onClick="toProfile"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/img_btn"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/my_icon_profile"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
+
+                <RelativeLayout
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:paddingHorizontal="10dp"
+                        android:text="Дневник здоровья"
+                        android:textColor="@color/purple_300"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:visibility="gone"
+                        android:paddingVertical="5dp"
+                        android:id="@+id/search_edit_text"
+                        android:layout_marginHorizontal="80dp"
+                        android:background="@drawable/corners_input_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:paddingHorizontal="20dp"
+                        android:text=""
+                        android:textColor="@color/purple_300"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/click_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/calendar"
+                        android:onClick="@{fragment::clickDate}" />
+
+                    <ImageButton
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/statistic"
+                        android:onClick="@{fragment::statistics}" />
+
+
+                    <ImageView
+                        android:layout_toLeftOf="@+id/date"
+                        android:id="@+id/imageView2"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/my_icon_sun"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
+                        android:hint="Среда, 05 апреля"
+                        android:text="@{fragment.dateObservable}"
+                        android:textColor="@color/red"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <FrameLayout
+                        android:id="@+id/hexagon"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/click_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="75dp"
+                            android:layout_height="80dp"
+                            android:background="@drawable/hexagon_2"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:textSize="20dp"
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 %"
+                            android:textStyle="bold"
+                            android:layout_gravity="center"/>
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:layout_below="@+id/click_date"
+                        android:layout_toRightOf="@+id/hexagon"
+                        android:id="@+id/state_layout"
+                        android:layout_width="286dp"
+                        android:layout_height="80dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:text="Состояние:"
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"/>
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:textColor="@color/purple_300"
+                            android:text="Не заполнено"
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="false"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_marginTop="70dp"
+                        android:layout_below="@+id/click_date"
+                        android:id="@+id/buttons_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.dd.ShadowLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toState}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Состояние"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+
+                        <com.dd.ShadowLayout
+                            android:layout_marginTop="80dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toPhoto}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_photo"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Фото высыпаний"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+                        <com.dd.ShadowLayout
+                            android:layout_marginTop="160dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toTriggers}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_triggers"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Триггеры"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+
+                        <com.dd.ShadowLayout
+                            android:layout_marginTop="240dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toTreatment}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_helth"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Лечение"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+                        <com.dd.ShadowLayout
+                            android:layout_marginTop="320dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toReminders}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_remind"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Напоминание"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+                        <com.dd.ShadowLayout
+                            android:layout_marginBottom="@dimen/margin_normal"
+                            android:layout_marginTop="400dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:sl_cornerRadius="86dp"
+                            app:sl_dx="0dp"
+                            app:sl_dy="5dp"
+                            app:sl_shadowColor="@color/shadow_color1"
+                            app:sl_shadowRadius="30dp">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:onClick="@{fragment::toRate}"
+                                android:gravity="center_vertical|left"
+                                android:drawablePadding="20dp"
+                                android:id="@+id/button_rate"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:background="@drawable/button_pressed_white"
+                                android:paddingHorizontal="35dp"
+                                android:text="Оценка"
+                                android:textAllCaps="false"
+                                android:textColor="@color/purple_300"
+                                android:textSize="13sp" />
+
+                        </com.dd.ShadowLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

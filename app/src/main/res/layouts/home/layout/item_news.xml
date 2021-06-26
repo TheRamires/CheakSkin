@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View.OnClickListener"/>
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.news.pojo.Datum" />
+    </data>
+
+<FrameLayout
+    android:id="@+id/clickable"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/background_news_item"
+    android:layout_width="110dp"
+    android:layout_height="110dp">
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image"/>
+
+    <ImageView
+        android:id="@+id/image_alpha"
+        android:background="@color/purple_300"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_margin="@dimen/margin_min"
+        android:textColor="@color/white"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="@{entity.name}"
+        android:id="@+id/name"
+        android:hint="name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"/>
+
+</FrameLayout>
+</layout>

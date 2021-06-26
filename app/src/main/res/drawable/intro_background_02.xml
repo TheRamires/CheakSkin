@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ripple android:color="?attr/colorControlHighlight"
+        tools:ignore="NewApi">
+        <item>
+            <shape android:shape="rectangle">
+                <gradient
+                    android:angle="225"
+                    android:startColor="#FB8BA7"
+                    android:centerColor="#FF8D74"
+                    android:endColor="#FF8D74"
+                    />
+            </shape>
+        </item>
+    </ripple>
+</inset>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.profile.AboutFragment" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backStack}"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:hint="tests name"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="О приложении"/>
+            <View
+                android:background="@color/gray"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </RelativeLayout>
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_below="@id/title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+            <LinearLayout
+                android:paddingBottom="@dimen/margin_min"
+                android:paddingHorizontal="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:layout_width="204dp"
+                    android:layout_height="226dp"
+                    android:id="@+id/imageView"
+                    android:background="@drawable/my_icon_cheak_skin"/>
+
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CheckSkin"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle=""/>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Разработано в студии мобильной разработки"
+                    android:layout_gravity="center_horizontal"/>
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/my_icon_axas"
+                    android:layout_width="75dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal"/>
+                <TextView
+                    android:onClick="@{fragment::contactTheDevelopers}"
+                    android:clickable="true"
+                    android:textColor="@drawable/text_clickable_blue"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Связаться с разработчиками"/>
+                <TextView
+                    android:onClick="@{fragment::feedback}"
+                    android:clickable="true"
+                    android:textColor="@drawable/text_clickable_blue"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Оставить отзыв"/>
+                <TextView
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ver. 1.02.4 (build 243)"/>
+                <TextView
+                    android:onClick="@{fragment::politics}"
+                    android:clickable="true"
+                    android:textColor="@drawable/text_clickable_blue"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/politics"/>
+                <TextView
+                    android:onClick="@{fragment::termsOfUuse}"
+                    android:clickable="true"
+                    android:textColor="@drawable/text_clickable_blue"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/terms_of_use"/>
+                <TextView
+                    android:textColor="@color/gray_dark"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/politics"/>
+                <TextView
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Мобильное приложение для людей с тяжелыми хроническими кожными заболеваниями (псориазом, атопическим дерматитом и др.), которое способствует повышению информированности о заболевании, получению актуальной информации о возможностях и видах лечения, о специализированных лечебно-профилактических учреждениях, а также - формированию более осознанного отношения к проводимому лечению, созданию новых возможностей мониторинга течения (динамики) заболевания для повышения качества медицинской помощи таким пациентам."/>
+            </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

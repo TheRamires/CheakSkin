@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".components.healthdiary.components.StatisticsFragment">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.StatisticsFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:id="@+id/title_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/img_btn"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:onClick="@{fragment::backStack}"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:layout_marginRight="@dimen/margin_big"
+            android:hint="tests name"
+            android:layout_toRightOf="@+id/img_btn"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@color/purple_300"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Состояние"
+            />
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/calendars"
+        android:layout_marginVertical="@dimen/margin_normal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <androidx.appcompat.widget.AppCompatButton
+            android:textColor="@color/gray_dark"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"
+            android:id="@+id/date_start"
+            android:drawableRight="@drawable/ic_down_gray"
+            android:layout_width="154dp"
+            android:layout_height="60dp"
+            android:background="@drawable/corners_input_text"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:textColor="@color/gray_dark"
+            android:stateListAnimator="@null"
+            android:id="@+id/date_end"
+            android:drawableRight="@drawable/ic_down_gray"
+            android:layout_marginLeft="@dimen/margin_min"
+            android:layout_width="154dp"
+            android:layout_height="60dp"
+            android:background="@drawable/corners_input_text"
+            />
+        
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/calendars"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_below="@+id/recycler"
+        android:background="@drawable/button_pressed_blue"
+        android:layout_marginHorizontal="@dimen/norm_button_margin"
+        android:textAllCaps="false"
+        android:paddingBottom="2dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="ВЫГРУЗИТЬ ОТЧЕТ"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_btn"
+        />
+    </LinearLayout>
+
+    <FrameLayout
+        android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="148dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </FrameLayout>
+</RelativeLayout>
+</layout>

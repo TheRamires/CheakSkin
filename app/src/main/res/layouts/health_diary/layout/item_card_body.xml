@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.healthdiary.data.EntityAffected" />
+        <variable
+            name="isDeleted"
+            type="java.lang.Boolean"/>
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel" />
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+<RelativeLayout
+    android:id="@+id/deleteButton"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginHorizontal="12dp">
+    <TextView
+        android:text="@{entity.name}"
+        android:hint="torso"
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"/>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="5dp"
+        style="@style/MyCardView2"
+        android:layout_width="84dp"
+        android:layout_height="87dp">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:imageUrl="@{entity.img}"
+            />
+    </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/button"
+            android:visibility="@{isDeleted ? View.VISIBLE : View.INVISIBLE, default=invisible}"
+            android:layout_alignTop="@+id/card"
+            android:layout_toRightOf="@+id/card"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/button_minus" />
+
+
+</RelativeLayout>
+</layout>

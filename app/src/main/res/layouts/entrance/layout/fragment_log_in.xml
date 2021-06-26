@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.entrance.LogInFragment" />
+
+        <variable
+            name="logInIsTrue"
+            type="java.lang.Boolean" />
+    </data>
+
+    <FrameLayout
+        tools:context=".entrance.LogInFragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:id="@+id/imageView"
+        android:background="@drawable/cheakskin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099" />
+
+    <TextView
+        android:layout_marginTop="13dp"
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CheckSkin"
+        android:textColor="@color/black"
+        android:textColorLink="@color/black"
+        android:textSize="30sp"
+        android:textStyle=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.049" />
+
+    <LinearLayout
+        android:paddingBottom="@dimen/margin_min"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+        
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginBottom="@dimen/margin_min"
+            android:layout_gravity="center_horizontal"
+            android:paddingHorizontal="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Введите номер телефона"/>
+
+        <ru.skinallergic.checkskin.entrance.MaskedEditText
+            android:gravity="center"
+            android:id="@+id/edit_text"
+            android:text="7"
+            android:inputType="phone"
+            app:mask="+9 (999) 999-99-99"
+            app:placeholder="_"
+            android:layout_marginHorizontal="@dimen/norm_button_margin"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/corners_input_text"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginHorizontal="@dimen/norm_button_margin"
+            android:onClick="@{fragment::logIn}"
+            android:clickable="@{logInIsTrue? true : false , default=false}"
+            android:background="@{logInIsTrue? @drawable/button_registr_pressed : @drawable/button_registr_uncklicable, default=@drawable/button_registr_uncklicable}"
+            android:textColor="@{logInIsTrue? @color/red :@color/gray , default=@color/gray}"
+            android:layout_gravity="center_horizontal"
+            android:text="Войти"
+            android:layout_marginVertical="@dimen/margin_min"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/vk"
+                android:onClick="@{fragment::logInVk}"
+                android:layout_marginHorizontal="@dimen/margin_min"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/my_icon_entry_vk"/>
+            <ImageButton
+                android:id="@+id/facebook"
+                android:onClick="@{fragment::logInFacebook}"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/my_icon_entry_facebook"/>
+
+            <com.facebook.login.widget.LoginButton
+                android:visibility="gone"
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_marginRight="5dp"
+                    android:background="#FBFBFB"
+                    android:button="@drawable/custom_checkbox"
+                    android:checked="true"
+                    android:id="@+id/cheak_box1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    />
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Я принимаю условия "/>
+                <TextView
+                    android:onClick="@{fragment::toPolitic}"
+                    android:textColor="@drawable/text_clickable_red"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="политики конфиденциальности"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:layout_marginRight="5dp"
+                    android:background="#FBFBFB"
+                    android:button="@drawable/custom_checkbox"
+                    android:checked="true"
+                    android:id="@+id/cheak_box2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    />
+                <TextView
+                    android:gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Даю согласиие на "/>
+
+                <TextView
+                    android:textColor="@drawable/text_clickable_red"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="обработку персональных данных"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </FrameLayout>
+</layout>

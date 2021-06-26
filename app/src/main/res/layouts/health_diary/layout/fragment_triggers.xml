@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.TriggersFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.TriggersViewModel" />
+    </data>
+<RelativeLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".components.healthdiary.components.TriggersFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:id="@+id/title_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/img_btn"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:onClick="@{fragment::backStack}"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:layout_marginRight="@dimen/margin_big"
+            android:hint="tests name"
+            android:layout_toRightOf="@+id/img_btn"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@color/purple_300"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Триггеры"
+            />
+        <ImageView
+            android:onClick="@{fragment::toRedact}"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/my_icon_pencil"
+            android:layout_marginRight="20dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/title_layout"
+        android:scrollbars="none"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <com.dd.ShadowLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_0"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Стресс"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+
+            <com.dd.ShadowLayout
+                android:layout_marginTop="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_1"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Смена климата"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+            <com.dd.ShadowLayout
+                android:layout_marginTop="160dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_2"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Другая болезнь"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+
+            <com.dd.ShadowLayout
+                android:layout_marginTop="240dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_3"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Питание"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+            <com.dd.ShadowLayout
+                android:layout_marginTop="320dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_4"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Цветение"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+            <com.dd.ShadowLayout
+                android:layout_marginTop="400dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_5"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Контакт с аллергенами"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+
+            </com.dd.ShadowLayout>
+            <com.dd.ShadowLayout
+                android:layout_marginTop="480dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sl_cornerRadius="86dp"
+                app:sl_dx="0dp"
+                app:sl_dy="5dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                app:sl_shadowRadius="30dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/trig_6"
+                    android:enabled="false"
+                    android:gravity="center_vertical|left"
+                    android:drawablePadding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_btn"
+                    android:background="@drawable/button_pressed_white"
+                    android:paddingHorizontal="35dp"
+                    android:text="Другое"
+                    android:textAllCaps="false"
+                    android:textColor="@color/purple_300"
+                    android:textSize="13sp" />
+            </com.dd.ShadowLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <FrameLayout
+        android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="148dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </FrameLayout>
+</RelativeLayout>
+</layout>

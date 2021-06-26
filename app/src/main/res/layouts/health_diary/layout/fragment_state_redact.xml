@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.StateRedactFragment" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".components.fooddiary.FoodDiaryFragment"
+        android:background="@color/gray">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backStack}"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:layout_marginRight="@dimen/margin_big"
+                android:hint="tests name"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Состояние"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:scrollbars="none"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:paddingHorizontal="13dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/title3"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Оцени свое общее состояние:"
+                    android:textColor="@color/purple_300"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/title3_descrip"
+                    android:paddingRight="20dp"
+                    android:layout_below="@+id/title3"
+                    android:layout_marginTop="9dp"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Выберите наиболее подходящее определение к твоему состоянию кажи сегодня"
+                    />
+                <View
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/line"
+                    android:layout_below="@id/title3_descrip"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
+
+                <RelativeLayout
+                    android:clickable="true"
+                    android:id="@+id/buttonLayout1"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/remision"
+                        android:layout_marginTop="16dp"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ремиссия"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/remision_descrip"
+                        android:paddingRight="20dp"
+                        android:layout_below="@+id/remision"
+                        android:layout_marginTop="9dp"
+                        android:textSize="14sp"
+                        android:layout_width="296dp"
+                        android:layout_height="wrap_content"
+                        android:text="Высыпей нет зуда нет"/>
+                    <View
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/line2"
+                        android:layout_below="@id/remision_descrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:clickable="true"
+                    android:id="@+id/buttonLayout2"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/buttonLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/state1"
+                        android:layout_marginTop="16dp"
+                        android:textSize="18sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Подострое состояние (хроническое)"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/state1_descrip"
+                        android:paddingRight="20dp"
+                        android:layout_below="@+id/state1"
+                        android:layout_marginTop="9dp"
+                        android:textSize="14sp"
+                        android:layout_width="296dp"
+                        android:layout_height="wrap_content"
+                        android:text="Лехенизация (утолщение кожи в местах расчесов), трещины на згибательных поверхностях, бледно-розовые высыпания, умеренный зуд"/>
+                    <View
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/line3"
+                        android:layout_below="@id/state1_descrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:clickable="true"
+                    android:id="@+id/buttonLayout3"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@+id/buttonLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/state2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Острое состояние (обострение)"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/state2_descrip"
+                        android:paddingRight="20dp"
+                        android:layout_below="@+id/state2"
+                        android:layout_marginTop="9dp"
+                        android:textSize="14sp"
+                        android:layout_width="296dp"
+                        android:layout_height="wrap_content"
+                        android:text="Ярко-красные высыпания, появления новых высыпаний, отек, эрозии, корки сильный зуд"/>
+                    <View
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/line4"
+                        android:layout_below="@id/state2_descrip"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray"/>
+                </RelativeLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:onClick="@{fragment::save}"
+                    android:layout_marginBottom="34dp"
+                    android:layout_below="@+id/buttonLayout3"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/button_pressed_blue"
+                    android:layout_marginHorizontal="@dimen/norm_button_margin"
+                    android:textAllCaps="false"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="2dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="15sp"
+                    android:text="СОХРАНИТЬ"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/to_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
+                <RadioGroup
+                    android:layout_marginRight="23dp"
+                    android:layout_gravity="right"
+                    android:id="@+id/radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/radio_1"
+                        android:layout_marginTop="145dp"
+                        android:theme="@style/MyRadioButton2"
+                        android:button="@drawable/check_box_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:id="@+id/radio_2"
+                        android:layout_marginTop="95dp"
+                        android:theme="@style/MyRadioButton2"
+                        android:button="@drawable/check_box_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <RadioButton
+                        android:id="@+id/radio_3"
+                        android:layout_marginTop="115dp"
+                        android:theme="@style/MyRadioButton2"
+                        android:button="@drawable/check_box_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </RadioGroup>
+            </FrameLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

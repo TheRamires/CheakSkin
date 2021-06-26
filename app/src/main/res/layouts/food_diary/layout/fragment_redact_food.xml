@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.fooddiary.components.RedactFoodFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.fooddiary.viewModels.RedactViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".components.fooddiary.FoodDiaryFragment"
+        android:background="@color/gray"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:paddingHorizontal="5dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backStack}"
+                android:src="@drawable/back" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/teal_700"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Питание"
+                />
+            <TextView
+                android:id="@+id/date"
+                android:layout_marginBottom="3dp"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_below="@+id/title"
+                android:hint="date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:layout_marginHorizontal="5dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:background="@drawable/cheak_mark"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:paddingHorizontal="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="12dp">
+
+            <Spinner
+                android:layout_marginTop="11dp"
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+            <View
+                android:layout_marginTop="7dp"
+                android:id="@+id/line"
+                android:layout_below="@id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/line"
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <ImageButton
+                android:layout_below="@+id/recycler"
+                android:onClick="@{fragment::add}"
+                android:clickable="true"
+                android:layout_marginTop="35dp"
+                android:background="@drawable/button_plus"
+                android:layout_centerHorizontal="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

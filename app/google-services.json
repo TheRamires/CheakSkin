@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "555626878432",
+    "project_id": "checkskin",
+    "storage_bucket": "cheakskin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555626878432:android:1dacdf531f490d381c8785",
+        "android_client_info": {
+          "package_name": "ru.skinallergic.checkskin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555626878432-f20jin0ksuou7jto0trf8rfo8vgnmjlj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAheGmDDDjWNcv75NIDjIx82m8hby8DLNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555626878432-f20jin0ksuou7jto0trf8rfo8vgnmjlj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

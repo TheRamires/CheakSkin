@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/icon_home"
+        android:title="@string/title_home" />
+
+    <!-- android:id="@+id/navigation_food_diary" -->
+    <item
+        android:icon="@drawable/icon_food"
+        android:title="@string/title_food_diary" />
+
+    <!-- android:id="@+id/navigation_health_diary"-->
+    <item
+        android:id="@+id/navigation_health_diary"
+        android:icon="@drawable/icon_healthy"
+        android:title="@string/title_health_diary" />
+
+    <item
+        android:id="@+id/navigation_news"
+        android:icon="@drawable/icon_news"
+        android:title="@string/title_news" />
+
+    <!-- android:id="@+id/navigation_tests"-->
+    <item
+        android:id="@+id/navigation_tests"
+        android:icon="@drawable/icon_tests"
+        android:title="@string/title_tests" />
+
+</menu>

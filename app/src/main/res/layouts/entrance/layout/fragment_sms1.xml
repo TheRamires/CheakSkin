@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.entrance.Sms1Fragment" />
+    </data>
+
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backstack}"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/img_btn"
+                android:text="Регистрация"
+                android:textColor="@color/purple_300"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_above="@+id/button_next_from_sms1"
+            android:id="@+id/scrollView"
+            android:layout_below="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="На ваш номер "/>
+
+            <ru.skinallergic.checkskin.entrance.MaskedEditText
+                android:backgroundTint="@android:color/transparent"
+                android:inputType="textNoSuggestions"
+                app:mask="+9 (999) 999-99-99"
+                android:enabled="false"
+                android:textIsSelectable="true"
+                android:textColor="@color/black"
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="number"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" был выслан код"/>
+        <TextView
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Введите код из SMS"/>
+        <EditText
+            android:id="@+id/code"
+            android:maxLength="4"
+            android:layout_gravity="center_horizontal"
+            android:inputType="phone"
+            android:background="@null"
+            android:textSize="45sp"
+            android:hint="0000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Не приходит код? "/>
+            <TextView
+                android:onClick="@{fragment::resubmit}"
+                android:textColor="@color/gray_dark"
+                android:id="@+id/resubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Отправить повторно "/>
+            <TextView
+                android:id="@+id/sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/button_next_from_sms1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:onClick="@{fragment::clickNext}"
+        android:text="Далее"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</RelativeLayout>
+</layout>

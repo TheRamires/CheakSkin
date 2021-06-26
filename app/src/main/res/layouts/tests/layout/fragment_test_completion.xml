@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.tests.TestCompletionFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.tests.viewModels.TestsViewModel" />
+        <variable
+            name="result"
+            type="ru.skinallergic.checkskin.components.tests.data.Result" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_alignParentTop="true"
+                android:background="@color/white"
+                android:id="@+id/title_layout"
+                android:paddingHorizontal="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/img_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:onClick="@{fragment::backStack}"
+                    android:src="@drawable/ic_back" />
+                <TextView
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:hint="tests name"
+                    android:layout_toRightOf="@+id/img_btn"
+                    android:layout_centerVertical="true"
+                    android:textSize="20sp"
+                    android:textColor="@color/purple_300"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.entityTestsObservable.name}"
+                    />
+                <View
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/title_layout"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <com.dd.ShadowLayout
+                    android:layout_marginTop="-100dp"
+                    android:layout_below="@+id/img"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:sl_cornerRadius="30dp"
+                    app:sl_dx="0dp"
+                    app:sl_dy="0dp"
+                    app:sl_shadowColor="#738696FC"
+                    app:sl_shadowRadius="10dp">
+
+                    <RelativeLayout
+                        android:paddingBottom="45dp"
+                        android:layout_marginHorizontal="@dimen/margin_min"
+                        android:layout_marginTop="@dimen/margin_min"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ScrollView
+                        android:layout_alignParentTop="true"
+                        android:layout_above="@+id/button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Предыдущие рузультаты:"
+                                android:textColor="@color/red"
+                                android:id="@+id/previous"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_marginTop="@dimen/margin_min"
+                                android:id="@+id/recycler"
+                                tools:listitem="@layout/item_previous"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                />
+
+                            <TextView
+                                android:paddingTop="@dimen/margin_min"
+                                android:textColor="@color/red"
+                                android:id="@+id/desctiption_result"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Текущие результаты:"
+                                />
+
+                            <LinearLayout
+                                android:id="@+id/linear"
+                                android:layout_marginBottom="@dimen/margin_min"
+                                android:layout_marginTop="@dimen/margin_min"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:textColor="@color/black"
+                                    android:text="@{result.text}"
+                                    android:id="@+id/text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:textColor="@color/black"
+                                    android:text="Количество баллов: "
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    />
+                                <TextView
+                                    android:textColor="@color/black"
+                                    android:id="@+id/quantity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:textColor="@color/black"
+                                android:layout_marginBottom="@dimen/margin_normal"
+                                android:id="@+id/desctiption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{result.description}"
+                                />
+                        </LinearLayout>
+                    </ScrollView>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_marginBottom="@dimen/margin_big"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+
+                            android:layout_marginVertical="@dimen/margin_min"
+                            android:onClick="@{fragment::finish}"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:text="Завершить тест"
+                            android:layout_marginHorizontal="@dimen/margin_min"
+                            android:id="@+id/button"
+                            android:background="@drawable/button_pressed_blue"
+                            android:layout_marginTop="@dimen/margin_normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/height_btn"/>
+
+                    </RelativeLayout>
+                </com.dd.ShadowLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

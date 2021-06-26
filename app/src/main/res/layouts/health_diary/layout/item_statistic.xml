@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<FrameLayout
+    android:id="@+id/statistic_item"
+    android:layout_marginHorizontal="@dimen/margin_min"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.dd.ShadowLayout
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sl_cornerRadius="30dp"
+        app:sl_dx="0dp"
+        app:sl_dy="0dp"
+        app:sl_shadowColor="@color/shadow_color1"
+        app:sl_shadowRadius="10dp">
+
+        <RelativeLayout
+            android:paddingHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="82dp">
+            <ImageView
+                android:id="@+id/img"
+                android:layout_marginLeft="@dimen/margin_min"
+                android:layout_centerVertical="true"
+                android:layout_width="41dp"
+                android:layout_height="41dp"/>
+            <TextView
+                android:gravity="left"
+                android:layout_marginStart="@dimen/margin_min"
+                android:layout_centerVertical="true"
+                android:id="@+id/name"
+                android:layout_toEndOf="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/textView"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="@dimen/margin_min"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                />
+            <TextView
+                android:layout_alignParentRight="true"
+                android:text="0"
+                android:textColor="@color/purple_300"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/count"/>
+            <TextView
+                android:textColor="@color/purple_300"
+                android:id="@+id/textView"
+                android:layout_toStartOf="@+id/count"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Дней: "/>
+        </RelativeLayout>
+    </com.dd.ShadowLayout>
+</FrameLayout>
+</layout>

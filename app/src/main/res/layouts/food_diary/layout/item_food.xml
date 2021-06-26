@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.fooddiary.data.EntityFoodPosition" />
+    </data>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TableLayout
+        android:paddingHorizontal="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <ImageView
+                android:id="@+id/image"
+                android:visibility="invisible"
+                android:src="@drawable/exclamation2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_marginLeft="7dp"
+                android:hint="Кукурузные хлопья"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                />
+            <TextView
+                android:id="@+id/weight"
+                android:layout_marginLeft="50dp"
+                android:hint="вес"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                />
+
+        </TableRow>
+    </TableLayout>
+</FrameLayout>
+</layout>

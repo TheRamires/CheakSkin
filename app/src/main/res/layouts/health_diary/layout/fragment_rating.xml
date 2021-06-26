@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.RatingFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
+    </data>
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".components.home.lpu.LPUReviewFragment"
+        android:orientation="vertical"
+        android:background="@color/gray">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:onClick="@{fragment::backStack}"
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:text="Оценка"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="name of LPU item"
+                />
+            <ImageView
+                android:onClick="@{fragment::toRedact}"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/my_icon_pencil"
+                android:layout_marginRight="20dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <View
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_below="@+id/title_layout"
+            android:paddingHorizontal="13dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginLeft="@dimen/margin_min"
+                android:id="@+id/rate"
+                android:textColor="@color/black"
+                android:text="Оцени эффект лечения"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/view"
+                android:layout_marginLeft="@dimen/margin_min"
+                android:layout_marginTop="@dimen/margin_min"
+                android:textSize="12sp"
+                android:text=" 1 - отсутствует эффект, 5 - отличный"
+                android:layout_below="@+id/rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RatingBar
+                android:stepSize="1"
+                android:isIndicator="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp"
+                android:layout_below="@+id/view"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:progressDrawable="@drawable/rating_custom"
+                android:id="@+id/ratingBar"
+                />
+        </RelativeLayout>
+        <FrameLayout
+            android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+    </RelativeLayout>
+</layout>
