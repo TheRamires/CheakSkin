@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.entrance.RegistrationFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.view_models.AccountViewModelImpl" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backstack}"
+                android:src="@drawable/ic_back" />
+            <TextView
+
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Регистрация"/>
+
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="@dimen/norm_button_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Имя"/>
+
+            <EditText
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:id="@+id/edit_name"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/corners_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Регион"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/corners_input_text"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/spinner_registr"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                </Spinner>
+                <ImageView
+                    android:background="@drawable/my_icon_spinner_down"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="right|center_vertical"/>
+            </FrameLayout>
+
+            <TextView
+                android:layout_marginTop="13dp"
+                android:paddingHorizontal="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Диагноз"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Spinner
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/corners_input_text"
+                    android:id="@+id/spinner_diagnosis"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                </Spinner>
+                <ImageView
+                    android:background="@drawable/my_icon_spinner_down"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="right|center_vertical"/>
+            </FrameLayout>
+
+            <TextView
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="25dp"
+                android:text="Выберите пол"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RadioGroup
+                android:layout_marginHorizontal="30dp"
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                    <RadioButton
+                        android:padding="10dp"
+                        android:button="@drawable/radiobutton_drawable"
+                        android:theme="@style/MyRadioButton"
+                        android:id="@+id/male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Мужчина"/>
+                <Space
+                    android:id="@+id/space"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:padding="10dp"
+                        android:button="@drawable/radiobutton_drawable"
+                        android:theme="@style/MyRadioButton"
+                        android:id="@+id/female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Женщина" />
+            </RadioGroup>
+            <Space
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            
+            <androidx.appcompat.widget.AppCompatButton
+                android:onClick="@{fragment::clickNext}"
+                android:textColor="@color/white"
+                android:layout_marginBottom="20dp"
+                android:text="Далее"
+                android:background="@drawable/button_blue_pressed"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btn"/>
+
+        </LinearLayout>
+    </LinearLayout>
+        <FrameLayout
+            android:visibility="@{viewModel.splashScreen ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

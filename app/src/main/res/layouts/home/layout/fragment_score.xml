@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/stars"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".components.home.lpu.ScoreFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="2dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/favoritesstar_0"
+            />
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="2dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/favoritesstar_0"
+            />
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="2dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/favoritesstar_0"
+            />
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="2dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/favoritesstar_0"
+            />
+        <ImageButton
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="2dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/favoritesstar_0"
+            />
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/rating"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="4.8"
+            android:hint="4.8"
+            />
+</LinearLayout>

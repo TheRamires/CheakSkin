@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:id="@+id/exp_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginHorizontal="@dimen/margin_normal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <com.dd.ShadowLayout
+        android:id="@+id/healthy_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sl_cornerRadius="86dp"
+        app:sl_dx="0dp"
+        app:sl_dy="1dp"
+        app:sl_shadowColor="#73BB86FC"
+        app:sl_shadowRadius="15dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:drawablePadding="@dimen/margin_normal"
+            android:gravity="left|center_vertical"
+            android:clickable="false"
+            android:id="@+id/btnLpu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btn"
+            android:background="@drawable/button_pressed_white"
+            android:onClick="@{fragment::toHealthyDiary}"
+            android:paddingHorizontal="@dimen/margin_normal"
+            android:textAllCaps="false"
+            android:textColor="@color/purple_300"
+            android:textSize="13sp"
+            android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" />
+
+    </com.dd.ShadowLayout>
+</LinearLayout>

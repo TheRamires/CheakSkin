@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.home.data.ReviewEntity" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/clickable_layout"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:clickable="true"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".components.home.components.LPUFragment">
+
+        <RatingBar
+            android:isIndicator="true"
+            android:layout_marginTop="14dp"
+            android:layout_below="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:progressDrawable="@drawable/rating_small_custom"
+            android:id="@+id/ratingBar"
+            />
+
+        <TextView
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@+id/ratingBar"
+            android:textColor="@color/black"
+            android:id="@+id/rating"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="4.8"
+            android:hint="4.8"
+            />
+    <TextView
+        android:layout_below="@+id/ratingBar"
+        android:text="@{entity.name}"
+        android:textSize="12sp"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="name"/>
+    <TextView
+        android:text="@{entity.text}"
+        android:textSize="12sp"
+        android:layout_below="@+id/name"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="description"/>
+    <TextView
+        android:text="@{entity.date}"
+        android:textColor="@color/gray"
+        android:textSize="10sp"
+        android:layout_below="@+id/description"
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="date"/>
+    <View
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/date"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+</RelativeLayout>
+</layout>

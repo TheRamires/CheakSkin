@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.home.data.LPU" />
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/clickable"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:clickable="true"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".components.home.components.LPUFragment"
+        android:focusable="true">
+
+        <RatingBar
+            android:isIndicator="true"
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_below="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:progressDrawable="@drawable/rating_small_custom"
+            android:id="@+id/ratingBar"
+            />
+
+        <TextView
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_toRightOf="@+id/ratingBar"
+            android:textColor="@color/black"
+            android:id="@+id/rating"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="4.8"
+            android:hint="4.8"
+            />
+
+        <TextView
+            android:textSize="12sp"
+            android:id="@+id/adress"
+            android:layout_below="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="г. Южно-Алтайск"
+            android:hint="г. Южно-Алтайск"/>
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_below="@+id/adress"
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ГБУЗ поликлиника"
+            android:hint="ГБУЗ поликлиника"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:layout_below="@+id/name"
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+000022200"
+            android:hint="+000022200"/>
+        <ImageButton
+            android:layout_margin="@dimen/margin_min"
+            android:alpha="0.6"
+            android:layout_centerVertical="true"
+            android:padding="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_further_orange"
+            android:layout_width="8dp"
+            android:layout_height="13dp"/>
+        <View
+            android:layout_below="@+id/number"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            />
+
+    </RelativeLayout>
+</layout>

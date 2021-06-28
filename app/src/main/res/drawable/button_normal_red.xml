@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ripple android:color="?attr/colorControlHighlight"
+        tools:ignore="NewApi">
+        <item>
+            <shape android:shape="rectangle">
+                <corners android:radius="80dp"/>
+                <solid android:color="@color/red"/>
+                <padding android:bottom="10dp"/>
+                <padding android:right="15dp"/>
+                <padding android:left="0dp"/>
+                <padding android:top="10dp"/>
+
+            </shape>
+        </item>
+    </ripple>
+</inset>

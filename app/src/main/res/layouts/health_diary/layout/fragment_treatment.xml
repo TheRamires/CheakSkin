@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="java.util.List"/>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.TreatmentFragment" />
+        <variable
+            name="therapies"
+            type="List" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.TreatmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".components.fooddiary.FoodDiaryFragment">
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:onClick="@{fragment::backStack}"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:layout_marginRight="@dimen/margin_big"
+                android:hint="tests name"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Лечение"
+                />
+            <ImageView
+                android:onClick="@{fragment::toRedact}"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/my_icon_pencil"
+                android:layout_marginRight="20dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"/>
+            <View
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:paddingHorizontal="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+
+            <RelativeLayout
+                android:layout_below="@+id/layout"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:id="@+id/layout0"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/title0"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Наружная терапия (мази, кремы)"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/title0"
+                    android:id="@+id/description0"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="14sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Наносятся непосредственно на пораженные участки кожи."/>
+                <EditText
+                    android:enabled="false"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/description0"
+                    android:id="@+id/editText0"
+                    android:textColor="@color/purple_300"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="16sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(therapies.get(0))}"/>
+                <View
+                    android:layout_below="@+id/editText0"
+                    android:id="@+id/divider0"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/gray"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/layout0"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:id="@+id/layout1"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/title1"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Системная терапия"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/title1"
+                    android:id="@+id/description"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="14sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Лекарства, которые принимают в виде таблеток или инъекций, оказывающие влияние на организм в целом"/>
+                <EditText
+                    android:enabled="false"
+                    android:text="@{String.valueOf(therapies.get(1))}"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/description"
+                    android:id="@+id/editText"
+                    android:textColor="@color/purple_300"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="16sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"/>
+                <View
+                    android:layout_below="@+id/editText"
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/gray"
+                    />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@+id/layout1"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:id="@+id/layout2"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/title2"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Прочее"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@id/title2"
+                    android:id="@id/description"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="14sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="Иные препараты и средства лечения"/>
+                <EditText
+                    android:enabled="false"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@+id/description"
+                    android:id="@+id/editText2"
+                    android:textColor="@color/purple_300"
+                    android:paddingRight="20dp"
+                    android:layout_marginTop="9dp"
+                    android:textSize="16sp"
+                    android:layout_width="266dp"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(therapies.get(2))}"/>
+                <View
+                    android:layout_below="@+id/editText2"
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/gray"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+            </FrameLayout>
+        </ScrollView>
+    </LinearLayout>
+        <FrameLayout
+            android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

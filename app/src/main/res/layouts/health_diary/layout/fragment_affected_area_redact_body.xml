@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.AffectedAreaRedactBodyFragment" />
+    </data>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".components.healthdiary.components.AffectedAreaRedactBodyFragment">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:id="@+id/title_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/img_btn"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:onClick="@{fragment::backStack}"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:layout_marginRight="@dimen/margin_big"
+            android:hint="tests name"
+            android:layout_toRightOf="@+id/img_btn"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@color/purple_300"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Фото высыпаний"
+            />
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:paddingHorizontal="13dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:clickable="true"
+            android:id="@+id/layout"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/title"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"
+                android:layout_width="266dp"
+                android:layout_height="wrap_content"
+                android:text="Зафиксируй пораженные участки твоего тела"
+                android:textColor="@color/purple_300"/>
+            <TextView
+                android:id="@+id/desc"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/title"
+                android:paddingRight="20dp"
+                android:layout_marginTop="9dp"
+                android:textSize="12sp"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="Выбери зоны, на которых есть сыпь, сделай фото и добавь описание:"/>
+            <View
+                android:layout_below="@+id/desc"
+                android:id="@+id/divide"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/gray"
+                />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_below="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/conteiner"/>
+
+        <LinearLayout
+            android:id="@+id/text_layout"
+            android:layout_below="@id/conteiner"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/purple_300"/>
+            <TextView
+                android:id="@+id/view"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/purple_300"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginHorizontal="@dimen/margin_min"
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_below="@+id/text_layout"
+            android:orientation="horizontal"
+            android:id="@+id/photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:id="@+id/container_for_photo_up_1"
+                android:background="@drawable/ic_background_photo_item2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{fragment::clickPhoto}"
+                    android:id="@+id/photo_rash_0"
+                    android:layout_width="102dp"
+                    android:layout_height="102dp"/>
+
+            </FrameLayout>
+            <Space
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <FrameLayout
+                android:id="@+id/container_for_photo_up_2"
+                android:background="@drawable/ic_background_photo_item2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{fragment::clickPhoto}"
+                    android:id="@+id/photo_rash_1"
+                    android:layout_width="102dp"
+                    android:layout_height="102dp"/>
+
+            </FrameLayout>
+            <Space
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <FrameLayout
+                android:id="@+id/container_for_photo_up_3"
+                android:background="@drawable/ic_background_photo_item2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{fragment::clickPhoto}"
+                    android:id="@+id/photo_rash_2"
+                    android:layout_width="102dp"
+                    android:layout_height="102dp"/>
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_view2"
+            android:layout_below="@+id/photos"
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Какая сыпь на отмеченных участках?"
+            android:textColor="@color/purple_300"/>
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_below="@+id/text_view2"
+            android:layout_marginTop="@dimen/margin_min"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:gravity="center_horizontal">
+                <ToggleButton
+                    android:id="@+id/toggle_0"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Крупная сыпь"
+                    android:textOn="Крупная сыпь"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+                <ToggleButton
+                    android:id="@+id/toggle_1"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Мелкая сыпь"
+                    android:textOn="Мелкая сыпь"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+            </TableRow>
+            <TableRow
+                android:gravity="center_horizontal">
+                <ToggleButton
+                    android:id="@+id/toggle_2"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Трещины"
+                    android:textOn="Трещины"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+                <ToggleButton
+                    android:id="@+id/toggle_3"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Сухость"
+                    android:textOn="Сухость"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+            </TableRow>
+            <TableRow
+                android:gravity="center_horizontal">
+                <ToggleButton
+                    android:id="@+id/toggle_4"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Отек"
+                    android:textOn="Отек"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+                <ToggleButton
+                    android:id="@+id/toggle_5"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textOff="Эрозия"
+                    android:textOn="Эрозия"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    style="@style/MyToggle"
+                    />
+            </TableRow>
+        </TableLayout>
+
+        <View
+            android:layout_below="@+id/table"
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:background="@color/gray"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:onClick="@{fragment::save}"
+            android:layout_below="@+id/line"
+            android:layout_marginBottom="34dp"
+            android:layout_marginVertical="25dp"
+            android:background="@drawable/button_pressed_blue"
+            android:layout_marginHorizontal="@dimen/norm_button_margin"
+            android:textAllCaps="false"
+            android:paddingTop="0dp"
+            android:paddingBottom="2dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="15sp"
+            android:text="СОХРАНИТЬ"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:id="@+id/to_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    </ScrollView>
+</LinearLayout>
+</layout>

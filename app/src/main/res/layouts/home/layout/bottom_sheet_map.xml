@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/lpu_item"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="20dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <View
+        android:layout_gravity="center"
+        android:layout_width="113dp"
+        android:layout_height="5dp"
+        android:background="@drawable/corners_grayt"
+        android:layout_marginVertical="@dimen/margin_min"
+        />
+
+    <fragment
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="2dp"
+        android:id="@+id/map_lpu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="ru.skinallergic.checkskin.components.home.components.LPUFragment"
+        />
+
+</LinearLayout>

@@ -1,0 +1,51 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.CheakSkin" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_300</item>
+        <item name="colorPrimaryVariant">@color/purple_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/purple_300</item>
+        <item name="colorSecondaryVariant">@color/purple_500</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Buttonise" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="background">@drawable/button_normal_white</item>
+        <item name="colorControlHighlight">#E8E2F1</item>
+    </style>
+
+    <style name="Button_press_purple" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="background">@drawable/button_normal_white</item>
+        <item name="colorControlHighlight">#E8E2F1</item>
+    </style>
+    <style name="Button_press_red" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="colorControlHighlight">#DA5C53</item>
+    </style>
+
+    <style name="date_picker_theme"  parent="android:Widget.Material.DatePicker">
+        <item name="android:headerMonthTextAppearance">@style/HeaderTextStyle</item>
+
+    </style>
+
+    <style name="HeaderTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/purple_300</item>
+    </style>
+
+    <style name="MyToggle" parent="android:Widget">
+
+        <item name="android:background">@drawable/btn_toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+    <style name="BodyToggle" parent="android:Widget">
+        <item name="android:background">@drawable/body_toggle_bg</item>
+        <item name="android:textOn">""</item>
+        <item name="android:textOff">""</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
+</resources>

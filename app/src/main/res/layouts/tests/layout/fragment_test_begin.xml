@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.tests.TestBeginFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.tests.viewModels.TestsViewModel" />
+        <variable
+            name="oneQuestion"
+            type="ru.skinallergic.checkskin.components.tests.data.Question" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_alignParentTop="true"
+                android:background="@color/white"
+                android:id="@+id/title_layout"
+                android:paddingHorizontal="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageButton
+                    android:id="@+id/img_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/white"
+                    android:onClick="@{fragment::backStack}"
+                    android:src="@drawable/ic_back" />
+                <TextView
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:hint="tests name"
+                    android:layout_toRightOf="@+id/img_btn"
+                    android:layout_centerVertical="true"
+                    android:textSize="20sp"
+                    android:textColor="@color/purple_300"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.entityTestsObservable.name}"
+                    />
+                <View
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@+id/title_layout"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_marginVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"/>
+
+                <com.dd.ShadowLayout
+                    android:layout_marginTop="-100dp"
+                    android:layout_below="@+id/img"
+                    android:layout_marginHorizontal="5dp"
+                    android:id="@+id/shadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:sl_cornerRadius="30dp"
+                    app:sl_dx="0dp"
+                    app:sl_dy="0dp"
+                    app:sl_shadowColor="#738696FC"
+                    app:sl_shadowRadius="10dp">
+
+                    <RelativeLayout
+                        android:paddingBottom="45dp"
+                        android:layout_marginHorizontal="@dimen/margin_min"
+                        android:layout_marginTop="@dimen/margin_min"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ScrollView
+                            android:layout_above="@+id/btn_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:paddingTop="15dp"
+                                android:paddingBottom="5dp"
+                                android:textColor="@color/black"
+                                android:id="@+id/question"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintBottom_toTopOf="@+id/line"
+                                android:hint="description"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <View
+                                android:id="@+id/line"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@+id/desctiption"
+                                android:background="@color/gray"
+                                app:layout_constraintBottom_toTopOf="@+id/textView"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:paddingTop="15dp"
+                                android:paddingBottom="5dp"
+                                android:id="@+id/textView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Выберите свой вариант ответа"
+                                app:layout_constraintBottom_toTopOf="@+id/count_layout"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <LinearLayout
+                                android:layout_marginVertical="@dimen/margin_min"
+                                android:id="@+id/count_layout"
+                                android:layout_below="@+id/textView"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_marginTop="@dimen/margin_normal"
+                                    android:visibility="gone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/seek_bar_count"
+                                    />
+
+                                <SeekBar
+                                    android:visibility="gone"
+                                    android:max="10"
+                                    android:id="@+id/seek_bar"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"/>
+
+                                <RadioGroup
+                                    android:visibility="gone"
+                                    android:id="@+id/radio_group"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/textView"
+                                    app:layout_constraintBottom_toTopOf="@+id/button_layout"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                        </ScrollView>
+
+                        <FrameLayout
+                            android:id="@+id/btn_layout"
+                            android:layout_marginVertical="@dimen/margin_min"
+                            android:layout_marginBottom="@dimen/margin_big"
+                            android:layout_alignParentBottom="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_marginHorizontal="5dp"
+                                android:id="@+id/button_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/btn_back"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/height_btn"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_lightblue_pressed"
+                                    android:onClick="@{fragment::back}"
+                                    android:stateListAnimator="@null"
+                                    android:text="Назад"
+                                    android:textColor="@color/gray_dark"
+                                    android:translationZ="0dp" />
+
+                                <Space
+                                    android:layout_width="@dimen/margin_normal"
+                                    android:layout_height="@dimen/margin_normal" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/btn_next"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/height_btn"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/button_blue_pressed"
+                                    android:onClick="@{fragment::next}"
+                                    android:stateListAnimator="@null"
+                                    android:text="Далее"
+                                    android:textColor="@color/white"
+                                    android:translationZ="0dp" />
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+
+                                android:id="@+id/btn_next_big"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_btn"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:background="@drawable/button_blue_pressed"
+                                android:onClick="@{fragment::next}"
+                                android:stateListAnimator="@null"
+                                android:text="Далее"
+                                android:textColor="@color/white"
+                                android:translationZ="0dp" />
+                        </FrameLayout>
+                    </RelativeLayout>
+                </com.dd.ShadowLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

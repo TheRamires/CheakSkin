@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_teme_of_meals">
+        <item>Завтрак</item>
+        <item>Перекус</item>
+        <item>Обед</item>
+        <item>Ужин</item>
+        <item>Выберите прием пищи</item>
+    </string-array>
+</resources>

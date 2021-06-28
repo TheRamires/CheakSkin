@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:paddingHorizontal="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:layout_marginTop="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/my_icon_heart"/>
+
+
+    <RatingBar
+        android:isIndicator="true"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:progressDrawable="@drawable/rating_small_custom"
+        android:id="@+id/ratingBar"
+        />
+
+    <TextView
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@+id/ratingBar"
+        android:textColor="@color/black"
+        android:id="@+id/rating"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="4.8"
+        android:hint="4.8"
+        />
+
+    <TextView
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/ratingBar"
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:hint="ГБУЗ Поликлиника кожных заболеваний"/>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/name"
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:hint="Оказывает высококачественную медицинскую помощь"/>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/description"
+        android:id="@+id/city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:hint="г. Горно-Алтайск, ул. Мира 1"/>
+
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/city"
+        android:id="@+id/schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:hint="График раюоты: Пн-Пт 9:00-18:00"/>
+
+    <TableLayout
+        android:id="@+id/date"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="88dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <TextView
+                android:textSize="14sp"
+                android:text="email"/>
+            <TextView
+                android:textSize="14sp"
+                android:hint="example@mail.ru"/>
+
+        </TableRow>
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:textSize="14sp"
+                android:text="тел"/>
+            <TextView
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                android:hint="8(800)2500550"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <TextView
+                android:textSize="14sp"
+                android:text="веб-сайт"/>
+            <TextView
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                android:hint="polkhozab.ru"/>
+
+        </TableRow>
+    </TableLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:onClick="@{fragment::toReview}"
+        android:background="@drawable/button_pressed_blue"
+        android:layout_marginHorizontal="@dimen/norm_button_margin"
+        android:textAllCaps="false"
+        android:paddingTop="0dp"
+        android:paddingBottom="2dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="15sp"
+        android:text="Добавить отзыв"
+        android:textColor="@color/white"
+        android:layout_marginTop="24dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/date"
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/button"
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+    <TextView
+        android:text="Отзывы"
+        android:layout_below="@+id/line"
+        android:id="@+id/rewiew"
+        android:textSize="14sp"
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginTop="@dimen/margin_min"
+        android:layout_below="@+id/rewiew"
+        android:id="@+id/recycler_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

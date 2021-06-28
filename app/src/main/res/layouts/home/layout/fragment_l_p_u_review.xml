@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.home.lpu.LPUReviewFragment" />
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.home.data.LPU" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".components.home.lpu.LPUReviewFragment"
+    android:orientation="vertical"
+    android:background="@color/gray">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:id="@+id/title_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:id="@+id/img_btn"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:onClick="@{fragment::backstack}"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:text="@{entity.name}"
+            android:layout_toRightOf="@+id/img_btn"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:textColor="@color/purple_300"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="name of LPU item"
+            />
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:paddingHorizontal="13dp"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:textColor="@color/purple_300"
+            android:text="Оставить отзыв"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11dp"/>
+
+
+        <RatingBar
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:progressDrawable="@drawable/rating_custom"
+            android:id="@+id/ratingBar"
+            />
+
+        <TextView
+            android:layout_below="@+id/ratingBar"
+            android:hint="description LPU"
+            android:id="@+id/title"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14dp"/>
+        <View
+            android:id="@+id/line"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="13dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"/>
+        <EditText
+
+            android:textSize="12sp"
+            android:hint="20-200 символов"
+            android:background="@null"
+            android:inputType="textNoSuggestions"
+            android:id="@+id/editText"
+            android:layout_below="@+id/line"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/button_pressed_blue"
+            android:layout_marginHorizontal="@dimen/norm_button_margin"
+            android:textAllCaps="false"
+            android:paddingTop="0dp"
+            android:paddingBottom="2dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/editText"
+            android:layout_marginTop="21dp"
+            android:text="Отправить"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btn"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

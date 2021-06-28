@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MyCardView3"
+            android:stateListAnimator="@null"
+            android:translationZ="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:paddingBottom="@dimen/margin_normal"
+                android:paddingTop="@dimen/margin_min"
+                android:paddingHorizontal="@dimen/margin_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="@dimen/margin_min"
+                    android:hint="description"
+                    android:layout_below="@+id/img"
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <View
+                    android:id="@+id/line"
+                    android:layout_below="@+id/desctiption1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
+                <TextView
+                    android:layout_marginTop="@dimen/margin_min"
+                    android:id="@+id/textView"
+                    android:layout_below="@+id/line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Выберите свой вариант ответа"/>
+
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView">
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/margin_min"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:stateListAnimator="@null"
+                        android:translationZ="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="@dimen/margin_min"
+                        android:layout_weight="1"
+                        android:textColor="@color/gray_dark"
+                        android:onClick="@{fragment::back}"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_btn"
+                        android:background="@drawable/button_lightblue_pressed"
+                        android:text="Назад" />
+                    <Space
+                        android:layout_width="@dimen/margin_normal"
+                        android:layout_height="@dimen/margin_normal"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:stateListAnimator="@null"
+                        android:translationZ="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="@dimen/margin_min"
+                        android:layout_weight="1"
+                        android:textColor="@color/white"
+                        android:onClick="@{fragment::next}"
+                        android:id="@+id/btn2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_btn"
+                        android:background="@drawable/button_blue_pressed"
+                        android:text="Далее" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

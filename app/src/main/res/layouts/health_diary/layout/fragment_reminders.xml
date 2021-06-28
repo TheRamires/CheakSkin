@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.healthdiary.reminders.RemindersFragment"
+        >
+        <ImageView
+            android:id="@+id/background"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_background_alarm_clock_1"/>
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:onClick="@{fragment::backStack}"
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:text="Оценка"
+                android:layout_toRightOf="@+id/img_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="name of LPU item"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </RelativeLayout>
+        <ScrollView
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/title_layout"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/my_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:elevation="2dp"
+                    android:scrollbars="vertical" />
+
+                <TextView
+                    android:id="@+id/empty_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="No Records"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:clickable="true"
+                    android:layout_below="@+id/my_recycler_view"
+                    android:layout_marginTop="28dp"
+                    android:background="@drawable/button_plus"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:onClick="@{fragment::add}"
+                    android:layout_marginBottom="40dp"/>
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</layout>
+
+

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.home.HomeFragment" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:id="@+id/title_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageButton
+            android:onClick="toProfile"
+            android:layout_marginRight="5dp"
+            android:id="@+id/img_btn"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/my_icon_profile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingHorizontal="10dp"
+            android:text="Главная"
+            android:textColor="@color/purple_300"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <View
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrol_view"
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.dd.ShadowLayout
+                        android:id="@+id/healthy_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:sl_cornerRadius="86dp"
+                        app:sl_dx="0dp"
+                        app:sl_dy="5dp"
+                        app:sl_shadowColor="@color/shadow_color1"
+                        app:sl_shadowRadius="30dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/healthy_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/height_btn"
+                            android:background="@drawable/button_pressed_white"
+                            android:onClick="@{fragment::toHealthyDiary}"
+                            android:paddingHorizontal="35dp"
+                            android:text="Заполнить дневник здоровья"
+                            android:textAllCaps="false"
+                            android:textColor="@color/purple_200"
+                            android:textSize="13sp" />
+
+                    </com.dd.ShadowLayout>
+
+                    <com.dd.ShadowLayout
+                        android:id="@+id/healthy_layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/shadow_margin_top_layout"
+                        app:sl_cornerRadius="86dp"
+                        app:sl_dx="0dp"
+                        app:sl_dy="5dp"
+                        app:sl_shadowColor="#00FFFFFF"
+                        app:sl_shadowRadius="30dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/eat_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/height_btn"
+                            android:background="@drawable/button_pressed_red"
+                            android:onClick="@{fragment::toFoodDiary}"
+                            android:paddingHorizontal="35dp"
+                            android:text="Заполнить дневник питания"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                    </com.dd.ShadowLayout>
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="19dp"
+                    android:background="@drawable/my_icon_sun"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_min"
+                    android:layout_marginLeft="@dimen/margin_min"
+                    android:layout_marginTop="17dp"
+                    android:hint="Среда, 05 апреля"
+                    android:textColor="@color/red"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="4dp"
+                    android:hint="Привет!"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_big"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="@dimen/margin_min"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/hexagon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/name" />
+
+                <TextView
+                    android:textSize="20dp"
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 %"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/view"
+                    app:layout_constraintEnd_toEndOf="@+id/view"
+                    app:layout_constraintHorizontal_bias="0.545"
+                    app:layout_constraintStart_toStartOf="@+id/view"
+                    app:layout_constraintTop_toTopOf="@+id/view" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="286dp"
+                    android:layout_height="109dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.157"
+                    app:layout_constraintStart_toEndOf="@+id/view"
+                    app:layout_constraintTop_toBottomOf="@+id/name">
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="false"
+                        android:text="Пора заполенять дневник здоровья"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="false"
+                        android:text="Чтобы тщательнее следить за своим  состоянием, не забывай заполнять  дневник здоровья каждый день!" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="180dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="@+id/relativeLayout2"
+                    tools:layout_editor_absoluteX="20dp">
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="@dimen/margin_normal"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Новости"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="@dimen/margin_min"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:id="@+id/recycler_news">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="@dimen/margin_normal"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Тесты"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginLeft="@dimen/margin_min"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:id="@+id/recycler_test"
+                        >
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_marginVertical="@dimen/margin_min"
+                android:layout_marginTop="@dimen/margin_min"
+                android:paddingTop="3dp"
+                android:paddingHorizontal="@dimen/margin_normal"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:paddingVertical="5dp"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Мои ЛПУ"/>
+        <TextView
+            android:onClick="@{fragment::toLPU}"
+            android:textSize="15dp"
+            android:clickable="true"
+            android:paddingVertical="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_string"
+            android:textColor="@drawable/text_clickable_red"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/margin_min"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_below="@+id/textView"
+            android:id="@+id/recuclerLpu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:text="Документы для ЛПУ"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:paddingLeft="60dp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/recuclerLpu"
+        android:onClick="@{fragment::toLPUDoc}"
+        android:id="@+id/btn_lpu"
+        android:drawablePadding="@dimen/margin_normal"
+        android:gravity="left|center_vertical"
+        android:background="@drawable/button_pressed_blue"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_btn"/>
+    </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
