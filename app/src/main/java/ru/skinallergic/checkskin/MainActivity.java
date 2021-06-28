@@ -42,7 +42,7 @@ import static ru.skinallergic.checkskin.InternetConnectingKt.hasConnection;
 import static ru.skinallergic.checkskin.utils.UtilsKt.NEWS_BUNDLE;
 import static ru.skinallergic.checkskin.utils.UtilsKt.PROFILE_BUNDLE;
 import static ru.skinallergic.checkskin.utils.UtilsKt.SPLASH_BUNDLE;
-//Ramires
+//Ramires //ramires
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private AccountViewModelImpl accountViewModel;
