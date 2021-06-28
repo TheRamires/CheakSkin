@@ -21,6 +21,7 @@ import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData;
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RatingViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.StateViewModel;
@@ -56,16 +57,16 @@ public class RatingFragment extends Fragment {
         binding.setViewModel(ratingViewModel);
         RatingBar ratingBar=binding.ratingBar;
 
-        ratingViewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<WritingData>() {
+        ratingViewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<GettingData>() {
             @Override
-            public void onChanged(WritingData writingData) {
-                Loger.log("liveData "+writingData);
-                if (writingData==null){return;}
-                Loger.log("liveData continue"+writingData);
-                Integer rating=writingData.getRating();
+            public void onChanged(GettingData gettingData) {
+                Loger.log("liveData "+gettingData);
+                if (gettingData==null){return;}
+                Loger.log("liveData continue"+gettingData);
+                Integer rating=gettingData.getRating();
                 if (rating!=null){
                     currentRating=rating;
-                    ratingBar.setRating(writingData.getRating());
+                    ratingBar.setRating(gettingData.getRating());
                 }
             }
         });

@@ -24,4 +24,14 @@ class AffectedAreaViewModel @Inject constructor(val repository: AffectedArreaRep
     fun deletePosition(id: Int) {
         Loger.log("delete$id")
     }
+    fun date(date:Long){
+        compositeDisposable.add(
+                repository.date((date/1000).toString())
+                        .doOnSubscribe { splashScreenOn.set(true) }
+                        .doOnComplete { splashScreenOn.set(false) }
+                        .subscribe ({
+                                    Loger.log("date $it")
+                        },{})
+        )
+    }
 }

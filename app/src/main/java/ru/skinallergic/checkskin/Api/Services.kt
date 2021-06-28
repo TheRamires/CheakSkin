@@ -56,7 +56,6 @@ interface HealthyService {
 
     @Multipart
     @POST("/journals/health/rashes/")
-
     fun addRashReport(
             @Header("Authorization") key: String,
             //@Header("Content-Type") contentType: String,
@@ -64,11 +63,22 @@ interface HealthyService {
                       @Part("area") area: RequestBody,
                       @Part("view") view: RequestBody,
                       @Part("kind") kind: RequestBody,
-                        @Part vararg  file: MultipartBody.Part
+                      @Part vararg  file: MultipartBody.Part
                      /* @Part file1: MultipartBody.Part,
                       @Part file2: MultipartBody.Part,
                       @Part file3: MultipartBody.Part*/
     ):Observable<ResponseBody>
-    fun redactRashReport()
+
+    @Multipart
+    @PUT("/journals/health/rashes/{id}/")
+    fun redactRashReport(
+            @Header("Authorization") key: String,
+            //@Header("Content-Type") contentType: String,
+            @Path ("id") id:Long,
+            @Part("area") area: RequestBody,
+            @Part("view") view: RequestBody,
+            @Part("kind") kind: RequestBody,
+            @Part vararg  file: MultipartBody.Part
+    ):Observable<ResponseBody>
 }
 

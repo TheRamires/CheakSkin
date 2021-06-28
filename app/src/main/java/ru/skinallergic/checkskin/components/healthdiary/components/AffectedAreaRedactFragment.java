@@ -66,9 +66,6 @@ public class AffectedAreaRedactFragment extends Fragment {
         binding.containerForPhotoUp1.setClipToOutline(true);
         binding.containerForPhotoUp2.setClipToOutline(true);
         binding.containerForPhotoUp3.setClipToOutline(true);
-        binding.containerForPhotoDown1.setClipToOutline(true);
-        binding.containerForPhotoDown2.setClipToOutline(true);
-        binding.containerForPhotoDown3.setClipToOutline(true);
         return view;
     }
 

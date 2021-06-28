@@ -11,9 +11,11 @@ import ru.skinallergic.checkskin.Api.HealthyService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityAffected
+import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.handlers.NetworkHandler
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.shared_pref_model.TokenModelImpls
+import ru.skinallergic.checkskin.utils.TOKENEXPIRED
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -52,18 +54,55 @@ class AffectedArreaRepository  @Inject constructor(
             newKind: RequestBody,
             files: List<MultipartBody.Part>,
     ): Observable<ResponseBody> {
+        Loger.log("files 3 //************************************ $files  size ${files.size}")
+        Loger.log("files 3 //**********************************files[0]** ${files[0]}")
+        networkHandler.check()
+        Loger.log("add by repo. area $newArea, view $newView")
         val accesToken=tokenModel_.loadAccesToken()!!
         return when (files.size){
-            0-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0])
-            1-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1])
-            2-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1],files[2])
+            1-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0])
+            2-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1])
+            3-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1],files[2])
             else-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1],files[2])
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
-    fun redact(){
+    fun redact(
+            id: Long,
+            newArea: RequestBody,
+            newView: RequestBody,
+            newKind: RequestBody,
+            files: List<MultipartBody.Part>,
+    ): Observable<ResponseBody> {
         networkHandler.check()
-        service_.redactRashReport()
+        Loger.log("redact by repo. area $newArea, view $newView, id $id")
+        val accesToken=tokenModel_.loadAccesToken()!!
+        return when (files.size){
+            1-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0])
+            2-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1])
+            3-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1],files[2])
+            else-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1],files[2])
+        }
+                .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+    }
+    fun date(date: String): Observable<GettingData>{
+        networkHandler.check()
+        val accesToken = tokenModel_.loadAccesToken()
+        return accesToken?.let{
+            service_.getData(accesToken, date)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError "+it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { date(date) }
+                        }}
+                    .map { it.data!! }
+
+        }!!
     }
 }

@@ -52,7 +52,6 @@ import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 import static android.app.Activity.RESULT_OK;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.GALLERY_REQUEST;
-import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.PHOTO_ID;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
 
 public class AffectedAreaRedactBodyFragment extends Fragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
@@ -134,7 +133,7 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
                 boolean ok=viewModel.checkArea();
                 if (ok){
                     viewModel.putKindsToMap(integers);
-                    Loger.log("onCheckedChanged. map "+viewModel.getMap());
+                    Loger.log("onCheckedChanged. map "+viewModel.getNewMap());
                 }
             }
         });
@@ -185,7 +184,12 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
                 ActionFunction actionFunction=()->{
                     imageView.setImageBitmap(finalBitmap);
                     //viewModel.addBitMapToList(finalBitmap);
-                    viewModel.putPhotoToMap(currentPhotoId, finalBitmap);
+                    try {
+                        File file=fileFromBitmap(finalBitmap, currentPhotoId);
+                        viewModel.putPhotoToMap(currentPhotoId, file);
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 };
                 DialogOnlyOneFunc dialog=new DialogOnlyOneFunc(
                         "Фото необходимо обрезать до квадрта",
@@ -288,7 +292,7 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
                 viewModel.addNewKind(kind);
             } else {viewModel.removeKind(kind);}
     }
-    private void reportRequest() throws IOException, ClassNotFoundException {
+    private void reportRequest() throws IOException, ClassNotFoundException {/*
         int size=3;
         List<Bitmap> bitmapList=viewModel.getBitmaps();
 
@@ -296,11 +300,15 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         for (int i=0;i<bitmapList.size();i++){
             if (i==size){break;}
             Bitmap bitmap=bitmapList.get(i);
+            if (bitmap==null){
+                Loger.log("reportRequest. bitmap is null");
+                continue;
+            }
             File file=fileFromBitmap(bitmap,i);
             files.add(file);
         }
-
-        viewModel.addReport(dateViewModel.getDateUnix(), files);
+*/
+        viewModel.addReport(dateViewModel.getDateUnix());
     }
     private File fileFromBitmap(Bitmap yourBitmap, int count) throws IOException, ClassNotFoundException {
         //create a file to write bitmap data
@@ -369,21 +377,21 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         } else {
             int view=viewModel.getNewView();
             if (view==0){
-                text="Спереди";
-            } else text="Сзади";
+                text="(спереди)";
+            } else text="(сзади)";
         }
         textView.setText(text);
     }
 
     public void showAreaEntity(){
-        List<Bitmap> bitmaps=viewModel.getPhotosFromMap();
+        List<File> bitmaps=viewModel.getPhotosFromMap();
         List<Integer> kinds=viewModel.getKindsFromMap();
 
         if (bitmaps!=null){
             for (int i=0;i<bitmaps.size();i++){
-                Bitmap bitmap=bitmaps.get(i);
+                File bitmap=bitmaps.get(i);
                 if (bitmap!=null){
-                    photoImageViewArray[i].setImageBitmap(bitmap);
+                    photoImageViewArray[i].setImageURI(Uri.parse(bitmap.getAbsolutePath()));
                 }
             }
         }
