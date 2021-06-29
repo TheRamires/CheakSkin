@@ -59,7 +59,7 @@ import static android.app.Activity.RESULT_OK;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.GALLERY_REQUEST;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
 
-public class AffectedAreaRedactBodyFragment extends Fragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
+public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
     private AffectedAreaRedactViewModel viewModel;
     private DateViewModel dateViewModel;
     private int gender;
@@ -76,13 +76,13 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cameraPermission=new CameraPermission(requireActivity());
         manager=getChildFragmentManager();
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         AccountViewModel accountViewModel=new ViewModelProvider(requireActivity(), viewModelFactory).get(AccountViewModelImpl.class);
         gender=accountViewModel.getCurrentUser().getGender();
+        viewModel.getNewViewLive().setValue(0);
     }
 
     @Override
@@ -267,27 +267,8 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            Integer kind=null;
-            switch (buttonView.getId()){
-                case R.id.toggle_0:
-                    kind=0;
-                    break;
-                case R.id.toggle_1:
-                    kind=1;
-                    break;
-                case R.id.toggle_2:
-                    kind=2;
-                    break;
-                case R.id.toggle_3:
-                    kind=3;
-                    break;
-                case R.id.toggle_4:
-                    kind=4;
-                    break;
-                case R.id.toggle_5:
-                    kind=5;
-                    break;
-            }
+            Integer kind=AreaManager.INSTANCE.getKindFromButtonId(buttonView.getId());
+
             if (viewModel.getNewArea()==null){
                 Toast.makeText(getContext(),"Выберите пораженный участок тела", Toast.LENGTH_SHORT).show();
                 clearKindsAndImageViews();
@@ -314,25 +295,6 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         }
 */
         viewModel.addReport(dateViewModel.getDateUnix());
-    }
-    private File fileFromBitmap(Bitmap yourBitmap, int count) throws IOException, ClassNotFoundException {
-        //create a file to write bitmap data
-        File f = new File(requireContext().getCacheDir(), "image"+count+".png");
-        f.createNewFile();
-
-        //Convert bitmap to byte array
-        Bitmap bitmap = yourBitmap;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-        byte[] bitmapdata = bos.toByteArray();
-
-        //write the bytes in file
-        FileOutputStream fos = new FileOutputStream(f);
-        fos.write(bitmapdata);
-        fos.flush();
-        fos.close();
-
-        return f.getAbsoluteFile();
     }
     private void initImagesView(FragmentAffectedAreaRedactBodyBinding binding){
         photoImageViewArray[0]=binding.photoRash0;
@@ -386,35 +348,6 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
             } else text="(сзади)";
         }
         textView.setText(text);
-    }
-    private boolean checkServerPath(File file){
-        String path=file.getAbsolutePath();
-
-        String regex= "http";
-        Pattern pattern=Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(path);
-        if (matcher.find()){
-            Loger.log("matcher true");
-            return true;
-        } else Loger.log("matcher false"); return false;
-
-        /*Loger.log("substring "+path.substring(1,5));
-        if (path.substring(1,5).equals("http")){
-            return true;
-        } else return false;*/
-    }
-
-    private void showByPicasso (File file, ImageView imageView){
-        Picasso.with(requireContext())
-                .load(file.toString())
-                .into(imageView);
-        Boolean isServerPath=checkServerPath(file);
-        Loger.log("isServerPath "+isServerPath);
-        if (isServerPath){
-            Picasso.with(requireContext())
-                    .load(file.toString())
-                    .into(imageView);
-        } else Picasso.with(requireContext()).load(file).into(imageView);
     }
 
     public void showAreaEntity(){

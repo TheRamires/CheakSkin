@@ -212,15 +212,21 @@ class AffectedAreaRedactViewModel@Inject constructor(
     }
 
     fun data(date:Long){
+        Loger.log("data start for view Model")
         compositeDisposable.add(
                 repository.date((date/1000).toString())
                         .doOnSubscribe { splashScreenOn.set(true) }
                         .doOnComplete { splashScreenOn.set(false) }
                         .subscribe ({
-                            oldMap=it.rashes!!
+                            val data: List<Rash>
                             Loger.log("date $it")
-                            initNewMap()  //testing**
-                            loaded.value = true
+                            if (it.message==null){loaded.value = false}
+                            else {
+                                data=it.data?.rashes!!
+                                oldMap=data
+                                initNewMap()
+                                loaded.value = true
+                            }
                         },{})
         )
     }

@@ -30,7 +30,7 @@ class AffectedAreaViewModel @Inject constructor(val repository: AffectedArreaRep
                         .doOnSubscribe { splashScreenOn.set(true) }
                         .doOnComplete { splashScreenOn.set(false) }
                         .subscribe ({
-                                    Loger.log("date $it")
+                                    Loger.log("date ${it}")
                         },{})
         )
     }

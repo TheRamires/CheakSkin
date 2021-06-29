@@ -45,7 +45,7 @@ interface HealthyService {
 
     @GET("/journals/health/?")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getData(@Header("Authorization") key: String, @Query("created") created: String): Observable<BaseResponse<GettingData>>
+    fun getData(@Header("Authorization") key: String, @Query("created") created: String): Observable<BaseResponse<GettingData?>>
 
 
     @GET("/journals/health/stat/")

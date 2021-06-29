@@ -11,6 +11,7 @@ import ru.skinallergic.checkskin.Api.HealthyService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityAffected
+import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.handlers.NetworkHandler
 import ru.skinallergic.checkskin.handlers.ToastyManager
@@ -87,7 +88,8 @@ class AffectedArreaRepository  @Inject constructor(
                 .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
     }
-    fun date(date: String): Observable<GettingData>{
+    fun date(date: String): Observable<BaseResponse<GettingData?>>{
+        Loger.log("data start for repo")
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
         return accesToken?.let{
@@ -101,7 +103,10 @@ class AffectedArreaRepository  @Inject constructor(
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
                             refreshToken { date(date) }
                         }}
-                    .map { it.data!! }
+                    /*.map {
+                        Loger.log("repo data "+it.message)
+                        it.data!!
+                    }*/
 
         }!!
     }

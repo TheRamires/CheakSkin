@@ -17,6 +17,15 @@ object AreaManager {
     const val LEG_01=4
     const val LEG_02=5
 
+    fun getViewTitle(view: Int):String{
+        var text=""
+        when(view){
+            0 -> text = "(Спереди)"
+            1 -> text = "(Сзади)"
+        }
+        return text
+    }
+
     fun getTitle(id: Int, view: Int):String{
         var text=""
         when (id) {
@@ -37,10 +46,10 @@ object AreaManager {
         }
         return text
     }
-    fun getIdOfArea(id:Int):Int?{
+    fun getIdOfArea(id: Int):Int?{
         var area: Int?=null
         when (id) {
-            head-> area = HEAD
+            head -> area = HEAD
             hand01 -> area = HAND_01
             hand02 -> area = HAND_02
             bodyCenter -> area = BODY_CENTER
@@ -49,16 +58,39 @@ object AreaManager {
         }
         return area
     }
-    fun getIdOfToggle(id:Int):Int?{
+    fun getIdOfToggle(id: Int):Int?{
         var idOfToggle: Int?=null
         when(id){
-            HEAD->idOfToggle=head
-            HAND_01->idOfToggle=hand01
-            HAND_02->idOfToggle=hand02
-            BODY_CENTER->idOfToggle= bodyCenter
-            LEG_01->idOfToggle= leg01
-            LEG_02->idOfToggle= leg02
+            HEAD -> idOfToggle = head
+            HAND_01 -> idOfToggle = hand01
+            HAND_02 -> idOfToggle = hand02
+            BODY_CENTER -> idOfToggle = bodyCenter
+            LEG_01 -> idOfToggle = leg01
+            LEG_02 -> idOfToggle = leg02
         }
         return idOfToggle
+    }
+    fun getKindFromButtonId(buttonId: Int): Int?{
+        var kind: Int? =null
+        when (buttonId) {
+            R.id.toggle_0 -> kind = 0
+            R.id.toggle_1 -> kind = 1
+            R.id.toggle_2 -> kind = 2
+            R.id.toggle_3 -> kind = 3
+            R.id.toggle_4 -> kind = 4
+            R.id.toggle_5 -> kind = 5
+        }
+        return kind
+    }
+    fun getKindTitle(index: Int): String?{
+        return when(index){
+            0->"Крупная сыпь"
+            1->"Мелкая сыпь"
+            2->"Трещины"
+            3->"Сухость"
+            4->"Отёк"
+            5->"Эрозия"
+            else -> null
+        }
     }
 }
