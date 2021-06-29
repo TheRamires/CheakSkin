@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +35,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import kotlin.text.Regex;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
@@ -382,6 +387,35 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
         }
         textView.setText(text);
     }
+    private boolean checkServerPath(File file){
+        String path=file.getAbsolutePath();
+
+        String regex= "http";
+        Pattern pattern=Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(path);
+        if (matcher.find()){
+            Loger.log("matcher true");
+            return true;
+        } else Loger.log("matcher false"); return false;
+
+        /*Loger.log("substring "+path.substring(1,5));
+        if (path.substring(1,5).equals("http")){
+            return true;
+        } else return false;*/
+    }
+
+    private void showByPicasso (File file, ImageView imageView){
+        Picasso.with(requireContext())
+                .load(file.toString())
+                .into(imageView);
+        Boolean isServerPath=checkServerPath(file);
+        Loger.log("isServerPath "+isServerPath);
+        if (isServerPath){
+            Picasso.with(requireContext())
+                    .load(file.toString())
+                    .into(imageView);
+        } else Picasso.with(requireContext()).load(file).into(imageView);
+    }
 
     public void showAreaEntity(){
         List<File> files=viewModel.getPhotosFromMap();
@@ -391,7 +425,8 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
             for (int i=0;i<files.size();i++){
                 File file=files.get(i);
                 if (file!=null){
-                    photoImageViewArray[i].setImageURI(Uri.parse(file.getAbsolutePath()));
+                    Loger.log("file "+file);
+                    showByPicasso(file,photoImageViewArray[i]);
                 }
             }
         }

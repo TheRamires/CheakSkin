@@ -3,6 +3,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
@@ -38,6 +40,20 @@ public class AffectedAreasFragment extends Fragment {
         //viewModel.getAffectedLists();
 
         viewModel.data(dateViewModel.getDateUnix());
+        viewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean==null){
+                    return;
+                }
+                if (aBoolean){
+                    aBoolean=null;
+                    if (viewModel.getOldMap().isEmpty()){
+                        toRedactBody(view);
+                    }
+                }
+            }
+        });
 
         RecyclerView recyclerView1=binding.recycler1;
 
@@ -53,5 +69,8 @@ public class AffectedAreasFragment extends Fragment {
     }
     public void toRedact(View view){
         Navigation.findNavController(view).navigate(R.id.action_affectedAreasFragment_to_affectedAreaRedactFragment);
+    }
+    public void toRedactBody(View view){
+        Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);
     }
 }

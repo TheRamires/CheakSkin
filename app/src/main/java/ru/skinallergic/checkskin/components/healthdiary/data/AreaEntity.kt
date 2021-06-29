@@ -5,5 +5,5 @@ import java.io.File
 
 data class AreaEntity (
         var kind: List<Int>? = null,
-        var bitmaps: MutableList<File?>?=null
+        var photos: MutableList<File?>?=null
         )

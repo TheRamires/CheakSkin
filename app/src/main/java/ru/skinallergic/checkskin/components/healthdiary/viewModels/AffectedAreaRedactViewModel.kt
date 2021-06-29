@@ -29,6 +29,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
     val saved =MutableLiveData<Boolean>()
+    val loaded=MutableLiveData<Boolean>()
 
     var oldMap : List<Rash> = listOf()
     val newMap : MutableMap<Int,MutableMap<Int, AreaEntity>> = mutableMapOf()
@@ -120,7 +121,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
-                val bitmaps=areaEntity?.bitmaps
+                val bitmaps=areaEntity?.photos
                 if (kind==null || bitmaps==null){return}
                 Loger.log("areaEntity $areaEntity")
 
@@ -219,6 +220,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                             oldMap=it.rashes!!
                             Loger.log("date $it")
                             initNewMap()  //testing**
+                            loaded.value = true
                         },{})
         )
     }
@@ -296,11 +298,11 @@ class AffectedAreaRedactViewModel@Inject constructor(
             newMap[area]!![view] = AreaEntity()
             //newMap[area] = hashMapOf(view to AreaEntity())
         }*/
-        val bitmaps= newMap[area]!![view]!!.bitmaps
+        val bitmaps= newMap[area]!![view]!!.photos
         if (bitmaps==null || bitmaps.size<3){
-            newMap[area]!![view]!!.bitmaps= mutableListOf(null,null,null)
+            newMap[area]!![view]!!.photos= mutableListOf(null,null,null)
         }
-        newMap[area]!![view]!!.bitmaps!![id] = bitmap
+        newMap[area]!![view]!!.photos!![id] = bitmap
     }
 
     fun getKindsFromMap() : List<Int>? {
@@ -311,7 +313,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
     fun getPhotosFromMap(): List<File?>?{
         val area=getNewArea()
         val view=getNewView()
-        return newMap[area]?.get(view)?.bitmaps
+        return newMap[area]?.get(view)?.photos
     }
 }
 fun <T>List<T>?.removeNulls() : List<T>{
