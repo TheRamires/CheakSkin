@@ -75,7 +75,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         stumpForImageView=false;
 
         //**
-        viewModel.initNewMap();
     }
     @Override
     public void onDestroyView() {
@@ -110,68 +109,22 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             }
         });
 
+        viewModel.getSaved().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
+                    viewModel.getSaved().setValue(false);
+                }
+            }
+        });
+
         List<String> listExample=new ArrayList<>();
         listExample.add("Крупная сыпь");
         listExample.add("Мулкая сыпь");
 
 
         return view;
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = null;
-        if (resultCode == RESULT_OK) {
-
-            switch (requestCode) {
-                case GALLERY_REQUEST:
-                    Uri selectedImage = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case REQUEST_TAKE_PHOTO:
-                    Bundle extras = data.getExtras();
-                    bitmap = (Bitmap) extras.get("data");
-                    break;
-            }
-
-            Bitmap finalBitmap = PhotoController.cropToSquare(bitmap);
-            if (finalBitmap!=null){
-                ActionFunction actionFunction=()->{
-                    imageView.setImageBitmap(finalBitmap);
-                    //viewModel.addBitMapToList(finalBitmap);
-                    try {
-                        File file=fileFromBitmap(finalBitmap, getCurrentPhotoId());
-                        viewModel.putPhotoToMap(getCurrentPhotoId(), file);
-                    } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                };
-                DialogOnlyOneFunc dialog=new DialogOnlyOneFunc(
-                        "Фото необходимо обрезать до квадрта",
-                        "Принять","Отмена",
-                        actionFunction);
-                dialog.show(manager,"photo");
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_TAKE_PHOTO:
-                boolean cameraIsTrue=cameraPermission.permissionsResult(this,requestCode,grantResults);
-                if (cameraIsTrue){
-                    photoController.getCameraPhoto();
-                }
-        }
     }
 
     private void createAdapter(){
@@ -214,6 +167,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         String FilePath02=showByPicasso(photo2, FILE_NAME_02,imageView1);
                         String FilePath03=showByPicasso(photo3, FILE_NAME_03,imageView2);
                         viewModel.putSavedPhotoToMap(area, view,FilePath01,  FilePath02, FilePath03);
+                        viewModel.copyToNewMap();
 
                         List<Integer> kindList=entity.getKinds();
                         List<KindTemp> kindTemps= new ArrayList<>();

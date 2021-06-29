@@ -1,8 +1,11 @@
 package ru.skinallergic.checkskin.components.healthdiary.components
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -16,6 +19,8 @@ import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel
+import ru.skinallergic.checkskin.components.profile.ActionFunction
+import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -34,7 +39,7 @@ abstract class BaseAreaFragment : Fragment() {
     lateinit var imageView: ImageView
     var currentPhotoId: Int=0
 
-    fun toPhoto(imageView:ImageView) {
+    fun toPhoto(imageView: ImageView) {
         when (imageView.id) {
             R.id.photo_rash_0 -> currentPhotoId = 0
             R.id.photo_rash_1 -> currentPhotoId = 1
@@ -42,6 +47,62 @@ abstract class BaseAreaFragment : Fragment() {
         }
         photoController.madePhoto()
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        var bitmap: Bitmap? = null
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                PhotoController.GALLERY_REQUEST -> {
+                    val selectedImage = data!!.data
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+                PhotoController.REQUEST_TAKE_PHOTO -> {
+                    val extras = data!!.extras
+                    bitmap = extras!!["data"] as Bitmap?
+                }
+            }
+            val finalBitmap = PhotoController.cropToSquare(bitmap)
+            if (finalBitmap != null) {
+                val actionFunction = object : ActionFunction {
+                    override fun action() {
+                        imageView.setImageBitmap(finalBitmap)
+                        //viewModel.addBitMapToList(finalBitmap);
+                        try {
+                            val file = fileFromBitmap(finalBitmap, currentPhotoId)
+                            viewModel.putPhotoToMap(currentPhotoId, file!!)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        } catch (e: ClassNotFoundException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                val dialog = DialogOnlyOneFunc(
+                        "Фото необходимо обрезать до квадрта",
+                        "Принять", "Отмена",
+                        actionFunction)
+                dialog.show(manager, "photo")
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PhotoController.REQUEST_TAKE_PHOTO -> {
+                val cameraIsTrue = cameraPermission.permissionsResult(this, requestCode, grantResults)
+                if (cameraIsTrue) {
+                    photoController.getCameraPhoto()
+                }
+            }
+        }
+    }
+
 
     fun checkServerPath(file: File): Boolean {
         val path = file.absolutePath

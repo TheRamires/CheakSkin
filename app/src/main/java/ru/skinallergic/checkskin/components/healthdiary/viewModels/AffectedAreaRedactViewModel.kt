@@ -39,7 +39,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
     val newMap : MutableMap<Int,MutableMap<Int, AreaEntity>> = mutableMapOf()
     //to init in onCreate of AffectedAreaRedactBodyFragment --NONE!!
     //to init in getData function
-    fun initNewMap (){
+    fun copyToNewMap (){
         if (oldMap.isEmpty()){return}
 
         newMap.clear()
@@ -110,9 +110,9 @@ class AffectedAreaRedactViewModel@Inject constructor(
         baseRepository.getData(date, gettingDataLive, null)
 
     }
-    fun checkReportField(files: List<File?>?): Boolean{
-        Loger.log("checkReportField. getNewArea ${getNewArea()}; getNewView ${getNewView()}; getNewKind ${ getNewKind()}; files $files")
-        return (getNewArea()!=null && getNewView()!=null && getNewKind()!=null && files!!.isNotEmpty())
+    fun checkReportField(files: List<File?>?, area: Int?, view: Int?, kinds: List<Int?>?): Boolean{
+        Loger.log("checkReportField. getNewArea ${area}; getNewView ${view}; getNewKind ${kinds}; files $files")
+        return (area!=null && view!=null && kinds!=null && kinds.isNotEmpty() && files!!.isNotEmpty())
     }
 
     fun addReport(date: Long){
@@ -137,7 +137,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
     }
 
     private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
-        val fieldsIsEmpty=!checkReportField(files)
+        val fieldsIsEmpty=!checkReportField(files, area, view, kinds)
         if (fieldsIsEmpty) {
             Loger.log(
                     "Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:")
@@ -239,8 +239,9 @@ class AffectedAreaRedactViewModel@Inject constructor(
                             if (it.message==null){loaded.value = false}
                             else {
                                 data=it.data?.rashes!!
+                                Loger.log("*********** data $data" )
                                 oldMap=data
-                                //initNewMap()
+                                copyToNewMap()
                                 loaded.value = true
                             }
                         },{})

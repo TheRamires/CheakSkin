@@ -66,7 +66,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         viewModel.getNewViewLive().setValue(0);
 
         //**
-        viewModel.initNewMap();
+        viewModel.copyToNewMap();
     }
 
     @Override
@@ -144,61 +144,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     public void onDestroyView() {
         super.onDestroyView();
         viewModel.getNewAreaLive().setValue(null);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = null;
-        if (resultCode == RESULT_OK) {
-
-            switch (requestCode) {
-                case GALLERY_REQUEST:
-                    Uri selectedImage = data.getData();
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), selectedImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case REQUEST_TAKE_PHOTO:
-                    Bundle extras = data.getExtras();
-                    bitmap = (Bitmap) extras.get("data");
-                    break;
-            }
-
-            Bitmap finalBitmap = PhotoController.cropToSquare(bitmap);
-            if (finalBitmap!=null){
-                ActionFunction actionFunction=()->{
-                    imageView.setImageBitmap(finalBitmap);
-                    //viewModel.addBitMapToList(finalBitmap);
-                    try {
-                        File file=fileFromBitmap(finalBitmap, getCurrentPhotoId());
-                        viewModel.putPhotoToMap(getCurrentPhotoId(), file);
-                    } catch (IOException | ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                };
-                DialogOnlyOneFunc dialog=new DialogOnlyOneFunc(
-                        "Фото необходимо обрезать до квадрта",
-                        "Принять","Отмена",
-                        actionFunction);
-                dialog.show(manager,"photo");
-            }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_TAKE_PHOTO:
-                boolean cameraIsTrue=cameraPermission.permissionsResult(this,requestCode,grantResults);
-                if (cameraIsTrue){
-                    photoController.getCameraPhoto();
-                }
-        }
     }
 
     public void backStack(View view){
