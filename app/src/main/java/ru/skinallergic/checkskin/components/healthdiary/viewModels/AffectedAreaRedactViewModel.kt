@@ -42,7 +42,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
         for (rash in oldMap){
             val area=rash.area!!
             val view: Int=rash.view!!
-            val kinds: List<Int> = listOf(rash.kind!!)
+            val kinds: List<Int> = rash.kinds!!
             val photos : List<String?> = listOf(rash.photo_1,rash.photo_2,rash.photo_3)
             val filesPhoto=photos.fileFromStringPath()
 
@@ -132,7 +132,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
         }
     }
 
-    private fun addReport(date: Long, area: Int, view: Int, kins: List<Int>, files: List<File?>?){
+    private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
         val fieldsIsEmpty=!checkReportField(files)
         if (fieldsIsEmpty) {
             Loger.log(
@@ -143,7 +143,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
 
         val newArea: RequestBody =multipartManager.createPartFromString(area)
         val newView: RequestBody =multipartManager.createPartFromString(view)
-        val newKind: RequestBody =multipartManager.createPartFromString(kins[0]) //Временно только один элемент
+        val newKinds: RequestBody =multipartManager.createPartFromString(kinds) //Временно только один элемент
         val fileName01="photo_1"; val fileName02="photo_2"; val fileName03="photo_3"
         val multiParts = mutableListOf<MultipartBody.Part>()
 
@@ -174,22 +174,20 @@ class AffectedAreaRedactViewModel@Inject constructor(
         }
         //check changes****************
         val id=isOldPosition(area,view)
-        Loger.log("files 1 //************************************ $multiParts")
-        Loger.log("id $id")
         if (id==null){
-            addPosition(date, newArea, newView, newKind, multiParts)
+            addPosition(date, newArea, newView, newKinds, multiParts)
         } else{
-            redactPosition(id, newArea, newView, newKind, multiParts)
+            redactPosition(id, newArea, newView, newKinds, multiParts)
         }
     }
     private fun addPosition(date:Long,
                     newArea: RequestBody,
                     newView: RequestBody,
-                    newKind: RequestBody,
+                    newKinds: RequestBody,
                     files: List<MultipartBody.Part>){
 
         Loger.log("files 2 //************************************ $files")
-        compositeDisposable.add(repository.add(date/1000, newArea, newView, newKind, files)
+        compositeDisposable.add(repository.add(date/1000, newArea, newView, newKinds, files)
                 .subscribe ({
                     saved.value=true
                     Loger.log(it.string())
@@ -200,9 +198,9 @@ class AffectedAreaRedactViewModel@Inject constructor(
     private fun redactPosition(id:Int,
                        newArea: RequestBody,
                        newView: RequestBody,
-                       newKind: RequestBody,
+                       newKinds: RequestBody,
                        files: List<MultipartBody.Part>){
-        compositeDisposable.add(repository.redact(id, newArea, newView, newKind, files)
+        compositeDisposable.add(repository.redact(id, newArea, newView, newKinds, files)
                 .subscribe ({
                     saved.value=true
                     Loger.log(it.string())

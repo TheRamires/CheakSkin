@@ -25,20 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import kotlin.text.Regex;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
@@ -48,7 +37,6 @@ import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc;
-import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBinding;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.AccountViewModel;
@@ -91,6 +79,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         FragmentAffectedAreaRedactBodyBinding binding=FragmentAffectedAreaRedactBodyBinding.inflate(inflater);
         binding.setFragment(this);
         view=binding.getRoot();
+        cameraPermission=new CameraPermission(requireActivity());
         photoController=new PhotoController(cameraPermission, this);
 
         currentPhotoId=0;
@@ -98,7 +87,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         initImagesView(binding);
         initToggles(binding);
 
-        cameraPermission=new CameraPermission(requireActivity());
         manager = requireActivity().getSupportFragmentManager();
 
         //fragment body

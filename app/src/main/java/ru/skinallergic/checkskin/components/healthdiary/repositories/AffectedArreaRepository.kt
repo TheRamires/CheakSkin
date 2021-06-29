@@ -52,7 +52,7 @@ class AffectedArreaRepository  @Inject constructor(
     fun add(date:Long,
             newArea: RequestBody,
             newView: RequestBody,
-            newKind: RequestBody,
+            newKinds: RequestBody,
             files: List<MultipartBody.Part>,
     ): Observable<ResponseBody> {
         Loger.log("files 3 //************************************ $files  size ${files.size}")
@@ -61,10 +61,10 @@ class AffectedArreaRepository  @Inject constructor(
         Loger.log("add by repo. area $newArea, view $newView")
         val accesToken=tokenModel_.loadAccesToken()!!
         return when (files.size){
-            1-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0])
-            2-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1])
-            3-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1],files[2])
-            else-> service_.addRashReport(accesToken,date,newArea,newView,newKind,files[0],files[1],files[2])
+            1-> service_.addRashReport(accesToken,date,newArea,newView,newKinds,files[0])
+            2-> service_.addRashReport(accesToken,date,newArea,newView,newKinds,files[0],files[1])
+            3-> service_.addRashReport(accesToken,date,newArea,newView,newKinds,files[0],files[1],files[2])
+            else-> service_.addRashReport(accesToken,date,newArea,newView,newKinds,files[0],files[1],files[2])
         }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,17 +73,17 @@ class AffectedArreaRepository  @Inject constructor(
             id: Int,
             newArea: RequestBody,
             newView: RequestBody,
-            newKind: RequestBody,
+            newKinds: RequestBody,
             files: List<MultipartBody.Part>,
     ): Observable<ResponseBody> {
         networkHandler.check()
         Loger.log("redact by repo. area $newArea, view $newView, id $id")
         val accesToken=tokenModel_.loadAccesToken()!!
         return when (files.size){
-            1-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0])
-            2-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1])
-            3-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1],files[2])
-            else-> service_.redactRashReport(accesToken,id,newArea,newView,newKind,files[0],files[1],files[2])
+            1-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0])
+            2-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1])
+            3-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1],files[2])
+            else-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1],files[2])
         }
                 .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())

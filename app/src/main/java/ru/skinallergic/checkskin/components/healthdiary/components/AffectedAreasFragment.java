@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
@@ -35,12 +33,10 @@ import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapter
 import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
-import ru.skinallergic.checkskin.databinding.ItemRashBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
@@ -70,7 +66,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         cameraPermission=new CameraPermission(requireActivity());
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
-        DateViewModel dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         viewModel.data(dateViewModel.getDateUnix());
     }
     @Override
@@ -205,10 +201,15 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         showByPicasso(photo2,imageView1);
                         showByPicasso(photo3,imageView2);
 
-                        //List<Integer> kindList=entity.getKind();
-                        String kindTitle=AreaManager.INSTANCE.getKindTitle(entity.getKind());
+                        List<Integer> kindList=entity.getKinds();
+                        List<KindTemp> kindTemps= new ArrayList<>();
+                        for (Integer index : kindList){
+                            String kindTitle=AreaManager.INSTANCE.getKindTitle(index);
+                            kindTemps.add(new KindTemp(index,kindTitle));
+                        }
+
                         LinearLayout kindContainer=binder.kindContainer;
-                        completionKindList(new KindTemp(entity.getKind(), kindTitle), kindContainer);
+                        completionKindList(kindTemps, kindContainer);
                     }
         });
         recyclerView.setAdapter(adapter);
@@ -242,7 +243,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModel.getNewAreaLive().setValue(area);
         viewModel.getNewViewLive().setValue(view);
     }
-
 
     public void clickPhoto(View view_){
         imageView= view_.findViewById(view_.getId());

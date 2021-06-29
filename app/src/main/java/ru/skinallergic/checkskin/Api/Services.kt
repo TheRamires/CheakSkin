@@ -62,7 +62,7 @@ interface HealthyService {
                       @Query("created") created: Long,
                       @Part("area") area: RequestBody,
                       @Part("view") view: RequestBody,
-                      @Part("kind") kind: RequestBody,
+                      @Part("kinds") kinds: RequestBody,
                       @Part vararg  file: MultipartBody.Part
                      /* @Part file1: MultipartBody.Part,
                       @Part file2: MultipartBody.Part,
@@ -77,7 +77,7 @@ interface HealthyService {
             @Path ("id") id:Int,
             @Part("area") area: RequestBody,
             @Part("view") view: RequestBody,
-            @Part("kind") kind: RequestBody,
+            @Part("kinds") kinds: RequestBody,
             @Part vararg  file: MultipartBody.Part
     ):Observable<ResponseBody>
 }
