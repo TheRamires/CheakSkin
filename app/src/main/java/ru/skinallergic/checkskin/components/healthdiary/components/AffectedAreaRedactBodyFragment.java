@@ -50,14 +50,9 @@ import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.R
 public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
     private int gender;
     private View view;
-    private ImageView imageView;
-    private CameraPermission cameraPermission;
-    private PhotoController photoController;
-    private FragmentManager manager;
     private ImageView [] photoImageViewArray=new ImageView[3];
     private ToggleButton[] kindButtonsArray = new ToggleButton[6];
 
-    private int currentPhotoId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +78,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         cameraPermission=new CameraPermission(requireActivity());
         photoController=new PhotoController(cameraPermission, this);
 
-        currentPhotoId=0;
+        setCurrentPhotoId(0);
 
         initImagesView(binding);
         initToggles(binding);
@@ -179,8 +174,8 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
                     imageView.setImageBitmap(finalBitmap);
                     //viewModel.addBitMapToList(finalBitmap);
                     try {
-                        File file=fileFromBitmap(finalBitmap, currentPhotoId);
-                        viewModel.putPhotoToMap(currentPhotoId, file);
+                        File file=fileFromBitmap(finalBitmap, getCurrentPhotoId());
+                        viewModel.putPhotoToMap(getCurrentPhotoId(), file);
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -226,22 +221,11 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
 
     public void clickPhoto(View view_){
         imageView= view.findViewById(view_.getId());
-        switch (view_.getId()){
-            case R.id.photo_rash_0:
-                currentPhotoId=0;
-                break;
-            case R.id.photo_rash_1:
-                currentPhotoId=1;
-                break;
-            case R.id.photo_rash_2:
-                currentPhotoId=2;
-                break;
-        }
         if (viewModel.getNewArea()==null){
             Toast.makeText(getContext(),"Выберите пораженный участок тела", Toast.LENGTH_SHORT).show();
             return;
         }
-        photoController.madePhoto();
+        toPhoto(imageView);
     }
 
     @Override

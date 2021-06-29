@@ -6,20 +6,42 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.LoadedFrom
 import com.squareup.picasso.Target
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.healthdiary.CameraPermission
+import ru.skinallergic.checkskin.components.healthdiary.PhotoController
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel
 import ru.skinallergic.checkskin.view_models.DateViewModel
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.regex.Pattern
 
 abstract class BaseAreaFragment : Fragment() {
     lateinit var viewModel: AffectedAreaRedactViewModel
     lateinit var dateViewModel: DateViewModel
+
+    lateinit var photoController: PhotoController
+    lateinit var cameraPermission: CameraPermission
+    lateinit var manager: FragmentManager
+
+    lateinit var imageView: ImageView
+    var currentPhotoId: Int=0
+
+    fun toPhoto(imageView:ImageView) {
+        when (imageView.id) {
+            R.id.photo_rash_0 -> currentPhotoId = 0
+            R.id.photo_rash_1 -> currentPhotoId = 1
+            R.id.photo_rash_2 -> currentPhotoId = 2
+        }
+        photoController.madePhoto()
+    }
 
     fun checkServerPath(file: File): Boolean {
         val path = file.absolutePath
@@ -59,7 +81,7 @@ abstract class BaseAreaFragment : Fragment() {
         Picasso.with(requireContext())
                 .load(path)
                 .into(imageView)
-        return imageDownload(requireContext(),name,path)
+        return imageDownload(requireContext(), name, path)
     }
     fun imageDownload(ctx: Context, name: String, pathHttp: String): String {
         val dir=ctx.getExternalFilesDir("photo")
@@ -102,30 +124,6 @@ abstract class BaseAreaFragment : Fragment() {
             override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
         }
     }
-
- /*   //target to save
-    fun getTarget(filePath: String): Target {
-        return object : Target {
-            override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
-                Thread {
-                    val file = File(filePath)
-                    try {
-                        file.createNewFile()
-                        val ostream = FileOutputStream(file)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
-                        ostream.flush()
-                        ostream.close()
-                    } catch (e: IOException) {
-                        println("IOException" + e.localizedMessage)
-                    }
-                }.start()
-            }
-
-            override fun onBitmapFailed(errorDrawable: Drawable) {}
-            override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
-        }
-    }
-    */
 
     @Throws(IOException::class, ClassNotFoundException::class)
     fun fileFromBitmap(yourBitmap: Bitmap, count: Int): File? {

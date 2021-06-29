@@ -61,11 +61,6 @@ import static ru.skinallergic.checkskin.components.healthdiary.viewModels.Affect
 
 public class AffectedAreasFragment extends BaseAreaFragment {
     private RecyclerView recyclerView;
-    private ImageView imageView;
-    private int currentPhotoId;
-    private PhotoController photoController;
-    private CameraPermission cameraPermission;
-    private FragmentManager manager;
     private Boolean stumpForImageView;
 
     @Override
@@ -78,6 +73,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         viewModel.data(dateViewModel.getDateUnix());
         stumpForImageView=false;
+
+        //**
+        viewModel.initNewMap();
     }
     @Override
     public void onDestroyView() {
@@ -149,8 +147,8 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                     imageView.setImageBitmap(finalBitmap);
                     //viewModel.addBitMapToList(finalBitmap);
                     try {
-                        File file=fileFromBitmap(finalBitmap, currentPhotoId);
-                        viewModel.putPhotoToMap(currentPhotoId, file);
+                        File file=fileFromBitmap(finalBitmap, getCurrentPhotoId());
+                        viewModel.putPhotoToMap(getCurrentPhotoId(), file);
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -267,18 +265,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
 
     public void clickPhoto(View view_){
         imageView= view_.findViewById(view_.getId());
-        switch (imageView.getId()){
-            case R.id.photo_rash_0:
-                currentPhotoId=0;
-                break;
-            case R.id.photo_rash_1:
-                currentPhotoId=1;
-                break;
-            case R.id.photo_rash_2:
-                currentPhotoId=2;
-                break;
-        }
-        photoController.madePhoto();
+        toPhoto(imageView);
     }
 /*
     //*******************************************save temp photo
