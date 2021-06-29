@@ -37,7 +37,7 @@ public class AffectedAreasFragment extends Fragment {
         DateViewModel dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         //viewModel.getAffectedLists();
 
-        viewModel.date(dateViewModel.getDateUnix());
+        viewModel.data(dateViewModel.getDateUnix());
 
         RecyclerView recyclerView1=binding.recycler1;
 

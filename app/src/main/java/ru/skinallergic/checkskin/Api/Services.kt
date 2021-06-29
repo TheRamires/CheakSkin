@@ -74,7 +74,7 @@ interface HealthyService {
     fun redactRashReport(
             @Header("Authorization") key: String,
             //@Header("Content-Type") contentType: String,
-            @Path ("id") id:Long,
+            @Path ("id") id:Int,
             @Part("area") area: RequestBody,
             @Part("view") view: RequestBody,
             @Part("kind") kind: RequestBody,

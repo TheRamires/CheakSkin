@@ -69,7 +69,7 @@ class AffectedArreaRepository  @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
     }
     fun redact(
-            id: Long,
+            id: Int,
             newArea: RequestBody,
             newView: RequestBody,
             newKind: RequestBody,

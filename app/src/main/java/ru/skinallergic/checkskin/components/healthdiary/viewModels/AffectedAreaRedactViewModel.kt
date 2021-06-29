@@ -32,7 +32,34 @@ class AffectedAreaRedactViewModel@Inject constructor(
 
     var oldMap : List<Rash> = listOf()
     val newMap : MutableMap<Int,MutableMap<Int, AreaEntity>> = mutableMapOf()
+    //to init in onCreate of AffectedAreaRedactBodyFragment --NONE!!
+    //to init in getData function
     fun initNewMap (){
+        if (oldMap.isEmpty()){return}
+
+        newMap.clear()
+        for (rash in oldMap){
+            val area=rash.area!!
+            val view: Int=rash.view!!
+            val kinds: List<Int> = listOf(rash.kind!!)
+            val photos : List<String?> = listOf(rash.photo_1,rash.photo_2,rash.photo_3)
+            val filesPhoto=photos.fileFromStringPath()
+
+            //************** вынести в отдельный метод
+            val temp = newMap[area]
+            if (temp==null){
+                newMap[area] = hashMapOf()
+            }
+            val areaEntity=newMap[area]!![view]
+            if (areaEntity==null){
+                newMap[area]!![view]=AreaEntity()
+            }
+            newMap[area]!![view]=AreaEntity(kinds,filesPhoto)
+        }
+        Loger.log("**initNewMap \n oldMap $oldMap \n newMap $newMap")
+    }
+    fun MutableMap<Int,MutableMap<Int, AreaEntity>>.checkNull(){
+        val temp=this
 
     }
 
@@ -120,15 +147,15 @@ class AffectedAreaRedactViewModel@Inject constructor(
         val multiParts = mutableListOf<MultipartBody.Part>()
 
         //remove all null**************
-        val finalFiles = mutableListOf<File>()
-        if (files != null) {
+        val finalFiles = files.removeNulls()
+        /*if (files != null) {
             for (position in files){
                 if (position!=null){
                     finalFiles.add(position)
                 }
             }
-        }
-        //*************************
+        }*/
+        //ceate file name**************
         for(count in finalFiles.indices){
             var name="nothing"
             when (count){
@@ -144,7 +171,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                         multipartManager.prepareFilePart(name, file))
             }
         }
-
+        //check changes****************
         val id=isOldPosition(area,view)
         Loger.log("files 1 //************************************ $multiParts")
         Loger.log("id $id")
@@ -169,7 +196,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                     Loger.log("throwable $it")
                 }))
     }
-    private fun redactPosition(id:Long,
+    private fun redactPosition(id:Int,
                        newArea: RequestBody,
                        newView: RequestBody,
                        newKind: RequestBody,
@@ -183,7 +210,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                 }))
     }
 
-    fun date(date:Long){
+    fun data(date:Long){
         compositeDisposable.add(
                 repository.date((date/1000).toString())
                         .doOnSubscribe { splashScreenOn.set(true) }
@@ -191,6 +218,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                         .subscribe ({
                             oldMap=it.rashes!!
                             Loger.log("date $it")
+                            initNewMap()  //testing**
                         },{})
         )
     }
@@ -216,7 +244,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
             return false
         } else return true
     }
-    fun isOldPosition(area: Int, view: Int):Long?{
+    fun isOldPosition(area: Int, view: Int):Int?{
         for (position in oldMap){
             if (position.area==area && position.view==view){
                 Loger.log("area $area, view $view, position $position")
@@ -230,6 +258,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
         val area=getNewArea()!!
         val view=getNewView()
 
+        //************** вынести в отдельный метод
         val temp = newMap[area]
         if (temp==null){
             newMap[area] = hashMapOf()
@@ -250,17 +279,28 @@ class AffectedAreaRedactViewModel@Inject constructor(
         val area=getNewArea()!!
         val view=getNewView()
 
-        val temp= newMap[area]?.get(view)
+
+        //************** вынести в отдельный метод
+        val temp = newMap[area]
         if (temp==null){
-            newMap[area] = hashMapOf(view to AreaEntity())
+            newMap[area] = hashMapOf()
         }
+        val areaEntity=newMap[area]!![view]
+        if (areaEntity==null){
+            newMap[area]!![view]=AreaEntity()
+        }
+
+        //************** вынести в отдельный метод
+        /*val temp= newMap[area]?.get(view)
+        if (temp==null){
+            newMap[area]!![view] = AreaEntity()
+            //newMap[area] = hashMapOf(view to AreaEntity())
+        }*/
         val bitmaps= newMap[area]!![view]!!.bitmaps
         if (bitmaps==null || bitmaps.size<3){
             newMap[area]!![view]!!.bitmaps= mutableListOf(null,null,null)
         }
-
         newMap[area]!![view]!!.bitmaps!![id] = bitmap
-
     }
 
     fun getKindsFromMap() : List<Int>? {
@@ -274,3 +314,26 @@ class AffectedAreaRedactViewModel@Inject constructor(
         return newMap[area]?.get(view)?.bitmaps
     }
 }
+fun <T>List<T>?.removeNulls() : List<T>{
+    val finalList = mutableListOf<T>()
+    this?.let {
+        for (position in this){
+            if (position!=null){
+                finalList.add(position)
+            }
+        }
+    }
+    return finalList
+}
+fun List<String?>.fileFromStringPath(): MutableList<File?>{
+    val fileList = mutableListOf<File?>()
+    for (path in this){
+        if(path==null){
+            fileList.add(null)
+        }else{
+            val file = File(path)
+            fileList.add(file)}
+    }
+    return fileList
+}
+

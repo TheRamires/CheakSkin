@@ -28,14 +28,14 @@ public class DateViewModel extends ViewModel {
     }
 
     public String getDate(){
-        if (dateLive==null) {
+        if (dateLive.getValue()==null) {
             setCurrentDate();
         }
         return formating(dateLive.getValue());
     }
 
     public String getDate(SimpleDateFormat sdf){
-        if (dateLive==null) {
+        if (dateLive.getValue()==null) {
             setCurrentDate();
         }
         return sdf.format(dateLive.getValue());
@@ -48,7 +48,7 @@ public class DateViewModel extends ViewModel {
 
     }
     public Long getDateUnix(){
-        if (dateLive==null) {
+        if (dateLive.getValue()==null) {
             setCurrentDate();
         }
         return Objects.requireNonNull(dateLive.getValue()).getTime();

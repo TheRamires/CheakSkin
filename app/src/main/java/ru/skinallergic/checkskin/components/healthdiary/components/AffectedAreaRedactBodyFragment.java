@@ -384,14 +384,14 @@ public class AffectedAreaRedactBodyFragment extends Fragment implements Body.Cli
     }
 
     public void showAreaEntity(){
-        List<File> bitmaps=viewModel.getPhotosFromMap();
+        List<File> files=viewModel.getPhotosFromMap();
         List<Integer> kinds=viewModel.getKindsFromMap();
 
-        if (bitmaps!=null){
-            for (int i=0;i<bitmaps.size();i++){
-                File bitmap=bitmaps.get(i);
-                if (bitmap!=null){
-                    photoImageViewArray[i].setImageURI(Uri.parse(bitmap.getAbsolutePath()));
+        if (files!=null){
+            for (int i=0;i<files.size();i++){
+                File file=files.get(i);
+                if (file!=null){
+                    photoImageViewArray[i].setImageURI(Uri.parse(file.getAbsolutePath()));
                 }
             }
         }
