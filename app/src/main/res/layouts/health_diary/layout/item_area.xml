@@ -110,7 +110,6 @@
     </LinearLayout>
 
     <ScrollView
-        android:scrollbars="none"
         android:layout_marginTop="15dp"
         android:id="@+id/rashes"
         app:layout_constraintTop_toBottomOf="@+id/photos"
@@ -118,6 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <HorizontalScrollView
+            android:scrollbars="none"
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

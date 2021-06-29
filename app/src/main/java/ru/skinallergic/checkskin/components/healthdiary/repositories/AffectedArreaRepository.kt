@@ -75,15 +75,16 @@ class AffectedArreaRepository  @Inject constructor(
             newView: RequestBody,
             newKinds: RequestBody,
             files: List<MultipartBody.Part>,
-    ): Observable<ResponseBody> {
+    ): Observable<ResponseBody>? {
         networkHandler.check()
-        Loger.log("redact by repo. area $newArea, view $newView, id $id")
+        Loger.log("redact by repo.  \n **  area $newArea, view $newView, id $id files ${files.size}")
         val accesToken=tokenModel_.loadAccesToken()!!
+        Loger.log("redact by repo.  \n ** files ${files.size}")
         return when (files.size){
             1-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0])
             2-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1])
             3-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1],files[2])
-            else-> service_.redactRashReport(accesToken,id,newArea,newView,newKinds,files[0],files[1],files[2])
+            else-> return null
         }
                 .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())

@@ -59,11 +59,43 @@
                 android:background="@color/gray"/>
         </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <ImageButton
+                android:layout_marginBottom="110dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:onClick="@{fragment::toRedactBody}"
+                android:layout_below="@+id/line_2"
+                android:id="@+id/button_plus"
+                style="@style/BodyToggle"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_gravity="bottom"
+                android:onClick="@{fragment::save}"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="@dimen/margin_big"
+                android:background="@drawable/button_pressed_blue"
+                android:layout_marginHorizontal="@dimen/norm_button_margin"
+                android:textAllCaps="false"
+                android:paddingTop="0dp"
+                android:paddingBottom="2dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="15sp"
+                android:text="СОХРАНИТЬ"
+                android:textColor="@color/white"
+                android:id="@+id/to_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
     </LinearLayout>
 </layout>

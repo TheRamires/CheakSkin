@@ -13,8 +13,12 @@ import ru.skinallergic.checkskin.components.healthdiary.repositories.AffectedArr
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import java.io.File
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.inject.Inject
 const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
+
+const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
 
 class AffectedAreaRedactViewModel@Inject constructor(
         val repository: AffectedArreaRepository,
@@ -121,13 +125,13 @@ class AffectedAreaRedactViewModel@Inject constructor(
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
-                val bitmaps=areaEntity?.photos
+                val files=areaEntity?.photos
                 if (kind==null || bitmaps==null){return}
                 Loger.log("areaEntity $areaEntity")
 
-                Loger.log("files 0 //************************************ $bitmaps")
+                Loger.log("files 0 //************************************ $files")
 
-                addReport(date,area,view, kind,bitmaps)
+                addReport(date,area,view, kind,files)
             }
         }
     }
@@ -144,7 +148,6 @@ class AffectedAreaRedactViewModel@Inject constructor(
         val newArea: RequestBody =multipartManager.createPartFromString(area)
         val newView: RequestBody =multipartManager.createPartFromString(view)
         val newKinds: RequestBody =multipartManager.createPartFromString(kinds) //Временно только один элемент
-        val fileName01="photo_1"; val fileName02="photo_2"; val fileName03="photo_3"
         val multiParts = mutableListOf<MultipartBody.Part>()
 
         //remove all null**************
@@ -160,18 +163,20 @@ class AffectedAreaRedactViewModel@Inject constructor(
         for(count in finalFiles.indices){
             var name="nothing"
             when (count){
-                0->name=fileName01
-                1->name=fileName02
-                2->name=fileName03
+                0->name= FILE_NAME_01
+                1->name=FILE_NAME_02
+                2->name=FILE_NAME_03
             }
-            val file=finalFiles.get(count)
+            val tempFile=finalFiles.get(count)
+            val finalFile = tempFile?.checkHttp()
 
-            Loger.log("file $file")
-            if (file!=null){
+            Loger.log("file **$finalFile")
+            if (finalFile!=null){
                 multiParts.add(
-                        multipartManager.prepareFilePart(name, file))
+                        multipartManager.prepareFilePart(name, finalFile))
             }
         }
+        Loger.log("multiParts **$multiParts")
         //check changes****************
         val id=isOldPosition(area,view)
         if (id==null){
@@ -200,13 +205,26 @@ class AffectedAreaRedactViewModel@Inject constructor(
                        newView: RequestBody,
                        newKinds: RequestBody,
                        files: List<MultipartBody.Part>){
+        var finalFiles = mutableListOf<File>()
+
+        val observable =repository.redact(id, newArea, newView, newKinds, files)
+        observable?.let {
+            compositeDisposable.add(it.subscribe ({
+                saved.value=true
+                Loger.log(it.string())
+            },{
+                Loger.log("throwable $it")
+            })
+            )
+        }
+/*
         compositeDisposable.add(repository.redact(id, newArea, newView, newKinds, files)
                 .subscribe ({
                     saved.value=true
                     Loger.log(it.string())
                 },{
                     Loger.log("throwable $it")
-                }))
+                }))*/
     }
 
     fun data(date:Long){
@@ -332,14 +350,39 @@ fun <T>List<T>?.removeNulls() : List<T>{
     return finalList
 }
 fun List<String?>.fileFromStringPath(): MutableList<File?>{
+
     val fileList = mutableListOf<File?>()
     for (path in this){
         if(path==null){
             fileList.add(null)
         }else{
             val file = File(path)
-            fileList.add(file)}
+            fileList.add(file)
+        }
     }
     return fileList
 }
+fun File.checkHttp(): File?{
+    if (regularHttp(this.absolutePath)){
+        return null
+    } else return this
+}
+
+fun List<File>.checkHttp():List<File?>{
+    val finalList= mutableListOf<File?>()
+    for (file in this){
+        if (regularHttp(file.absolutePath)){
+            finalList.add(null)
+        } else finalList.add(file)
+    }
+    return finalList
+}
+
+fun regularHttp(path:String): Boolean{ // проверка, true если файл уже загружен с сервера, тогда 2ой раз его отпарвлять не надо
+    val regex="http"
+    val pattern=Pattern.compile(regex,Pattern.CASE_INSENSITIVE)
+    val matcher= pattern.matcher(path)
+    return matcher.find()
+}
+
 

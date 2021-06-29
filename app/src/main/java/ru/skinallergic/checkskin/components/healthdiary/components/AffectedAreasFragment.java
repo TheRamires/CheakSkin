@@ -1,7 +1,9 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -13,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
@@ -41,6 +47,7 @@ import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +55,11 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.GALLERY_REQUEST;
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_01;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_02;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_03;
 
 public class AffectedAreasFragment extends BaseAreaFragment {
-    private AffectedAreaRedactViewModel viewModel;
-    private DateViewModel dateViewModel;
     private RecyclerView recyclerView;
     private ImageView imageView;
     private int currentPhotoId;
@@ -197,9 +205,10 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         imageView1.setOnClickListener((View v) ->{clickPhoto(imageView1);setAreaAndView(area,view);});
                         imageView2.setOnClickListener((View v) ->{clickPhoto(imageView2);setAreaAndView(area,view);});
 
-                        showByPicasso(photo1,imageView0);
-                        showByPicasso(photo2,imageView1);
-                        showByPicasso(photo3,imageView2);
+                        showByPicasso(photo1, imageView0);
+                        showByPicasso(photo2, imageView1);
+                        showByPicasso(photo3, imageView2);
+                        //Loger.log(pathOfSave01+"\n"+pathOfSave02+"\n"+pathOfSave03);
 
                         List<Integer> kindList=entity.getKinds();
                         List<KindTemp> kindTemps= new ArrayList<>();
@@ -259,4 +268,53 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         }
         photoController.madePhoto();
     }
+/*
+    //*******************************************save temp photo
+    //save image
+    public String imageDownload(Context ctx, String name, String pathHttp){
+        String filePath=ctx.getExternalFilesDir("photo").getAbsolutePath()+"/" + name;
+        Picasso.with(ctx)
+                .load(pathHttp)
+                .into(getTarget(filePath));
+        return filePath;
+    }
+
+    //target to save
+    private static Target getTarget(final String filePath){
+        Target target = new Target(){
+
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        File file = new File(filePath);
+                        try {
+                            file.createNewFile();
+                            FileOutputStream ostream = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
+                            ostream.flush();
+                            ostream.close();
+                        } catch (IOException e) {
+                            System.out.println("IOException"+ e.getLocalizedMessage());
+                        }
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        return target;
+    }*/
 }

@@ -1,17 +1,28 @@
 package ru.skinallergic.checkskin.components.healthdiary.components
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Picasso.LoadedFrom
+import com.squareup.picasso.Target
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel
+import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.regex.Pattern
 
-abstract class BaseAreaFragment : Fragment(){
+abstract class BaseAreaFragment : Fragment() {
+    lateinit var viewModel: AffectedAreaRedactViewModel
+    lateinit var dateViewModel: DateViewModel
 
     fun checkServerPath(file: File): Boolean {
         val path = file.absolutePath
@@ -34,12 +45,62 @@ abstract class BaseAreaFragment : Fragment(){
                     .into(imageView)
         } else Picasso.with(requireContext()).load(file).into(imageView)
     }
+
     fun showByPicasso(path: String?, imageView: ImageView) {
-        if (path==null){return}
+        if (path == null) {
+            return
+        }
         Picasso.with(requireContext())
                 .load(path)
                 .into(imageView)
     }
+
+    //*******************************************save temp photo
+    //save image
+  /*  fun showByPicasso(path: String?, name: String, imageView: ImageView):String? {
+        if (path==null){return null}
+        Picasso.with(requireContext())
+                .load(path)
+                .into(imageView)
+        return imageDownload(requireContext(),name,path)
+    }
+    fun imageDownload(ctx: Context, name: String, pathHttp: String?): String {
+        val dir=ctx.getExternalFilesDir("photo")
+        if (!dir!!.exists()){
+            dir.mkdirs()
+        }
+        dir.createNewFile()
+
+        val filePath = dir.absolutePath + "/" + name
+        Picasso.with(ctx)
+                .load(pathHttp)
+                .into(getTarget(filePath))
+        return filePath
+    }
+
+    //target to save
+    fun getTarget(filePath: String): Target {
+        return object : Target {
+            override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
+                Thread {
+                    val file = File(filePath)
+                    try {
+                        file.createNewFile()
+                        val ostream = FileOutputStream(file)
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
+                        ostream.flush()
+                        ostream.close()
+                    } catch (e: IOException) {
+                        println("IOException" + e.localizedMessage)
+                    }
+                }.start()
+            }
+
+            override fun onBitmapFailed(errorDrawable: Drawable) {}
+            override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
+        }
+    }
+    */
 
     @Throws(IOException::class, ClassNotFoundException::class)
     fun fileFromBitmap(yourBitmap: Bitmap, count: Int): File? {
@@ -58,5 +119,23 @@ abstract class BaseAreaFragment : Fragment(){
         fos.flush()
         fos.close()
         return f.absoluteFile
+    }
+
+    @Throws(IOException::class, ClassNotFoundException::class)
+    fun reportRequest() {
+
+        viewModel.addReport(dateViewModel.getDateUnix())
+    }
+
+    fun save(view: View?) {
+        if (viewModel.isChanged()) {
+            try {
+                reportRequest()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+            }
+        } else Navigation.findNavController(requireView()).popBackStack(R.id.affectedAreasFragment, false)
     }
 }

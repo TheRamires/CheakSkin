@@ -48,8 +48,6 @@ import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.G
 import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
 
 public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
-    private AffectedAreaRedactViewModel viewModel;
-    private DateViewModel dateViewModel;
     private int gender;
     private View view;
     private ImageView imageView;
@@ -209,16 +207,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         Navigation.findNavController(view).popBackStack();
     }
 
-    public void save(View view){
-        if (viewModel.isChanged()){
-            try {
-                reportRequest();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        } else Navigation.findNavController(view).popBackStack(R.id.affectedAreasFragment, false);
-    }
     @Override
     public void arround() {
         Loger.log("arround");
@@ -265,24 +253,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             if (isChecked){
                 viewModel.addNewKind(kind);
             } else {viewModel.removeKind(kind);}
-    }
-    private void reportRequest() throws IOException, ClassNotFoundException {/*
-        int size=3;
-        List<Bitmap> bitmapList=viewModel.getBitmaps();
-
-        List<File> files=new ArrayList<>();
-        for (int i=0;i<bitmapList.size();i++){
-            if (i==size){break;}
-            Bitmap bitmap=bitmapList.get(i);
-            if (bitmap==null){
-                Loger.log("reportRequest. bitmap is null");
-                continue;
-            }
-            File file=fileFromBitmap(bitmap,i);
-            files.add(file);
-        }
-*/
-        viewModel.addReport(dateViewModel.getDateUnix());
     }
     private void initImagesView(FragmentAffectedAreaRedactBodyBinding binding){
         photoImageViewArray[0]=binding.photoRash0;
@@ -365,5 +335,29 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         for (int i=0;i<photoImageViewArray.length;i++){
             photoImageViewArray[i].setImageBitmap(null);
         }
+    }/*
+    private void  reportRequest() {
+        int size=3;
+        List<Bitmap> bitmapList=viewModel.getBitmaps();
+
+        List<File> files=new ArrayList<>();
+        for (int i=0;i<bitmapList.size();i++){
+            if (i==size){break;}
+            Bitmap bitmap=bitmapList.get(i);
+            if (bitmap==null){
+                Loger.log("reportRequest. bitmap is null");
+                continue;
+            }
+            File file=fileFromBitmap(bitmap,i);
+            files.add(file);
+        }
+
+        viewModel.addReport(dateViewModel.getDateUnix());
     }
+    public void save(View view){
+        if (viewModel.isChanged()){
+            reportRequest();
+
+        } else Navigation.findNavController(view).popBackStack(R.id.affectedAreasFragment, false);
+    }*/
 }
