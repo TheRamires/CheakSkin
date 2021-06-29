@@ -129,7 +129,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                 if (kind==null || bitmaps==null){return}
                 Loger.log("areaEntity $areaEntity")
 
-                Loger.log("files 0 //************************************ $files")
+                Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date,area,view, kind,files)
             }
@@ -149,16 +149,14 @@ class AffectedAreaRedactViewModel@Inject constructor(
         val newView: RequestBody =multipartManager.createPartFromString(view)
         val newKinds: RequestBody =multipartManager.createPartFromString(kinds) //Временно только один элемент
         val multiParts = mutableListOf<MultipartBody.Part>()
-
+/*
+        val tempFiles=files?.checkHttp()
+        Loger.log("************☺ tempFiles $tempFiles")
+*/
         //remove all null**************
         val finalFiles = files.removeNulls()
-        /*if (files != null) {
-            for (position in files){
-                if (position!=null){
-                    finalFiles.add(position)
-                }
-            }
-        }*/
+        Loger.log("************☺ finalFiles $finalFiles")
+
         //ceate file name**************
         for(count in finalFiles.indices){
             var name="nothing"
@@ -168,9 +166,11 @@ class AffectedAreaRedactViewModel@Inject constructor(
                 2->name=FILE_NAME_03
             }
             val tempFile=finalFiles.get(count)
-            val finalFile = tempFile?.checkHttp()
 
-            Loger.log("file **$finalFile")
+            //val finalFile : File? = compareWithOldMap(tempFile) ?: continue
+            val finalFile=tempFile
+
+            Loger.log("************☺ last finalFile $finalFiles")
             if (finalFile!=null){
                 multiParts.add(
                         multipartManager.prepareFilePart(name, finalFile))
@@ -240,7 +240,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                             else {
                                 data=it.data?.rashes!!
                                 oldMap=data
-                                initNewMap()
+                                //initNewMap()
                                 loaded.value = true
                             }
                         },{})
@@ -299,11 +299,10 @@ class AffectedAreaRedactViewModel@Inject constructor(
 
         Loger.log("putKinds map $newMap")
     }
+
     fun putPhotoToMap(id:Int,bitmap: File){
         val area=getNewArea()!!
         val view=getNewView()
-
-
         //************** вынести в отдельный метод
         val temp = newMap[area]
         if (temp==null){
@@ -313,7 +312,6 @@ class AffectedAreaRedactViewModel@Inject constructor(
         if (areaEntity==null){
             newMap[area]!![view]=AreaEntity()
         }
-
         //************** вынести в отдельный метод
         /*val temp= newMap[area]?.get(view)
         if (temp==null){
@@ -325,6 +323,16 @@ class AffectedAreaRedactViewModel@Inject constructor(
             newMap[area]!![view]!!.photos= mutableListOf(null,null,null)
         }
         newMap[area]!![view]!!.photos!![id] = bitmap
+    }
+    fun putSavedPhotoToMap(area: Int, view:Int,
+                           photoPath01:String?,  photoPath02:String?,  photoPath03:String?,){
+        for (rash in oldMap){
+            if (rash.area==area && rash.view==view){
+                rash.photo_1=photoPath01
+                rash.photo_2=photoPath02
+                rash.photo_3=photoPath03
+            }
+        }
     }
 
     fun getKindsFromMap() : List<Int>? {
@@ -368,9 +376,10 @@ fun File.checkHttp(): File?{
     } else return this
 }
 
-fun List<File>.checkHttp():List<File?>{
+fun List<File?>.checkHttp():List<File?>{
     val finalList= mutableListOf<File?>()
     for (file in this){
+        if (file==null){continue}
         if (regularHttp(file.absolutePath)){
             finalList.add(null)
         } else finalList.add(file)

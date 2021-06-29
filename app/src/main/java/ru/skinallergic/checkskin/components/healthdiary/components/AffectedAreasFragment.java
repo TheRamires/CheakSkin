@@ -66,6 +66,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     private PhotoController photoController;
     private CameraPermission cameraPermission;
     private FragmentManager manager;
+    private Boolean stumpForImageView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         viewModel.data(dateViewModel.getDateUnix());
+        stumpForImageView=false;
     }
     @Override
     public void onDestroyView() {
@@ -190,6 +192,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         binder.title.setText(areaTitle);
                         binder.viewTitle.setText(viewTitle);
 
+                        //containers
                         FrameLayout frameLayout0=binder.containerForPhotoUp0;
                         FrameLayout frameLayout1=binder.containerForPhotoUp1;
                         FrameLayout frameLayout2=binder.containerForPhotoUp2;
@@ -201,14 +204,18 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         ImageView imageView1=binder.photoRash1;
                         ImageView imageView2=binder.photoRash2;
 
-                        imageView0.setOnClickListener((View v) ->{clickPhoto(imageView0);setAreaAndView(area,view);});
+                        //clickListener
+                        /*imageView0.setOnClickListener((View v) ->{clickPhoto(imageView0);setAreaAndView(area,view);});
                         imageView1.setOnClickListener((View v) ->{clickPhoto(imageView1);setAreaAndView(area,view);});
-                        imageView2.setOnClickListener((View v) ->{clickPhoto(imageView2);setAreaAndView(area,view);});
+                        imageView2.setOnClickListener((View v) ->{clickPhoto(imageView2);setAreaAndView(area,view);});*/
+                        clickListenerForImageView(imageView0, area,view);
+                        clickListenerForImageView(imageView1, area,view);
+                        clickListenerForImageView(imageView2, area,view);
 
-                        showByPicasso(photo1, imageView0);
-                        showByPicasso(photo2, imageView1);
-                        showByPicasso(photo3, imageView2);
-                        //Loger.log(pathOfSave01+"\n"+pathOfSave02+"\n"+pathOfSave03);
+                        String FilePath01=showByPicasso(photo1, FILE_NAME_01,imageView0);
+                        String FilePath02=showByPicasso(photo2, FILE_NAME_02,imageView1);
+                        String FilePath03=showByPicasso(photo3, FILE_NAME_03,imageView2);
+                        viewModel.putSavedPhotoToMap(area, view,FilePath01,  FilePath02, FilePath03);
 
                         List<Integer> kindList=entity.getKinds();
                         List<KindTemp> kindTemps= new ArrayList<>();
@@ -223,6 +230,11 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         });
         recyclerView.setAdapter(adapter);
     }
+    private void clickListenerForImageView(ImageView imageView, int area, int view){
+        if (stumpForImageView){return;}
+        imageView.setOnClickListener((View v) ->{clickPhoto(imageView);setAreaAndView(area,view);});
+    }
+
     private void completionKindList(List<KindTemp> kindTemps, LinearLayout container){
         for (KindTemp kind: kindTemps){
             completionKindList(kind, container);

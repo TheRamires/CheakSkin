@@ -14,10 +14,7 @@ import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel
 import ru.skinallergic.checkskin.view_models.DateViewModel
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.util.regex.Pattern
 
 abstract class BaseAreaFragment : Fragment() {
@@ -57,14 +54,14 @@ abstract class BaseAreaFragment : Fragment() {
 
     //*******************************************save temp photo
     //save image
-  /*  fun showByPicasso(path: String?, name: String, imageView: ImageView):String? {
+   fun showByPicasso(path: String?, name: String, imageView: ImageView):String? {
         if (path==null){return null}
         Picasso.with(requireContext())
                 .load(path)
                 .into(imageView)
         return imageDownload(requireContext(),name,path)
     }
-    fun imageDownload(ctx: Context, name: String, pathHttp: String?): String {
+    fun imageDownload(ctx: Context, name: String, pathHttp: String): String {
         val dir=ctx.getExternalFilesDir("photo")
         if (!dir!!.exists()){
             dir.mkdirs()
@@ -74,11 +71,39 @@ abstract class BaseAreaFragment : Fragment() {
         val filePath = dir.absolutePath + "/" + name
         Picasso.with(ctx)
                 .load(pathHttp)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(getTarget(filePath))
         return filePath
     }
 
-    //target to save
+    fun getTarget(filePath: String):Target{
+        return object : Target {
+            override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
+                Thread {
+                    val file = File(filePath)
+                    if (!file.parentFile.exists())
+                        file.parentFile.mkdirs();
+
+                    if (!file.exists())
+                        file.createNewFile();
+                    try {
+                        val ostream = FileOutputStream(file)
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
+                        ostream.flush()
+                        ostream.close()
+                        println(filePath)
+                    } catch (e: IOException) {
+                        println("IOException" + e.localizedMessage)
+                    }
+                }.start()
+            }
+
+            override fun onBitmapFailed(errorDrawable: Drawable) {}
+            override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
+        }
+    }
+
+ /*   //target to save
     fun getTarget(filePath: String): Target {
         return object : Target {
             override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {

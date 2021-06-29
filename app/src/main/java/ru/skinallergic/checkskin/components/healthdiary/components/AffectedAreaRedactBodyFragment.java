@@ -69,6 +69,9 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         AccountViewModel accountViewModel=new ViewModelProvider(requireActivity(), viewModelFactory).get(AccountViewModelImpl.class);
         gender=accountViewModel.getCurrentUser().getGender();
         viewModel.getNewViewLive().setValue(0);
+
+        //**
+        viewModel.initNewMap();
     }
 
     @Override
