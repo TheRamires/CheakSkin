@@ -88,7 +88,7 @@ class AffectedArreaRepository  @Inject constructor(
                 .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
     }
-    fun date(date: String): Observable<BaseResponse<GettingData?>>{
+    override fun date(date: String): Observable<BaseResponse<GettingData?>>{
         Loger.log("data start for repo")
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()

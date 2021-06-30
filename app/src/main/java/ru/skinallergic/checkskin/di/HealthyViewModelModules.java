@@ -7,6 +7,7 @@ import dagger.Module;
 import dagger.multibindings.IntoMap;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.HealthyDiaryViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RatingViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.StateViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.StatisticsViewModel;
@@ -62,5 +63,10 @@ abstract public class HealthyViewModelModules {
     @IntoMap
     @ViewModelKey(RatingViewModel.class)
     abstract ViewModel ratingViewModel(RatingViewModel ratingViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HealthyDiaryViewModel.class)
+    abstract ViewModel healthyDiaryViewModel(HealthyDiaryViewModel healthyDiaryViewModel);
 
 }

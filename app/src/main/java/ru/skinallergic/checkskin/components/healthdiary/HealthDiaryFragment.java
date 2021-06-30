@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableField;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -20,6 +23,7 @@ import java.util.Date;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
 
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.HealthyDiaryViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentHealthDiaryBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -29,6 +33,26 @@ public class HealthDiaryFragment extends Fragment {
     private Bundle bundle;
     private DialogFragment dialogfragment;
     public ObservableField<String> dateObservable=new ObservableField<>();
+    private DateViewModel dateViewModel;
+    private HealthyDiaryViewModel viewModel;
+    private Drawable checkMark;
+    private Drawable checkMarkOff;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
+        checkMark=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_on);
+        checkMarkOff=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_off);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        viewModel.getSum().set(0);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,8 +106,6 @@ public class HealthDiaryFragment extends Fragment {
         btnRate.setCompoundDrawables(icon6, null, cheakBox6, null);
 
         //--------------------------------------------------------------------------------------
-        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         dateObservable.set(dateViewModel.getDate());
 
         //dialogfragment = new DatePickerTheme(dateViewModel.dateLive);
@@ -93,6 +115,88 @@ public class HealthDiaryFragment extends Fragment {
             bundle.putString("date",date);
             dateObservable.set(date);
         });
+
+        viewModel.data(dateViewModel.getDateUnix());
+        viewModel.isLoadedAndCalculated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    viewModel.isLoadedAndCalculated().setValue(false);
+                    int sum = viewModel.getSumaryPercent();
+                    binding.sum.setText(sum+"%");
+                    if (sum>0){
+                        binding.view.setBackground(AppCompatResources.getDrawable(requireContext(),R.drawable.hexagon_3));
+                        binding.sum.setTextColor(AppCompatResources.getColorStateList(requireContext(),R.color.white));
+                    } else {
+                        binding.view.setBackground(AppCompatResources.getDrawable(requireContext(),R.drawable.hexagon_2));
+                        binding.sum.setTextColor(AppCompatResources.getColorStateList(requireContext(),R.color.gray_dark));
+                    }
+                }
+            }
+        });
+        viewModel.getState().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s!=null){
+                    binding.stateString.setText(s);
+                }
+            }
+        });
+
+        viewModel.getStateChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getStateChecked().setValue(null);
+            AppCompatButton button=btnState;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+        });
+        viewModel.getRashPhotosChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getRashPhotosChecked().setValue(null);
+            AppCompatButton button=btnPhoto;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+
+        });
+        viewModel.getTriggersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getTriggersChecked().setValue(null);
+            AppCompatButton button=btnTriggers;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+
+        });
+        viewModel.getStatmentChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getStatmentChecked().setValue(null);
+            AppCompatButton button=btnHealth;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+
+        });
+        viewModel.getRemindersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getRatingChecked().setValue(null);
+            AppCompatButton button=btnRemind;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+
+        });
+        viewModel.getRatingChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean==null){return;}
+            viewModel.getRatingChecked().setValue(null);
+            AppCompatButton button=btnRate;
+            if (aBoolean){
+                changeVisibility(button, true);
+            } else changeVisibility(button, false);
+
+        });
+
         return view;
     }
     public void clickDate(View view){
@@ -124,5 +228,16 @@ public class HealthDiaryFragment extends Fragment {
     
     public void toRate (View view){
         Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_ratingFragment);
+    }
+
+    private void changeVisibility(AppCompatButton button, Boolean visible){
+        Drawable[] drawables =button.getCompoundDrawables();
+        Drawable icon=drawables[0];
+        Drawable checkMarker=checkMark;
+        Drawable checkMarkerOff=checkMarkOff;
+        if (visible){
+            button.setCompoundDrawables(icon,null,checkMarker,null);
+        } else button.setCompoundDrawables(icon,null,checkMarkerOff,null);
+
     }
 }

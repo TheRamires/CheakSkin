@@ -2,11 +2,13 @@ package ru.skinallergic.checkskin.components.healthdiary.repositories
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.skinallergic.checkskin.Api.HealthyService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
 import ru.skinallergic.checkskin.handlers.NetworkHandler
@@ -66,5 +68,23 @@ open class HealthyDiaryRepository @Inject constructor(
                         }
                     }))
         }
+    }
+    open fun date(date: String): Observable<BaseResponse<GettingData?>> {
+        Loger.log("data start for repo")
+        networkHandler.check()
+        val accesToken = tokenModel_.loadAccesToken()
+        return accesToken?.let{
+            service.getData(accesToken, date)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError "+it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { date(date) }
+                        }}
+
+        }!!
     }
 }
