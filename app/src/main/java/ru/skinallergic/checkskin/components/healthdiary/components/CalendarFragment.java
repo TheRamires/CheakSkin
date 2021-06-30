@@ -1,30 +1,21 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
-import ru.skinallergic.checkskin.R;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.StateViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentCalendarBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -43,20 +34,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        int monthOfYear=datePicker.getMonth();
-        int dayOfMonth=datePicker.getDayOfMonth();
-        int year=datePicker.getYear();
 
-
-        String month=String.format("%02d",monthOfYear+1);
-        String day=String.format("%02d",dayOfMonth);
-        String dateString=day+"."+month+"."+year;
-
-        Date date=dateViewModel.simpleFormattingToDate(dateString);
-        dateViewModel.dateLive.setValue(date);
-        Loger.log("unix "+dateViewModel.getDateUnix());
-        Loger.log("calendar "+dateViewModel.getDate());
-
+        Loger.log("destroyView by CalendarFrag");
 
     }
 
@@ -96,9 +75,31 @@ public class CalendarFragment extends Fragment {
                 Loger.log("new date "+ttt);
           //  }
        // });
-*/
+
+ */
+
+
         return view;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        int monthOfYear=datePicker.getMonth();
+        int dayOfMonth=datePicker.getDayOfMonth();
+        int year=datePicker.getYear();
+
+
+        String month=String.format("%02d",monthOfYear+1);
+        String day=String.format("%02d",dayOfMonth);
+        String dateString=day+"."+month+"."+year;
+
+        Date date=dateViewModel.simpleFormattingToDate(dateString);
+        dateViewModel.dateLive.setValue(date);
+        Loger.log("unix "+dateViewModel.getDateUnix());
+        Loger.log("calendar "+dateViewModel.getDate());
+    }
+
     public void backStack (View view){
         Navigation.findNavController(view).popBackStack();
     }

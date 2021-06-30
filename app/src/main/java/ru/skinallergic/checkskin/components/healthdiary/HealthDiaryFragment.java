@@ -42,9 +42,6 @@ public class HealthDiaryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
         checkMark=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_on);
         checkMarkOff=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_off);
         checkMark.setBounds(0, 0, 45, 45);
@@ -64,6 +61,11 @@ public class HealthDiaryFragment extends Fragment {
         View view=binding.getRoot();
         bundle=new Bundle();
 
+        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
+
+        Loger.log("dateViewModel *******"+dateViewModel.getDate());
         //Настройка кнопок ---------------------------------------------------------------------
 
         AppCompatButton btnState = binding.buttonState;
