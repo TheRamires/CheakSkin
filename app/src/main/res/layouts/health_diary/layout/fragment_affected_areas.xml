@@ -3,12 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="fragment"
             type="ru.skinallergic.checkskin.components.healthdiary.components.AffectedAreasFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
+        <variable
+            name="affectedAreaVM"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,7 +52,8 @@
                 android:text="Фото высыпаний"
                 />
             <ImageView
-                android:onClick="@{fragment::toRedact}"
+                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.GONE : View.VISIBLE ,default=visible}"
+                android:onClick="@{fragment::redactMode}"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/my_icon_pencil"
@@ -60,6 +68,7 @@
         </RelativeLayout>
 
         <FrameLayout
+            android:layout_below="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -70,6 +79,7 @@
                 android:layout_height="match_parent"/>
 
             <ImageButton
+                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
                 android:layout_marginBottom="110dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:onClick="@{fragment::toRedactBody}"
@@ -80,6 +90,7 @@
                 android:layout_height="80dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
                 android:layout_gravity="bottom"
                 android:onClick="@{fragment::save}"
                 android:layout_marginBottom="30dp"
@@ -97,5 +108,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </FrameLayout>
-    </LinearLayout>
+        <FrameLayout
+            android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+    </RelativeLayout>
 </layout>

@@ -18,9 +18,11 @@ import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel
 import ru.skinallergic.checkskin.components.profile.ActionFunction
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
+import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
+import ru.skinallergic.checkskin.components.profile.NavigationFunction
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -29,7 +31,7 @@ import java.io.IOException
 import java.util.regex.Pattern
 
 abstract class BaseAreaFragment : Fragment() {
-    lateinit var viewModel: AffectedAreaRedactViewModel
+    lateinit var viewModelCommon: AffectedAreaCommonViewModel
     lateinit var dateViewModel: DateViewModel
 
     lateinit var photoController: PhotoController
@@ -70,11 +72,12 @@ abstract class BaseAreaFragment : Fragment() {
             if (finalBitmap != null) {
                 val actionFunction = object : ActionFunction {
                     override fun action() {
+                        viewModelCommon.someChanging()
                         imageView.setImageBitmap(finalBitmap)
                         //viewModel.addBitMapToList(finalBitmap);
                         try {
                             val file = fileFromBitmap(finalBitmap, currentPhotoId)
-                            viewModel.putPhotoToMap(currentPhotoId, file!!)
+                            viewModelCommon.putPhotoToMap(currentPhotoId, file!!)
                         } catch (e: IOException) {
                             e.printStackTrace()
                         } catch (e: ClassNotFoundException) {
@@ -208,11 +211,11 @@ abstract class BaseAreaFragment : Fragment() {
     @Throws(IOException::class, ClassNotFoundException::class)
     fun reportRequest() {
 
-        viewModel.addReport(dateViewModel.getDateUnix())
+        viewModelCommon.addReport(dateViewModel.getDateUnix())
     }
 
     fun save(view: View?) {
-        if (viewModel.isChanged()) {
+        if (viewModelCommon.isChanged()) {
             try {
                 reportRequest()
             } catch (e: IOException) {
@@ -221,5 +224,34 @@ abstract class BaseAreaFragment : Fragment() {
                 e.printStackTrace()
             }
         } else Navigation.findNavController(requireView()).popBackStack(R.id.affectedAreasFragment, false)
+    }
+    fun quitSaveLogic(view: View){
+        Loger.log("viewModelCommon.isChanged() "+viewModelCommon.isChanged())
+        if (viewModelCommon.isChanged()) {
+            quitSaveDialog(view)
+        } else {
+            Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false)
+        }
+    }
+
+    fun quitSaveDialog(view: View) {
+        val negative = object : ActionFunction {
+            override fun action() {
+                Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false)
+            }
+        }
+        val positive = object : ActionFunction {
+            override fun action() {
+                save(view)
+            }
+        }
+        val navigation = object : NavigationFunction {
+            override fun navigate() {
+                //empty
+            }
+        }
+        val dialog = DialogTwoFunctionFragment(
+                "Сохранить изменения", negative, positive, navigation)
+        dialog.show(manager, "dialog")
     }
 }

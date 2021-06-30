@@ -1,21 +1,15 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,7 +22,7 @@ import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.databinding.BodyManBinding;
 import ru.skinallergic.checkskin.databinding.BodyWomanBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
@@ -43,7 +37,7 @@ import static ru.skinallergic.checkskin.utils.UtilsKt.GENDER_MALE;
  *
  */
 public class Body extends Fragment{
-    private AffectedAreaRedactViewModel viewModel;
+    private AffectedAreaCommonViewModel viewModel;
 
     private ViewBinding binding = null;
     private Drawable bodyFront;
@@ -83,7 +77,7 @@ public class Body extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
+        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         if (getArguments() != null) {
             gender = getArguments().getInt(GENDER);
             mParam2 = getArguments().getString(ARG_PARAM2);

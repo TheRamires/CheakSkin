@@ -1,22 +1,13 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import android.widget.Toast;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
@@ -38,30 +27,22 @@ import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapterArea;
 import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
-import ru.skinallergic.checkskin.components.profile.ActionFunction;
-import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.GALLERY_REQUEST;
-import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_01;
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_02;
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModelKt.FILE_NAME_03;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_01;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_02;
+import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_03;
 
 public class AffectedAreasFragment extends BaseAreaFragment {
+    private AffectedAreaViewModel viewModel;
     private RecyclerView recyclerView;
-    private Boolean stumpForImageView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,18 +50,21 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         manager=getChildFragmentManager();
         cameraPermission=new CameraPermission(requireActivity());
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
+        viewModelCommon=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
-        viewModel.data(dateViewModel.getDateUnix());
-        stumpForImageView=false;
+
+        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaViewModel.class);
+        viewModelCommon.data(dateViewModel.getDateUnix());
 
         //**
     }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getNewAreaLive().setValue(null);
-        viewModel.getNewViewLive().setValue(null);
+        viewModelCommon.getNewAreaLive().setValue(null);
+        viewModelCommon.getNewViewLive().setValue(null);
+        viewModelCommon.setSomeChanged(false);
+        viewModel.redactModeOff();
     }
 
     @Override
@@ -88,33 +72,35 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                              Bundle savedInstanceState) {
         FragmentAffectedAreasBinding binding=FragmentAffectedAreasBinding.inflate(inflater);
         binding.setFragment(this);
+        binding.setViewModel(viewModelCommon);
+        binding.setAffectedAreaVM(viewModel);
         View view=binding.getRoot();
         photoController=new PhotoController(cameraPermission, this);
 
         //viewModel.getAffectedLists();
 
         recyclerView=binding.recycler;
-        viewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        viewModelCommon.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 Loger.log("aBoolean "+aBoolean);
                 if (aBoolean==null){return;}
-                viewModel.getLoaded().setValue(null);
+                viewModelCommon.getLoaded().setValue(null);
                 if (aBoolean){
-                    viewModel.getLoaded().setValue(null);
-                    if (viewModel.getOldMap().isEmpty() || viewModel.getOldMap().size()==0){
+                    viewModelCommon.getLoaded().setValue(null);
+                    if (viewModelCommon.getOldMap().isEmpty() || viewModelCommon.getOldMap().size()==0){
                         toRedactBody(view);
                     } else createAdapter();
                 } else {toRedactBody(view);}
             }
         });
 
-        viewModel.getSaved().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        viewModelCommon.getSaved().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
                     Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
-                    viewModel.getSaved().setValue(false);
+                    viewModelCommon.getSaved().setValue(false);
                 }
             }
         });
@@ -128,7 +114,8 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     }
 
     private void createAdapter(){
-        RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModel.getOldMap(),
+        Loger.log("************ in createAdapter. oldMap "+viewModelCommon.getOldMap());
+        RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModelCommon.getOldMap(),
                 new RecyclerAdapterArea.RecyclerCallback() {
                     @Override
                     public void bind(ItemAreaBinding binder, Rash entity) {
@@ -166,60 +153,103 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         String FilePath01=showByPicasso(photo1, FILE_NAME_01,imageView0);
                         String FilePath02=showByPicasso(photo2, FILE_NAME_02,imageView1);
                         String FilePath03=showByPicasso(photo3, FILE_NAME_03,imageView2);
-                        viewModel.putSavedPhotoToMap(area, view,FilePath01,  FilePath02, FilePath03);
-                        viewModel.copyToNewMap();
+                        viewModelCommon.putSavedPhotoToMap(area, view, FilePath01,  FilePath02, FilePath03);
+                        viewModelCommon.copyToNewMap();
 
+                        //kindTemps.clear();
+                         List<KindTemp> kindTemps = new ArrayList<>();
                         List<Integer> kindList=entity.getKinds();
-                        List<KindTemp> kindTemps= new ArrayList<>();
+                        Loger.log("******* inAdapter. area "+area+",; view"+view+"; kindList "+kindList);
                         for (Integer index : kindList){
                             String kindTitle=AreaManager.INSTANCE.getKindTitle(index);
                             kindTemps.add(new KindTemp(index,kindTitle));
+
                         }
 
                         LinearLayout kindContainer=binder.kindContainer;
-                        completionKindList(kindTemps, kindContainer);
+                        completionKindList(kindTemps, kindContainer, area,view);
                     }
         });
         recyclerView.setAdapter(adapter);
     }
     private void clickListenerForImageView(ImageView imageView, int area, int view){
-        if (stumpForImageView){return;}
-        imageView.setOnClickListener((View v) ->{clickPhoto(imageView);setAreaAndView(area,view);});
+        imageView.setOnClickListener((View v) ->{
+            clickPhoto(imageView);
+            setAreaAndView(area,view);});
     }
 
-    private void completionKindList(List<KindTemp> kindTemps, LinearLayout container){
-        for (KindTemp kind: kindTemps){
-            completionKindList(kind, container);
+    private void completionKindList(List<KindTemp> kindTemps, LinearLayout container, int area, int view){
+        for (int i=0; i<kindTemps.size();i++){
+            KindTemp kind=kindTemps.get(i);
+            int count=i;
+            //completionKindList(kind, container,count,area,view);
+
+            LayoutInflater inflater = LayoutInflater.from(requireContext());
+            View item = inflater.inflate(R.layout.item_rash, container,false);
+            TextView text=item.findViewById(R.id.text);
+            text.setText(kind.getTitle());
+            ImageButton button=item.findViewById(R.id.btn_close);
+            button.setOnClickListener((View v)-> {
+                if (viewModel.redactModeIsOn()){
+                    if (kindTemps.size()==1){
+                        Toast.makeText(getContext(),"Должен быть указан как минимум один тип сыпи", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    deleteKindPosition(kindTemps,count, container,area,view);
+                }
+            });
+            container.addView(item);
         }
     }
-
-    private void completionKindList (KindTemp kind, LinearLayout container){
+/*
+    private void completionKindList (KindTemp kind, LinearLayout container, int position, int area, int view){
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View item = inflater.inflate(R.layout.item_rash, container,false);
         TextView text=item.findViewById(R.id.text);
         text.setText(kind.getTitle());
         ImageButton button=item.findViewById(R.id.btn_close);
-        button.setOnClickListener((View v)-> {  });
+        button.setOnClickListener((View v)-> {
+            if (!stumpForButtonClose){
+                //deleteKindPosition(position, container,area,view);
+            }
+        });
         container.addView(item);
+    }*/
+    private void deleteKindPosition(List<KindTemp> kindTemps,int indx, LinearLayout container, int area, int view){
+        Loger.log("delete indx "+indx+" container"+container);
+        container.removeAllViews();
+        kindTemps.remove(indx);
+        completionKindList(kindTemps, container,area,view);
+        List<Integer> kindIndexes= new ArrayList();
+        for (KindTemp kindTemp : kindTemps){
+            kindIndexes.add(kindTemp.getIndex());
+        }
+        viewModelCommon.someChanging();
+        viewModelCommon.putKindsToMap(kindIndexes, area, view);
     }
 
     public void backStack(View view){
-        Navigation.findNavController(view).popBackStack();
+        Boolean redactMode=viewModel.getRedactModeLive().get();
+        if (redactMode == null || redactMode==false){
+            Navigation.findNavController(view).popBackStack();
+        } else {quitSaveLogic(view);}
     }
-    public void toRedact(View view){
-        Navigation.findNavController(view).navigate(R.id.action_affectedAreasFragment_to_affectedAreaRedactFragment);
+    public void redactMode(View view){
+        viewModel.redactModeOn();
     }
     public void toRedactBody(View view){
         Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);
     }
     private void setAreaAndView(int area, int view) {
-        viewModel.getNewAreaLive().setValue(area);
-        viewModel.getNewViewLive().setValue(view);
+        viewModelCommon.getNewAreaLive().setValue(area);
+        viewModelCommon.getNewViewLive().setValue(view);
     }
 
     public void clickPhoto(View view_){
-        imageView= view_.findViewById(view_.getId());
-        toPhoto(imageView);
+        if (viewModel.redactModeIsOn()){
+            imageView= view_.findViewById(view_.getId());
+            toPhoto(imageView);
+        }
     }
 /*
     //*******************************************save temp photo

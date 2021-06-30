@@ -1,10 +1,10 @@
 package ru.skinallergic.checkskin.components.healthdiary.viewModels
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.healthdiary.repositories.AffectedArreaRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
-import ru.skinallergic.checkskin.components.healthdiary.data.EntityAffected
+import java.util.*
 import javax.inject.Inject
 
 class AffectedAreaViewModel @Inject constructor(val repository: AffectedArreaRepository): BaseViewModel() {
@@ -14,24 +14,19 @@ class AffectedAreaViewModel @Inject constructor(val repository: AffectedArreaRep
         baseRepository.compositeDisposable=this.compositeDisposable
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
-    var affectedLive1 = MutableLiveData<List<EntityAffected>?>()
-    var affectedLive2 = MutableLiveData<List<EntityAffected>?>()
-    val affectedLists: Unit
-        get() {
-            repository.loadAffectedsLists(affectedLive1, affectedLive2)
-        }
+    val redactModeLive= ObservableField<Boolean>()
 
-    fun deletePosition(id: Int) {
-        Loger.log("delete$id")
+    var stumpForImageView: Boolean = false
+    var stumpForButtonClose: Boolean = false
+
+    fun redactModeOn(){
+        redactModeLive.set(true)
     }
-    fun date(date:Long){
-        compositeDisposable.add(
-                repository.date((date/1000).toString())
-                        .doOnSubscribe { splashScreenOn.set(true) }
-                        .doOnComplete { splashScreenOn.set(false) }
-                        .subscribe ({
-                                    Loger.log("date ${it}")
-                        },{})
-        )
+    fun redactModeOff(){
+        redactModeLive.set(false)
+    }
+
+    fun redactModeIsOn():Boolean{
+        return !(redactModeLive.get() ==null || redactModeLive.get()==false)
     }
 }

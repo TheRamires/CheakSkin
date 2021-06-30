@@ -1,20 +1,14 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +20,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
@@ -34,18 +27,12 @@ import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
-import ru.skinallergic.checkskin.components.profile.ActionFunction;
-import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.AccountViewModel;
 import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
-
-import static android.app.Activity.RESULT_OK;
-import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.GALLERY_REQUEST;
-import static ru.skinallergic.checkskin.components.healthdiary.PhotoController.REQUEST_TAKE_PHOTO;
 
 public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
     private int gender;
@@ -59,14 +46,14 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         super.onCreate(savedInstanceState);
         manager=getChildFragmentManager();
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaRedactViewModel.class);
+        viewModelCommon=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         AccountViewModel accountViewModel=new ViewModelProvider(requireActivity(), viewModelFactory).get(AccountViewModelImpl.class);
         gender=accountViewModel.getCurrentUser().getGender();
-        viewModel.getNewViewLive().setValue(0);
+        viewModelCommon.getNewViewLive().setValue(0);
 
         //**
-        viewModel.copyToNewMap();
+        viewModelCommon.copyToNewMap();
     }
 
     @Override
@@ -89,7 +76,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         FrameLayout conteiner=binding.conteiner;
         createBody(gender, conteiner);
 
-        viewModel.getNewAreaLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+        viewModelCommon.getNewAreaLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 completionAreaText(integer, binding);
@@ -103,10 +90,10 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             }
         });
 
-        viewModel.getNewViewLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+        viewModelCommon.getNewViewLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                completionAreaText(viewModel.getNewArea(), binding);
+                completionAreaText(viewModelCommon.getNewArea(), binding);
                 completionViewText(integer, binding);
                 if (integer==null){return;}
                 clearKindsAndImageViews();
@@ -114,25 +101,25 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             }
         });
 
-        viewModel.getNewKindsLive().observe(getViewLifecycleOwner(), new Observer<List<Integer>>() {
+        viewModelCommon.getNewKindsLive().observe(getViewLifecycleOwner(), new Observer<List<Integer>>() {
             @Override
             public void onChanged(List<Integer> integers) {
                 if (integers==null){return;}
                 Loger.log("New Kinds " +integers);
-                boolean ok=viewModel.checkArea();
+                boolean ok=viewModelCommon.checkArea();
                 if (ok){
-                    viewModel.putKindsToMap(integers);
-                    Loger.log("onCheckedChanged. map "+viewModel.getNewMap());
+                    viewModelCommon.putKindsToMap(integers);
+                    Loger.log("onCheckedChanged. map "+viewModelCommon.getNewMap());
                 }
             }
         });
 
-        viewModel.getSaved().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        viewModelCommon.getSaved().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
                     Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
-                    viewModel.getSaved().setValue(false);
+                    viewModelCommon.getSaved().setValue(false);
                 }
             }
         });
@@ -143,11 +130,12 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getNewAreaLive().setValue(null);
+        viewModelCommon.getNewAreaLive().setValue(null);
+        viewModelCommon.setSomeChanged(false);
     }
 
     public void backStack(View view){
-        Navigation.findNavController(view).popBackStack();
+        quitSaveLogic(view);
     }
 
     @Override
@@ -166,7 +154,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
 
     public void clickPhoto(View view_){
         imageView= view.findViewById(view_.getId());
-        if (viewModel.getNewArea()==null){
+        if (viewModelCommon.getNewArea()==null){
             Toast.makeText(getContext(),"Выберите пораженный участок тела", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -177,14 +165,15 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Integer kind=AreaManager.INSTANCE.getKindFromButtonId(buttonView.getId());
 
-            if (viewModel.getNewArea()==null){
+            if (viewModelCommon.getNewArea()==null){
                 Toast.makeText(getContext(),"Выберите пораженный участок тела", Toast.LENGTH_SHORT).show();
                 clearKindsAndImageViews();
                 return;
             }
+            viewModelCommon.someChanging();
             if (isChecked){
-                viewModel.addNewKind(kind);
-            } else {viewModel.removeKind(kind);}
+                viewModelCommon.addNewKind(kind);
+            } else {viewModelCommon.removeKind(kind);}
     }
     private void initImagesView(FragmentAffectedAreaRedactBodyBinding binding){
         photoImageViewArray[0]=binding.photoRash0;
@@ -221,7 +210,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         if (id==null){
             textView.setText("");
         } else {
-            int view=viewModel.getNewView();
+            int view=viewModelCommon.getNewView();
             String text=AreaManager.INSTANCE.getTitle(id, view);
             textView.setText(text);
         }
@@ -232,7 +221,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         if (id==null){
             text="";
         } else {
-            int view=viewModel.getNewView();
+            int view=viewModelCommon.getNewView();
             if (view==0){
                 text="(спереди)";
             } else text="(сзади)";
@@ -241,8 +230,8 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     }
 
     public void showAreaEntity(){
-        List<File> files=viewModel.getPhotosFromMap();
-        List<Integer> kinds=viewModel.getKindsFromMap();
+        List<File> files=viewModelCommon.getPhotosFromMap();
+        List<Integer> kinds=viewModelCommon.getKindsFromMap();
 
         if (files!=null){
             for (int i=0;i<files.size();i++){
@@ -260,7 +249,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         }
     }
     public void clearKindsAndImageViews(){
-        viewModel.getNewKindsLive().setValue(null);
+        viewModelCommon.getNewKindsLive().setValue(null);
         for (int i=0;i<kindButtonsArray.length;i++){
             kindButtonsArray[i].setChecked(false);
         }

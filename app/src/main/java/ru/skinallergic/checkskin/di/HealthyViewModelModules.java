@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaRedactViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RatingViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.StateViewModel;
@@ -45,8 +45,8 @@ abstract public class HealthyViewModelModules {
 
     @Binds
     @IntoMap
-    @ViewModelKey(AffectedAreaRedactViewModel.class)
-    abstract ViewModel affectedAreaRedactViewModel(AffectedAreaRedactViewModel affectedAreaRedactViewModel);
+    @ViewModelKey(AffectedAreaCommonViewModel.class)
+    abstract ViewModel affectedAreaRedactViewModel(AffectedAreaCommonViewModel affectedAreaRedactViewModel);
 
     @Binds
     @IntoMap

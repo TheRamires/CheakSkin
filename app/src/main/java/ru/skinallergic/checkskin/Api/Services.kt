@@ -47,12 +47,10 @@ interface HealthyService {
     @Headers("Content-Type: application/json", "Connection: close")
     fun getData(@Header("Authorization") key: String, @Query("created") created: String): Observable<BaseResponse<GettingData?>>
 
-
     @GET("/journals/health/stat/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun statistic(@Header ("Authorization") key: String, @Query ("start") start: Long, @Query ("end") end: Long
     ): Observable<BaseResponse<List<EntityStatistic>>>
-
 
     @Multipart
     @POST("/journals/health/rashes/")

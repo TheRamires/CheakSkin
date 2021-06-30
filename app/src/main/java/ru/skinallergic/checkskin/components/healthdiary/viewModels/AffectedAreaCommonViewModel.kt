@@ -16,11 +16,12 @@ import java.io.File
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
+
 const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
 
 const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
 
-class AffectedAreaRedactViewModel@Inject constructor(
+class AffectedAreaCommonViewModel@Inject constructor(
         val repository: AffectedArreaRepository,
         val multipartManager: MultipartManager,
         val toastyManager: ToastyManager
@@ -32,6 +33,8 @@ class AffectedAreaRedactViewModel@Inject constructor(
         baseRepository.compositeDisposable=this.compositeDisposable
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
+    var someChanged=false
+
     val saved =MutableLiveData<Boolean>()
     val loaded=MutableLiveData<Boolean>()
 
@@ -61,7 +64,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
             }
             newMap[area]!![view]=AreaEntity(kinds,filesPhoto)
         }
-        Loger.log("**initNewMap \n oldMap $oldMap \n newMap $newMap")
+        Loger.log("**copyToNewMap \n oldMap $oldMap \n newMap $newMap")
     }
     fun MutableMap<Int,MutableMap<Int, AreaEntity>>.checkNull(){
         val temp=this
@@ -112,7 +115,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
     }
     fun checkReportField(files: List<File?>?, area: Int?, view: Int?, kinds: List<Int?>?): Boolean{
         Loger.log("checkReportField. getNewArea ${area}; getNewView ${view}; getNewKind ${kinds}; files $files")
-        return (area!=null && view!=null && kinds!=null && kinds.isNotEmpty() && files!!.isNotEmpty())
+        return (area!=null && view!=null && kinds!=null && kinds.isNotEmpty() && files!=null && files?.isNotEmpty())
     }
 
     fun addReport(date: Long){
@@ -191,7 +194,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                     newKinds: RequestBody,
                     files: List<MultipartBody.Part>){
 
-        Loger.log("files 2 //************************************ $files")
+        Loger.log("addPosition \n area = "+newArea+"\n view= "+newView+"\n"+"files 2 //************************************ $files")
         compositeDisposable.add(repository.add(date/1000, newArea, newView, newKinds, files)
                 .subscribe ({
                     saved.value=true
@@ -235,7 +238,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
                         .doOnComplete { splashScreenOn.set(false) }
                         .subscribe ({
                             val data: List<Rash>
-                            Loger.log("date $it")
+                            Loger.log("**************data $it")
                             if (it.message==null){loaded.value = false}
                             else {
                                 data=it.data?.rashes!!
@@ -247,9 +250,14 @@ class AffectedAreaRedactViewModel@Inject constructor(
                         },{})
         )
     }
+    fun someChanging(){
+        someChanged=true
+        //toastyManager.toastyyyy("someChanged $someChanged")
+    }
 
     fun isChanged(): Boolean{
-        return true
+        //toastyManager.toastyyyy("someChanged $someChanged")
+        return someChanged
     }
 
     fun addBitMapToList(img: Bitmap){
@@ -278,11 +286,7 @@ class AffectedAreaRedactViewModel@Inject constructor(
         }
         return null
     }
-
-    fun putKindsToMap(kinds: List<Int>){
-        val area=getNewArea()!!
-        val view=getNewView()
-
+    fun putKindsToMap(kinds: List<Int>, area: Int, view: Int){
         //************** вынести в отдельный метод
         val temp = newMap[area]
         if (temp==null){
@@ -299,6 +303,12 @@ class AffectedAreaRedactViewModel@Inject constructor(
         newMap[area]!![view]!!.kind=kinds
 
         Loger.log("putKinds map $newMap")
+    }
+
+    fun putKindsToMap(kinds: List<Int>){
+        val area=getNewArea()!!
+        val view=getNewView()
+        putKindsToMap(kinds,area,view)
     }
 
     fun putPhotoToMap(id:Int,bitmap: File){
@@ -394,5 +404,4 @@ fun regularHttp(path:String): Boolean{ // проверка, true если фай
     val matcher= pattern.matcher(path)
     return matcher.find()
 }
-
 

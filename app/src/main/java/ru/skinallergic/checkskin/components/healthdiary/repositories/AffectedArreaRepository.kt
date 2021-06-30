@@ -58,7 +58,6 @@ class AffectedArreaRepository  @Inject constructor(
         Loger.log("files 3 //************************************ $files  size ${files.size}")
         Loger.log("files 3 //**********************************files[0]** ${files[0]}")
         networkHandler.check()
-        Loger.log("add by repo. area $newArea, view $newView")
         val accesToken=tokenModel_.loadAccesToken()!!
         return when (files.size){
             1-> service_.addRashReport(accesToken,date,newArea,newView,newKinds,files[0])

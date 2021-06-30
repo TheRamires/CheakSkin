@@ -8,6 +8,6 @@ import javax.inject.Inject
 class ToastyManager @Inject constructor(val context: Context){
     fun toastyyyy(message: String){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        Loger.log("toasty manager $message")
+        Loger.log("╝§toasty manager $message")
     }
 }
