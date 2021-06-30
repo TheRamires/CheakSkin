@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 import java.util.Date;
 
 import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.HealthyDiaryViewModel;
@@ -46,6 +47,8 @@ public class HealthDiaryFragment extends Fragment {
         viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
         checkMark=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_on);
         checkMarkOff=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_off);
+        checkMark.setBounds(0, 0, 45, 45);
+        checkMarkOff.setBounds(0, 0, 45, 45);
     }
 
     @Override
@@ -65,45 +68,88 @@ public class HealthDiaryFragment extends Fragment {
 
         AppCompatButton btnState = binding.buttonState;
         Drawable icon1 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_1);
-        Drawable cheakBox1 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon1.setBounds(0, 0, 75, 75);
-        cheakBox1.setBounds(0, 0, 45, 45);
-        btnState.setCompoundDrawables(icon1, null, cheakBox1, null);
+        changeMark(btnState, icon1,false);
 
         AppCompatButton btnPhoto = binding.buttonPhoto;
         Drawable icon2 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_2);
-        Drawable cheakBox2 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon2.setBounds(0, 0, 75, 75);
-        cheakBox2.setBounds(0, 0, 45, 45);
-        btnPhoto.setCompoundDrawables(icon2, null, cheakBox2, null);
+        changeMark(btnPhoto, icon2,false);
 
         AppCompatButton btnTriggers = binding.buttonTriggers;
         Drawable icon3 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_3);
-        Drawable cheakBox3 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon3.setBounds(0, 0, 75, 75);
-        cheakBox3.setBounds(0, 0, 45, 45);
-        btnTriggers.setCompoundDrawables(icon3, null, cheakBox3, null);
+        changeMark(btnTriggers, icon3,false);
 
         AppCompatButton btnHealth = binding.buttonHelth;
         Drawable icon4 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_4);
-        Drawable cheakBox4 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon4.setBounds(0, 0, 75, 75);
-        cheakBox4.setBounds(0, 0, 45, 45);
-        btnHealth.setCompoundDrawables(icon4, null, cheakBox4, null);
+        changeMark(btnHealth, icon4,false);
 
         AppCompatButton btnRemind = binding.buttonRemind;
         Drawable icon5 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_5);
-        Drawable cheakBox5 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon5.setBounds(0, 0, 75, 75);
-        cheakBox5.setBounds(0, 0, 45, 45);
-        btnRemind.setCompoundDrawables(icon5, null, cheakBox5, null);
+        changeMark(btnRemind, icon5,false);
 
         AppCompatButton btnRate = binding.buttonRate;
         Drawable icon6 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_6);
-        Drawable cheakBox6 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon6.setBounds(0, 0, 75, 75);
-        cheakBox6.setBounds(0, 0, 45, 45);
-        btnRate.setCompoundDrawables(icon6, null, cheakBox6, null);
+        changeMark(btnRate, icon6,false);
+
+
+        viewModel.getStateChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getStateChecked "+aBoolean);
+            AppCompatButton button = btnState;
+            Drawable drawable=icon1;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+        });
+        viewModel.getRashPhotosChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getRashPhotosChecked "+aBoolean);
+            AppCompatButton button = btnPhoto;
+            Drawable drawable=icon2;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+
+        });
+        viewModel.getTriggersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getTriggersChecked "+aBoolean);
+            AppCompatButton button = btnTriggers;
+            Drawable drawable=icon3;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+
+        });
+        viewModel.getStatmentChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getStatmentChecked "+aBoolean);
+            AppCompatButton button = btnHealth;
+            Drawable drawable=icon4;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+
+        });
+        viewModel.getRemindersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getRemindersChecked "+aBoolean);
+            AppCompatButton button = btnRemind;
+            Drawable drawable=icon5;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+
+        });
+        viewModel.getRatingChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            Loger.log("getRatingChecked "+aBoolean);
+            AppCompatButton button = btnRate;
+            Drawable drawable=icon6;
+            if (aBoolean){
+                changeMark(button, drawable,true);
+            } else changeMark(button, drawable,false);
+
+        });
 
         //--------------------------------------------------------------------------------------
         dateObservable.set(dateViewModel.getDate());
@@ -143,60 +189,6 @@ public class HealthDiaryFragment extends Fragment {
             }
         });
 
-        viewModel.getStateChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getStateChecked().setValue(null);
-            AppCompatButton button=btnState;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-        });
-        viewModel.getRashPhotosChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getRashPhotosChecked().setValue(null);
-            AppCompatButton button=btnPhoto;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-
-        });
-        viewModel.getTriggersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getTriggersChecked().setValue(null);
-            AppCompatButton button=btnTriggers;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-
-        });
-        viewModel.getStatmentChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getStatmentChecked().setValue(null);
-            AppCompatButton button=btnHealth;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-
-        });
-        viewModel.getRemindersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getRatingChecked().setValue(null);
-            AppCompatButton button=btnRemind;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-
-        });
-        viewModel.getRatingChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
-            if (aBoolean==null){return;}
-            viewModel.getRatingChecked().setValue(null);
-            AppCompatButton button=btnRate;
-            if (aBoolean){
-                changeVisibility(button, true);
-            } else changeVisibility(button, false);
-
-        });
-
         return view;
     }
     public void clickDate(View view){
@@ -230,12 +222,10 @@ public class HealthDiaryFragment extends Fragment {
         Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_ratingFragment);
     }
 
-    private void changeVisibility(AppCompatButton button, Boolean visible){
-        Drawable[] drawables =button.getCompoundDrawables();
-        Drawable icon=drawables[0];
+    private void changeMark(AppCompatButton button, Drawable icon, Boolean on){
         Drawable checkMarker=checkMark;
         Drawable checkMarkerOff=checkMarkOff;
-        if (visible){
+        if (on){
             button.setCompoundDrawables(icon,null,checkMarker,null);
         } else button.setCompoundDrawables(icon,null,checkMarkerOff,null);
 
