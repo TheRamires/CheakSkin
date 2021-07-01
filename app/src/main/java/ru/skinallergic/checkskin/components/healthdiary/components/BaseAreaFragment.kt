@@ -135,6 +135,7 @@ abstract class BaseAreaFragment : Fragment() {
         }
         Picasso.with(requireContext())
                 .load(path)
+                .placeholder(R.drawable.no_photo)
                 .into(imageView)
     }
 
@@ -144,10 +145,11 @@ abstract class BaseAreaFragment : Fragment() {
         if (path==null){return null}
         Picasso.with(requireContext())
                 .load(path)
+                .placeholder(R.drawable.no_photo)
                 .into(imageView)
         return imageDownload(requireContext(), name, path)
     }
-    fun imageDownload(ctx: Context, name: String, pathHttp: String): String {
+    fun imageDownload(ctx: Context, name: String, pathHttp: String): String? {
         val dir=ctx.getExternalFilesDir("photo")
         if (!dir!!.exists()){
             dir.mkdirs()
@@ -155,16 +157,21 @@ abstract class BaseAreaFragment : Fragment() {
         dir.createNewFile()
 
         val filePath = dir.absolutePath + "/" + name
-        Picasso.with(ctx)
-                .load(pathHttp)
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(getTarget(filePath))
-        return filePath
+        try {
+            Picasso.with(ctx)
+                    .load(pathHttp)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(getTarget(filePath))
+            return filePath
+
+        }catch (t: Throwable){
+            return null
+        }
     }
 
     fun getTarget(filePath: String):Target{
         return object : Target {
-            override fun onBitmapLoaded(bitmap: Bitmap, from: LoadedFrom) {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom) {
                 Thread {
                     val file = File(filePath)
                     if (!file.parentFile.exists())
@@ -174,7 +181,7 @@ abstract class BaseAreaFragment : Fragment() {
                         file.createNewFile();
                     try {
                         val ostream = FileOutputStream(file)
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
+                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
                         ostream.flush()
                         ostream.close()
                         println(filePath)
@@ -190,14 +197,14 @@ abstract class BaseAreaFragment : Fragment() {
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
-    fun fileFromBitmap(yourBitmap: Bitmap, count: Int): File? {
+    fun fileFromBitmap(yourBitmap: Bitmap?, count: Int): File? {
         //create a file to write bitmap data
         val f = File(requireContext().cacheDir, "image$count.png")
         f.createNewFile()
 
         //Convert bitmap to byte array
         val bos = ByteArrayOutputStream()
-        yourBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
+        yourBitmap?.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
         val bitmapdata = bos.toByteArray()
 
         //write the bytes in file
@@ -223,21 +230,35 @@ abstract class BaseAreaFragment : Fragment() {
             } catch (e: ClassNotFoundException) {
                 e.printStackTrace()
             }
-        } else Navigation.findNavController(requireView()).popBackStack(R.id.affectedAreasFragment, false)
+        } else Navigation.findNavController(requireView()).popBackStack()
     }
     fun quitSaveLogic(view: View){
+
         Loger.log("viewModelCommon.isChanged() "+viewModelCommon.isChanged())
         if (viewModelCommon.isChanged()) {
-            quitSaveDialog(view)
+            quitSaveDialog(view){
+                Navigation.findNavController(view).popBackStack()
+            }
         } else {
-            Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false)
+            Navigation.findNavController(view).popBackStack()
+        }
+    }
+    fun quitSaveLogic(view: View,navigation: BackNavigation){
+
+        Loger.log("viewModelCommon.isChanged() "+viewModelCommon.isChanged())
+        if (viewModelCommon.isChanged()) {
+            quitSaveDialog(view){
+                navigation.nav()
+            }
+        } else {
+            navigation.nav()
         }
     }
 
-    fun quitSaveDialog(view: View) {
+    fun quitSaveDialog(view: View, popBack: ()->Unit) {
         val negative = object : ActionFunction {
             override fun action() {
-                Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false)
+                popBack()
             }
         }
         val positive = object : ActionFunction {

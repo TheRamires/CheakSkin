@@ -54,7 +54,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
 
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaViewModel.class);
-        viewModelCommon.data(dateViewModel.getDateUnix());
 
         //**
     }
@@ -76,6 +75,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         binding.setAffectedAreaVM(viewModel);
         View view=binding.getRoot();
         photoController=new PhotoController(cameraPermission, this);
+        viewModelCommon.data(dateViewModel.getDateUnix());
 
         //viewModel.getAffectedLists();
 
@@ -229,10 +229,12 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     }
 
     public void backStack(View view){
+        BackNavigation pop=() ->{ viewModel.redactModeOff();};
+
         Boolean redactMode=viewModel.getRedactModeLive().get();
         if (redactMode == null || redactMode==false){
             Navigation.findNavController(view).popBackStack();
-        } else {quitSaveLogic(view);}
+        } else {quitSaveLogic(view,pop);}
     }
     public void redactMode(View view){
         viewModel.redactModeOn();

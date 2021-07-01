@@ -19,6 +19,7 @@ public class DateViewModel extends ViewModel {
     public static String DAY_FORMAT="d";
     public static String MONTH_FORMAT="M";
     public static String YEAR_FORMAT="yyyy";
+    public static String DATE_NORMAL="dd.MM.yyyy";
 
     @Inject
     public DateViewModel (){}
@@ -75,7 +76,7 @@ public class DateViewModel extends ViewModel {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd.MM.yyyy", myDateFormatSymbols);
         return sdf.format(date);
     }
-    public String formating(Date date, String Pattern){
+    public static String formating(Date date, String Pattern){
 
         SimpleDateFormat sdf = new SimpleDateFormat(Pattern,  Locale.US);
         return sdf.format(date);
@@ -94,7 +95,7 @@ public class DateViewModel extends ViewModel {
 
         return date;
     }
-    public Date simpleFormattingToDateWithMin(String formatedStringDate){
+    public static Date simpleFormattingToDateWithMin(String formatedStringDate){
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.US);
         Date date = null;
         try {

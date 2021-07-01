@@ -38,6 +38,9 @@ import ru.skinallergic.checkskin.view_models.DateViewModel;
 public class StatisticsFragment extends Fragment {
     private StatisticsViewModel viewModel;
     private DateViewModel dateViewModel;
+    private Date startDate=null;
+    private FragmentStatisticsBinding binding;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,10 +58,11 @@ public class StatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentStatisticsBinding binding=FragmentStatisticsBinding.inflate(inflater);
+        binding=FragmentStatisticsBinding.inflate(inflater);
         binding.setFragment(this);
         View view=binding.getRoot();
         binding.setViewModel(viewModel);
+        recyclerView=binding.recycler;
 
         Button btnDateStart= binding.dateStart;
         Button btnDateEnd=binding.dateEnd;
@@ -76,8 +80,6 @@ public class StatisticsFragment extends Fragment {
         });
 
         subscribeMediator(viewModel.getMediatorLiveData());
-        RecyclerView recyclerView=binding.recycler;
-        subscribeStatistic(viewModel.getStatistic(),recyclerView);
         subscribeExpiredRefreshToken(viewModel.getExpiredRefreshToken());
 
         return view;
@@ -92,25 +94,41 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void calendarListener(Button view, String position){
+        subscribeStatistic(viewModel.getStatistic(),recyclerView);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatePickerThemeSmall calendar=null;
+                switch (v.getId()){
+                    case R.id.date_start:
+                        calendar = new DatePickerThemeSmall(dateViewModel.dateLive.getValue(),false);
+                        break;
+                    case R.id.date_end:
+                        if (startDate==null){startDate=dateViewModel.dateLive.getValue();}
+                        calendar = new DatePickerThemeSmall(startDate,true);
+                        break;
+                }
 
-                DatePickerThemeSmall calendar = new DatePickerThemeSmall();
                 calendar.show(requireActivity().getSupportFragmentManager(), "theme2");
+
                 calendar.setCalendarListener(new DatePickerThemeSmall.CalendarListener() {
                     @Override
                     public void getDate(String date) {
                         String dateWithMin;
+
                         if (v.getId()==R.id.date_end){
                             dateWithMin=viewModel.endWithMin(date);
-                        } else dateWithMin=viewModel.startWithMin(date);
+
+                        } else {
+                            dateWithMin=viewModel.startWithMin(date);
+
+                        }
                         Loger.log(dateWithMin);
                         view.setText(
                                 stringBuild(position,date)
                         );
                         Loger.log("getDate "+dateWithMin);
-                        Date formattedDate=dateViewModel.simpleFormattingToDateWithMin(dateWithMin);
+                        Date formattedDate= DateViewModel.simpleFormattingToDateWithMin(dateWithMin);
                         Loger.log("getDate "+formattedDate);
                         switchDate(v,formattedDate);
                     }
@@ -124,6 +142,7 @@ public class StatisticsFragment extends Fragment {
             case R.id.date_start:
                 Loger.log("date_start "+formattedDate);
                 viewModel.getDateStart().setValue(formattedDate);
+                startDate=formattedDate;
                 break;
             case R.id.date_end:
                 Loger.log("date_end "+formattedDate);
@@ -158,7 +177,6 @@ public class StatisticsFragment extends Fragment {
                 }
             }
         });
-
     }
 
     private void subscribeStatistic(MutableLiveData<List<EntityStatistic>> liveData, RecyclerView recyclerView){
@@ -167,13 +185,16 @@ public class StatisticsFragment extends Fragment {
             @Override
             public void onChanged(List<EntityStatistic> entityStatistics) {
                 Loger.log("statistics "+entityStatistics.size());
+                if (!checkInside(entityStatistics)){
+                    binding.none.setVisibility(View.VISIBLE);
+                } else binding.none.setVisibility(View.INVISIBLE);
                 MyRecyclerAdapter<EntityStatistic, ItemStatisticBinding> adapter=new MyRecyclerAdapter<>(
                         entityStatistics, R.layout.item_statistic, new RecyclerCallback<ItemStatisticBinding, EntityStatistic>() {
                     @Override
                     public void bind(ItemStatisticBinding binder, EntityStatistic entity) {
-                       /* if (entity.getCount()==0){
+                        if (entity.getCount()==0){
                             binder.statisticItem.setVisibility(View.INVISIBLE);
-                        }*/
+                        }
 
                         Drawable drawable= AppCompatResources.getDrawable(getContext(),R.drawable.smile_01);
                         String name="";
@@ -199,5 +220,14 @@ public class StatisticsFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
             }
         });
+    }
+    private boolean checkInside(List<EntityStatistic> entityStatistics){
+        boolean bool=false;
+        for (EntityStatistic statistic : entityStatistics){
+            if (statistic.getCount()!=0){
+                bool=true;
+            }
+        }
+        return bool;
     }
 }

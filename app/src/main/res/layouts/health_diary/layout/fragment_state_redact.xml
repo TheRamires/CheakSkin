@@ -122,7 +122,7 @@
                         android:textSize="14sp"
                         android:layout_width="296dp"
                         android:layout_height="wrap_content"
-                        android:text="Высыпей нет зуда нет"/>
+                        android:text="Высыпаний нет зуда нет"/>
                     <View
                         android:layout_marginTop="20dp"
                         android:id="@+id/line2"

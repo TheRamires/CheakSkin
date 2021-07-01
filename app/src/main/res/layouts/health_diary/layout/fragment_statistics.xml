@@ -56,7 +56,7 @@
             android:background="@color/gray"/>
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_below="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -92,6 +92,7 @@
             />
         
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/calendars"
         android:layout_width="match_parent"
@@ -100,21 +101,33 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_below="@+id/recycler"
-        android:background="@drawable/button_pressed_blue"
-        android:layout_marginHorizontal="@dimen/norm_button_margin"
-        android:textAllCaps="false"
-        android:paddingBottom="2dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="ВЫГРУЗИТЬ ОТЧЕТ"
-        android:textSize="15sp"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_btn"
-        />
-    </LinearLayout>
+        <TextView
+            android:id="@+id/none"
+            android:textColor="@color/gray_2"
+            android:layout_marginTop="20sp"
+            android:layout_below="@+id/calendars"
+            android:layout_centerHorizontal="true"
+            android:textStyle="italic"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выберите период"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_pressed_blue"
+            android:layout_marginHorizontal="@dimen/norm_button_margin"
+            android:textAllCaps="false"
+            android:paddingBottom="2dp"
+            android:layout_marginBottom="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="ВЫГРУЗИТЬ ОТЧЕТ"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btn"/>
+    </RelativeLayout>
 
     <FrameLayout
         android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"

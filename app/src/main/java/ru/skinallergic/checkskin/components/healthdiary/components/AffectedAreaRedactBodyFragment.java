@@ -135,7 +135,11 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     }
 
     public void backStack(View view){
-        quitSaveLogic(view);
+        BackNavigation navigationByStep=()-> {Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);};
+        if (viewModelCommon.getNewMap().isEmpty() || viewModelCommon.getNewMap()==null){
+            quitSaveLogic(view,navigationByStep);
+        } else quitSaveLogic(view);
+
     }
 
     @Override
@@ -183,7 +187,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         binding.containerForPhotoUp1.setClipToOutline(true);
         binding.containerForPhotoUp2.setClipToOutline(true);
         binding.containerForPhotoUp3.setClipToOutline(true);
-
     }
 
     private void initToggles(FragmentAffectedAreaRedactBodyBinding binding){

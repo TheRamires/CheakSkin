@@ -128,12 +128,12 @@ public class Body extends Fragment{
             } else if (front){
                 imageView.setImageDrawable(bodyFront);
                 if (gender==GENDER_FEMALE){
-                    bodyCenter.setTranslationX(dpWidth-150);
+                    bodyCenter.setX(dpWidth-50);
                 }
             } else {
                 imageView.setImageDrawable(bodyBack);
                 if (gender==GENDER_FEMALE){
-                    bodyCenter.setTranslationX((dpWidth)-80);
+                    bodyCenter.setX(dpWidth+15);
                 }
             }
             setView(front);
