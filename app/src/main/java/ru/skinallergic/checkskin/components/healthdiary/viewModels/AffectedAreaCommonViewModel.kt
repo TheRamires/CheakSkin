@@ -13,7 +13,6 @@ import ru.skinallergic.checkskin.components.healthdiary.repositories.AffectedArr
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import java.io.File
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -37,6 +36,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     val saved =MutableLiveData<Boolean>()
     val loaded=MutableLiveData<Boolean>()
+    val notSaving =MutableLiveData<Boolean>()
 
     var oldMap : List<Rash> = listOf()
     val newMap : MutableMap<Int,MutableMap<Int, AreaEntity>> = mutableMapOf()
@@ -121,41 +121,60 @@ class AffectedAreaCommonViewModel@Inject constructor(
     fun addReport(date: Long){
         val allAreas=newMap.keys
         if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
+        if (!checkFullyFields(allAreas)){return} // **самая важная проверка -- "есть ли незаполненные поля"**
         for (area in allAreas){
             val allViews=newMap[area]?.keys
             if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
+
             for (view in allViews){
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || bitmaps==null){return}
-                Loger.log("areaEntity $areaEntity")
-
+                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
                 Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date,area,view, kind,files)
             }
         }
     }
+    fun checkFullyFields(allAreas: MutableSet<Int>): Boolean{
+        for (area in allAreas){
+            val allViews=newMap[area]?.keys
+            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE);return false}
+
+            for (view in allViews){
+                if(view ==null){continue}
+                val areaEntity= newMap[area]!![view]
+                val kind=areaEntity?.kind
+                val files=areaEntity?.photos
+                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE);return false}
+
+            }
+        }
+        return true
+    }
+
+    private fun <T>List<T?>?.isEmpty(): Boolean{
+        if (this==null){return true}
+        if (this.size==0){return true}
+        var boolean=true
+        for (position in this){
+            if (position!=null){boolean=false}
+        }
+        return boolean
+    }
 
     private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
         val fieldsIsEmpty=!checkReportField(files, area, view, kinds)
         if (fieldsIsEmpty) {
-            Loger.log(
-                    "Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:")
-            toastyManager.toastyyyy(
-                "Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
-        );return}
+            toastyManager.toastyyyy(MESSAGE);return}
 
         val newArea: RequestBody =multipartManager.createPartFromString(area)
         val newView: RequestBody =multipartManager.createPartFromString(view)
         val newKinds: RequestBody =multipartManager.createPartFromString(kinds) //Временно только один элемент
         val multiParts = mutableListOf<MultipartBody.Part>()
-/*
-        val tempFiles=files?.checkHttp()
-        Loger.log("************☺ tempFiles $tempFiles")
-*/
+
         //remove all null**************
         val finalFiles = files.removeNulls()
         Loger.log("************☺ finalFiles $finalFiles")
@@ -170,7 +189,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
             }
             val tempFile=finalFiles.get(count)
 
-            //val finalFile : File? = compareWithOldMap(tempFile) ?: continue
             val finalFile=tempFile
 
             Loger.log("************☺ last finalFile $finalFiles")
@@ -179,7 +197,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
                         multipartManager.prepareFilePart(name, finalFile))
             }
         }
-        Loger.log("multiParts **$multiParts")
         //check changes****************
         val id=isOldPosition(area,view)
         if (id==null){
@@ -220,14 +237,11 @@ class AffectedAreaCommonViewModel@Inject constructor(
             })
             )
         }
-/*
-        compositeDisposable.add(repository.redact(id, newArea, newView, newKinds, files)
-                .subscribe ({
-                    saved.value=true
-                    Loger.log(it.string())
-                },{
-                    Loger.log("throwable $it")
-                }))*/
+    }
+    fun notSaving(){
+        toastyManager.toastyyyy(MESSAGE)
+        notSaving.value=true
+
     }
 
     fun data(date:Long){

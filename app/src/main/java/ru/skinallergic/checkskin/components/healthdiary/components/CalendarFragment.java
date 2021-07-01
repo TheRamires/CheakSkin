@@ -20,6 +20,10 @@ import ru.skinallergic.checkskin.databinding.FragmentCalendarBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
+import static ru.skinallergic.checkskin.view_models.DateViewModel.DAY_FORMAT;
+import static ru.skinallergic.checkskin.view_models.DateViewModel.MONTH_FORMAT;
+import static ru.skinallergic.checkskin.view_models.DateViewModel.YEAR_FORMAT;
+
 public class CalendarFragment extends Fragment {
     private DateViewModel dateViewModel;
     private DatePicker datePicker;
@@ -47,6 +51,11 @@ public class CalendarFragment extends Fragment {
 
         binding.setFragment(this);
         datePicker=binding.datePicker;
+
+        int day=Integer.parseInt(dateViewModel.getDate(DAY_FORMAT));
+        int month=Integer.parseInt(dateViewModel.getDate(MONTH_FORMAT))-1;
+        int year=Integer.parseInt(dateViewModel.getDate(YEAR_FORMAT));
+        datePicker.updateDate(year,month,day);
 /*
         datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override

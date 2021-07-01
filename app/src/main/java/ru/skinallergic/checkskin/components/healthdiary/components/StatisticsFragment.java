@@ -171,7 +171,9 @@ public class StatisticsFragment extends Fragment {
                         entityStatistics, R.layout.item_statistic, new RecyclerCallback<ItemStatisticBinding, EntityStatistic>() {
                     @Override
                     public void bind(ItemStatisticBinding binder, EntityStatistic entity) {
-                        binder.shadow.setBackgroundColor(getResources().getColor(R.color.red)); //testing!!!!!!!***
+                       /* if (entity.getCount()==0){
+                            binder.statisticItem.setVisibility(View.INVISIBLE);
+                        }*/
 
                         Drawable drawable= AppCompatResources.getDrawable(getContext(),R.drawable.smile_01);
                         String name="";

@@ -16,6 +16,9 @@ import javax.inject.Inject;
 import ru.skinallergic.checkskin.Loger;
 
 public class DateViewModel extends ViewModel {
+    public static String DAY_FORMAT="d";
+    public static String MONTH_FORMAT="M";
+    public static String YEAR_FORMAT="yyyy";
 
     @Inject
     public DateViewModel (){}
@@ -32,6 +35,12 @@ public class DateViewModel extends ViewModel {
             setCurrentDate();
         }
         return formating(dateLive.getValue());
+    }
+    public String getDate(String format){
+        if (dateLive.getValue()==null) {
+            setCurrentDate();
+        }
+        return formating(dateLive.getValue(),format);
     }
 
     public String getDate(SimpleDateFormat sdf){
@@ -66,6 +75,12 @@ public class DateViewModel extends ViewModel {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd.MM.yyyy", myDateFormatSymbols);
         return sdf.format(date);
     }
+    public String formating(Date date, String Pattern){
+
+        SimpleDateFormat sdf = new SimpleDateFormat(Pattern,  Locale.US);
+        return sdf.format(date);
+    }
+
 
     public Date simpleFormattingToDate(String formatedStringDate){
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
