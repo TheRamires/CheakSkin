@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
@@ -32,7 +34,10 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaV
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
+import ru.skinallergic.checkskin.handlers.ToastyManager;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +59,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
 
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaViewModel.class);
+        toastyManager=App.getInstance().getAppComponent().getToastyManager();
 
         //**
     }
@@ -64,6 +70,14 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModelCommon.getNewViewLive().setValue(null);
         viewModelCommon.setSomeChanged(false);
         viewModel.redactModeOff();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //testing -
+        viewModelCommon.clearPhotoDirectory(viewModelCommon.getPhotoDirectoryInMemory());
     }
 
     @Override
@@ -77,7 +91,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         photoController=new PhotoController(cameraPermission, this);
         viewModelCommon.data(dateViewModel.getDateUnix());
 
-        //viewModel.getAffectedLists();
 
         recyclerView=binding.recycler;
         viewModelCommon.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -99,8 +112,8 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
-                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
                     viewModelCommon.getSaved().setValue(false);
+                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
                 }
             }
         });
@@ -153,7 +166,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         String FilePath01=showByPicasso(photo1, FILE_NAME_01,imageView0);
                         String FilePath02=showByPicasso(photo2, FILE_NAME_02,imageView1);
                         String FilePath03=showByPicasso(photo3, FILE_NAME_03,imageView2);
-                        viewModelCommon.putSavedPhotoToMap(area, view, FilePath01,  FilePath02, FilePath03);
+
+                        viewModelCommon.putSavedPhotoToOldMap(area, view, FilePath01,  FilePath02, FilePath03);
+
                         viewModelCommon.copyToNewMap();
 
                         //kindTemps.clear();

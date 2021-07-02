@@ -68,7 +68,7 @@ public class DatePickerThemeSmall extends DialogFragment implements DatePickerDi
 
         //Если dataEnd меньше startData, то увеличиваем день на один
         if (isEndDate){
-            Date formattedDate= DateViewModel.simpleFormattingToDateWithMin("23:59 "+day+"."+myMonth+"."+year);
+            Date formattedDate= DateViewModel.simpleFormattingToDateWithMin("23:59 "+String.format("%02d", day)+"."+myMonth+"."+year);
             if (startDate!=null && formattedDate.compareTo(startDate)<=0){
                 Toast.makeText(requireContext(),"Конечная дата не может быть раньше начальной",Toast.LENGTH_SHORT).show();
 
@@ -82,7 +82,7 @@ public class DatePickerThemeSmall extends DialogFragment implements DatePickerDi
             }
         }
 
-        String stringDate=day+"."+myMonth+"."+year;
+        String stringDate=String.format("%02d", day)+"."+myMonth+"."+year;
         calendarListener.getDate(stringDate);
     }
     interface CalendarListener{

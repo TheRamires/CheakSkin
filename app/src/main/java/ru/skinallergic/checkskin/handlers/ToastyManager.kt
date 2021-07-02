@@ -5,9 +5,11 @@ import android.widget.Toast
 import ru.skinallergic.checkskin.Loger
 import javax.inject.Inject
 
-class ToastyManager @Inject constructor(val context: Context){
+class ToastyManager @Inject constructor(val context: Context, val handleOnce: HandleOnce){
     fun toastyyyy(message: String){
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        if (handleOnce.itWasNotHandled(message)){
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
         Loger.log("╝§toasty manager $message")
     }
 }

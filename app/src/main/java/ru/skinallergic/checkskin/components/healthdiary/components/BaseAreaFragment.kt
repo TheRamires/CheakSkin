@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
@@ -23,12 +24,17 @@ import ru.skinallergic.checkskin.components.profile.ActionFunction
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
 import ru.skinallergic.checkskin.components.profile.NavigationFunction
+import ru.skinallergic.checkskin.handlers.HandleOnce
+import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
+import java.util.UUID.randomUUID
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 abstract class BaseAreaFragment : Fragment() {
     lateinit var viewModelCommon: AffectedAreaCommonViewModel
@@ -37,6 +43,7 @@ abstract class BaseAreaFragment : Fragment() {
     lateinit var photoController: PhotoController
     lateinit var cameraPermission: CameraPermission
     lateinit var manager: FragmentManager
+    lateinit var toastyManager: ToastyManager
 
     lateinit var imageView: ImageView
     var currentPhotoId: Int=0
@@ -58,7 +65,8 @@ abstract class BaseAreaFragment : Fragment() {
                 PhotoController.GALLERY_REQUEST -> {
                     val selectedImage = data!!.data
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
+                        val bitmapTemp = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
+                        bitmap =compressBitmap(bitmapTemp)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -156,7 +164,10 @@ abstract class BaseAreaFragment : Fragment() {
         }
         dir.createNewFile()
 
-        val filePath = dir.absolutePath + "/" + name
+        viewModelCommon.photoDirectoryInMemory=dir // testing +
+        //toastyManager.toastyyyy(viewModelCommon.photoDirectoryInMemory.toString())
+
+        val filePath = dir.absolutePath + "/" + randomUUID() +".png" //testing png+ , Date+
         try {
             Picasso.with(ctx)
                     .load(pathHttp)
@@ -194,6 +205,14 @@ abstract class BaseAreaFragment : Fragment() {
             override fun onBitmapFailed(errorDrawable: Drawable) {}
             override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
         }
+    }
+    private fun compressBitmap(bitmap: Bitmap): Bitmap{
+        val halfWidth = bitmap.getWidth() / 7
+        val halfHeight = bitmap.getWidth() / 7
+
+        val bmHalf = Bitmap.createScaledBitmap(bitmap, halfWidth,
+                halfHeight, false)
+        return bmHalf
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
@@ -234,7 +253,7 @@ abstract class BaseAreaFragment : Fragment() {
     }
     fun quitSaveLogic(view: View){
 
-        Loger.log("viewModelCommon.isChanged() "+viewModelCommon.isChanged())
+        Loger.log("viewModelCommon.isChanged() " + viewModelCommon.isChanged())
         if (viewModelCommon.isChanged()) {
             quitSaveDialog(view){
                 Navigation.findNavController(view).popBackStack()
@@ -243,9 +262,9 @@ abstract class BaseAreaFragment : Fragment() {
             Navigation.findNavController(view).popBackStack()
         }
     }
-    fun quitSaveLogic(view: View,navigation: BackNavigation){
+    fun quitSaveLogic(view: View, navigation: BackNavigation){
 
-        Loger.log("viewModelCommon.isChanged() "+viewModelCommon.isChanged())
+        Loger.log("viewModelCommon.isChanged() " + viewModelCommon.isChanged())
         if (viewModelCommon.isChanged()) {
             quitSaveDialog(view){
                 navigation.nav()
@@ -255,7 +274,7 @@ abstract class BaseAreaFragment : Fragment() {
         }
     }
 
-    fun quitSaveDialog(view: View, popBack: ()->Unit) {
+    fun quitSaveDialog(view: View, popBack: () -> Unit) {
         val negative = object : ActionFunction {
             override fun action() {
                 popBack()

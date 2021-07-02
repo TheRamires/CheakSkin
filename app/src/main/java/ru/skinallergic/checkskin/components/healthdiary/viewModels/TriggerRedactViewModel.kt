@@ -34,7 +34,7 @@ class TriggerRedactViewModel @Inject constructor(val repository: HealthyDiaryRep
                 null,
                 null,
                 triggers)
-        repository.redact((date/1000).toString(), writingData, saved)
+        repository.redact((date/1000).toString(), writingData, saved,progressBar)
     }
 
     fun backSave(date: Long,
@@ -48,7 +48,7 @@ class TriggerRedactViewModel @Inject constructor(val repository: HealthyDiaryRep
                 null,
                 null,
                 triggers)
-        repository.redact((date/1000).toString(), writingData, backSaved)
+        repository.redact((date/1000).toString(), writingData, backSaved,progressBar)
     }
 
     fun compareChanging(): Boolean{

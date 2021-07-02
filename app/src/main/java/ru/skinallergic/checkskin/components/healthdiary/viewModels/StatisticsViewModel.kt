@@ -3,9 +3,9 @@ package ru.skinallergic.checkskin.components.healthdiary.viewModels
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.StatisticRepository
-import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -77,7 +77,15 @@ class StatisticsViewModel @Inject constructor(
                 .doOnSubscribe { splashScreenOn.set(true) }
                 .doOnComplete { splashScreenOn.set(false) }
                 .subscribe({
-                    statistic.value = it
+
+                    val entityStatistics: MutableList<EntityStatistic> = ArrayList()
+                    for (entity in it) {
+                        if (entity.count != 0) {
+                            entityStatistics.add(entity)
+                        }
+                    }
+
+                    statistic.value = entityStatistics
                 }, { Loger.log("onError $it") }))
     }
 

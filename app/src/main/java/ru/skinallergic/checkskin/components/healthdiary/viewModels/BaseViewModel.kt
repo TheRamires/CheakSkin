@@ -8,6 +8,7 @@ import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthy
 
 abstract class BaseViewModel: ViewModel() {
     val splashScreenOn = ObservableField(false);
+    val progressBar = ObservableField(false)
     val compositeDisposable = CompositeDisposable()
     abstract var baseRepository : BaseHealthyRepository
     val expiredRefreshToken=MutableLiveData<Boolean>()

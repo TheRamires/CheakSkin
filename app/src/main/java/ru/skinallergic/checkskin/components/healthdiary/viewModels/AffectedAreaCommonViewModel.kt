@@ -16,6 +16,7 @@ import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
 
+
 const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
 
 const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
@@ -24,7 +25,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         val repository: AffectedArreaRepository,
         val multipartManager: MultipartManager,
         val toastyManager: ToastyManager
-        ): BaseViewModel() {
+): BaseViewModel() {
 
     override var baseRepository: BaseHealthyRepository = repository
 
@@ -38,8 +39,10 @@ class AffectedAreaCommonViewModel@Inject constructor(
     val loaded=MutableLiveData<Boolean>()
     val notSaving =MutableLiveData<Boolean>()
 
+    var photoDirectoryInMemory: File?=null
+
     var oldMap : List<Rash> = listOf()
-    val newMap : MutableMap<Int,MutableMap<Int, AreaEntity>> = mutableMapOf()
+    val newMap : MutableMap<Int, MutableMap<Int, AreaEntity>> = mutableMapOf()
     //to init in onCreate of AffectedAreaRedactBodyFragment --NONE!!
     //to init in getData function
     fun copyToNewMap (){
@@ -50,7 +53,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
             val area=rash.area!!
             val view: Int=rash.view!!
             val kinds: List<Int> = rash.kinds!!
-            val photos : List<String?> = listOf(rash.photo_1,rash.photo_2,rash.photo_3)
+            val photos : List<String?> = listOf(rash.photo_1, rash.photo_2, rash.photo_3)
             val filesPhoto=photos.fileFromStringPath()
 
             //************** вынести в отдельный метод
@@ -62,11 +65,11 @@ class AffectedAreaCommonViewModel@Inject constructor(
             if (areaEntity==null){
                 newMap[area]!![view]=AreaEntity()
             }
-            newMap[area]!![view]=AreaEntity(kinds,filesPhoto)
+            newMap[area]!![view]=AreaEntity(kinds, filesPhoto)
         }
         Loger.log("**copyToNewMap \n oldMap $oldMap \n newMap $newMap")
     }
-    fun MutableMap<Int,MutableMap<Int, AreaEntity>>.checkNull(){
+    fun MutableMap<Int, MutableMap<Int, AreaEntity>>.checkNull(){
         val temp=this
 
     }
@@ -134,7 +137,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
                 if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
                 Loger.log("***********☺ files 0 //************************************ $files")
 
-                addReport(date,area,view, kind,files)
+                addReport(date, area, view, kind, files)
             }
         }
     }
@@ -183,9 +186,9 @@ class AffectedAreaCommonViewModel@Inject constructor(
         for(count in finalFiles.indices){
             var name="nothing"
             when (count){
-                0->name= FILE_NAME_01
-                1->name=FILE_NAME_02
-                2->name=FILE_NAME_03
+                0 -> name = FILE_NAME_01
+                1 -> name = FILE_NAME_02
+                2 -> name = FILE_NAME_03
             }
             val tempFile=finalFiles.get(count)
 
@@ -198,43 +201,50 @@ class AffectedAreaCommonViewModel@Inject constructor(
             }
         }
         //check changes****************
-        val id=isOldPosition(area,view)
+        val id=isOldPosition(area, view)
         if (id==null){
             addPosition(date, newArea, newView, newKinds, multiParts)
         } else{
             redactPosition(id, newArea, newView, newKinds, multiParts)
         }
     }
-    private fun addPosition(date:Long,
-                    newArea: RequestBody,
-                    newView: RequestBody,
-                    newKinds: RequestBody,
-                    files: List<MultipartBody.Part>){
+    private fun addPosition(date: Long,
+                            newArea: RequestBody,
+                            newView: RequestBody,
+                            newKinds: RequestBody,
+                            files: List<MultipartBody.Part>){
 
-        Loger.log("addPosition \n area = "+newArea+"\n view= "+newView+"\n"+"files 2 //************************************ $files")
-        compositeDisposable.add(repository.add(date/1000, newArea, newView, newKinds, files)
-                .subscribe ({
-                    saved.value=true
+        Loger.log("addPosition \n area = " + newArea + "\n view= " + newView + "\n" + "files 2 //************************************ $files")
+        compositeDisposable.add(repository.add(date / 1000, newArea, newView, newKinds, files)
+                .doOnSubscribe { progressBar.set(true) }
+                .doOnComplete { progressBar.set(false) }
+                .doOnError { progressBar.set(false) }
+                .subscribe({
+                    saved.value = true
                     Loger.log(it.string())
-                },{
+                }, {
                     Loger.log("throwable $it")
                 }))
     }
-    private fun redactPosition(id:Int,
-                       newArea: RequestBody,
-                       newView: RequestBody,
-                       newKinds: RequestBody,
-                       files: List<MultipartBody.Part>){
+    private fun redactPosition(id: Int,
+                               newArea: RequestBody,
+                               newView: RequestBody,
+                               newKinds: RequestBody,
+                               files: List<MultipartBody.Part>){
         var finalFiles = mutableListOf<File>()
 
         val observable =repository.redact(id, newArea, newView, newKinds, files)
         observable?.let {
-            compositeDisposable.add(it.subscribe ({
-                saved.value=true
-                Loger.log(it.string())
-            },{
-                Loger.log("throwable $it")
-            })
+            compositeDisposable.add(it
+                    .doOnSubscribe { progressBar.set(true) }
+                    .doOnComplete { progressBar.set(false) }
+                    .doOnError { progressBar.set(false) }
+                    .subscribe({
+                        saved.value = true
+                        Loger.log(it.string())
+                    }, {
+                        Loger.log("throwable $it")
+                    })
             )
         }
     }
@@ -244,24 +254,31 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     }
 
-    fun data(date:Long){
-        Loger.log("data start for view Model")
+    fun data(oldDate: Long){
+
+        val HOUR = (3600 * 1000).toLong() //Временное решение
+        val newData=(oldDate/1000)+12*HOUR
+        Loger.log("data start for view Model $newData")
         compositeDisposable.add(
-                repository.date((date/1000).toString())
-                        .doOnSubscribe { splashScreenOn.set(true) }
-                        .doOnComplete { splashScreenOn.set(false) }
-                        .subscribe ({
-                            val data: List<Rash>
-                            Loger.log("**************data $it")
-                            if (it.message==null){loaded.value = false}
-                            else {
-                                data=it.data?.rashes!!
-                                Loger.log("*********** data $data" )
-                                oldMap=data
-                                copyToNewMap()
-                                loaded.value = true
-                            }
-                        },{})
+                repository.date((newData).toString())?.let {
+                    it.doOnSubscribe { splashScreenOn.set(true) }
+                            .doOnComplete { splashScreenOn.set(false) }
+                            .subscribe({
+                                val data: List<Rash>
+                                Loger.log("**************data $it")
+                                if (it.message == null) {
+                                    loaded.value = false
+                                } else {
+                                    data = it.data?.rashes!!
+                                    Loger.log("*********** data $data")
+                                    oldMap = emptyList()
+                                    oldMap = data //**************************************************
+                                    copyToNewMap()
+                                    loaded.value = true
+                                }
+                            }, {})
+
+                }
         )
     }
     fun someChanging(){
@@ -311,8 +328,8 @@ class AffectedAreaCommonViewModel@Inject constructor(
             newMap[area]!![view]=AreaEntity()
         }
 
-        Loger.log("area "+getNewArea())
-        Loger.log("area "+area)
+        Loger.log("area " + getNewArea())
+        Loger.log("area " + area)
 
         newMap[area]!![view]!!.kind=kinds
 
@@ -322,10 +339,10 @@ class AffectedAreaCommonViewModel@Inject constructor(
     fun putKindsToMap(kinds: List<Int>){
         val area=getNewArea()!!
         val view=getNewView()
-        putKindsToMap(kinds,area,view)
+        putKindsToMap(kinds, area, view)
     }
 
-    fun putPhotoToMap(id:Int,bitmap: File){
+    fun putPhotoToMap(id: Int, bitmap: File){
         val area=getNewArea()!!
         val view=getNewView()
         //************** вынести в отдельный метод
@@ -345,12 +362,14 @@ class AffectedAreaCommonViewModel@Inject constructor(
         }*/
         val bitmaps= newMap[area]!![view]!!.photos
         if (bitmaps==null || bitmaps.size<3){
-            newMap[area]!![view]!!.photos= mutableListOf(null,null,null)
+            newMap[area]!![view]!!.photos= mutableListOf(null, null, null)
         }
         newMap[area]!![view]!!.photos!![id] = bitmap
     }
-    fun putSavedPhotoToMap(area: Int, view:Int,
-                           photoPath01:String?,  photoPath02:String?,  photoPath03:String?,){
+    fun putSavedPhotoToOldMap(
+            area: Int, view: Int,
+            photoPath01: String?, photoPath02: String?, photoPath03: String?,
+    ){
         for (rash in oldMap){
             if (rash.area==area && rash.view==view){
                 rash.photo_1=photoPath01
@@ -369,6 +388,29 @@ class AffectedAreaCommonViewModel@Inject constructor(
         val area=getNewArea()
         val view=getNewView()
         return newMap[area]?.get(view)?.photos
+    }
+    fun clearPhotoDirectory(path: File?): Boolean {
+        if(path==null){return false }
+        if (path.exists()) {
+            val files = path.listFiles() ?: return true
+            for (i in files.indices) {
+                if (files[i].isDirectory) {
+                    clearPhotoDirectory(files[i])
+                } else {
+                    files[i].delete()
+                }
+            }
+        }
+        return path.delete()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        unsubscribe()
+        photoDirectoryInMemory?.let { directory->
+            clearPhotoDirectory(directory)
+            photoDirectoryInMemory=null
+        }
     }
 }
 fun <T>List<T>?.removeNulls() : List<T>{
@@ -412,9 +454,9 @@ fun List<File?>.checkHttp():List<File?>{
     return finalList
 }
 
-fun regularHttp(path:String): Boolean{ // проверка, true если файл уже загружен с сервера, тогда 2ой раз его отпарвлять не надо
+fun regularHttp(path: String): Boolean{ // проверка, true если файл уже загружен с сервера, тогда 2ой раз его отпарвлять не надо
     val regex="http"
-    val pattern=Pattern.compile(regex,Pattern.CASE_INSENSITIVE)
+    val pattern=Pattern.compile(regex, Pattern.CASE_INSENSITIVE)
     val matcher= pattern.matcher(path)
     return matcher.find()
 }

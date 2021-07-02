@@ -78,13 +78,13 @@ public class DateViewModel extends ViewModel {
     }
     public static String formating(Date date, String Pattern){
 
-        SimpleDateFormat sdf = new SimpleDateFormat(Pattern,  Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat(Pattern,Locale.getDefault());
         return sdf.format(date);
     }
 
 
     public Date simpleFormattingToDate(String formatedStringDate){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault());
         Date date = null;
         try {
             date = formatter.parse(formatedStringDate);
@@ -96,7 +96,7 @@ public class DateViewModel extends ViewModel {
         return date;
     }
     public static Date simpleFormattingToDateWithMin(String formatedStringDate){
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.US);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd.MM.yyyy",Locale.getDefault());
         Date date = null;
         try {
             date = formatter.parse(formatedStringDate);

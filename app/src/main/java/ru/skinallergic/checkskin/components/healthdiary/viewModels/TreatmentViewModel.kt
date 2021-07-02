@@ -39,7 +39,7 @@ class TreatmentViewModel @Inject constructor(val repository: HealthyDiaryReposit
                 systemic_therapy=therapiesNew[SYSTEMATIC_THERAPY_INDEX],
                 other_treatments=therapiesNew[OTHER_TREATMENTS_INDEX]
         )
-        repository.redact((date/1000).toString(), writingData, saved)
+        repository.redact((date/1000).toString(), writingData, saved,progressBar)
     }
 
     fun getData(date: Long){
@@ -56,7 +56,7 @@ class TreatmentViewModel @Inject constructor(val repository: HealthyDiaryReposit
                 systemic_therapy=therapiesNew[SYSTEMATIC_THERAPY_INDEX],
                 other_treatments=therapiesNew[OTHER_TREATMENTS_INDEX]
         )
-        repository.redact((date/1000).toString(), writingData, backSaved)
+        repository.redact((date/1000).toString(), writingData, backSaved,progressBar)
     }
 
     fun backLoad(date: Long){

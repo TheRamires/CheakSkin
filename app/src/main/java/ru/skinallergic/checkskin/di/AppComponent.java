@@ -9,6 +9,7 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import ru.skinallergic.checkskin.entrance.helper_classes.ValidatorField;
+import ru.skinallergic.checkskin.handlers.ToastyManager;
 
 @Component(modules = {
         RemoteModule.class,
@@ -33,4 +34,6 @@ public interface AppComponent {
         */
     MyViewModelFactory getViewModelFactory();
     ValidatorField getValidatorField();
+
+    public ToastyManager getToastyManager();
 }

@@ -51,10 +51,11 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
     val ratingChecked=MutableLiveData<Boolean>()
 
     fun data(date: Long){
+        if(date==null){return}
         Loger.log("data start for view Model")
         compositeDisposable.add(
-                repository.date((date / 1000).toString())
-                        .doOnSubscribe { splashScreenOn.set(true) }
+                repository.date((date / 1000).toString())?.let {
+                    it.doOnSubscribe { splashScreenOn.set(true) }
                         .doOnComplete { splashScreenOn.set(false) }
                         .subscribe({
                             val gettingData = it.data
@@ -93,6 +94,8 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
                         }, {Loger.log("********************о☻ in healthyDiaryViEModel \n"+it)
                             errorCallBack()
                         })
+
+                }
         )
     }
     fun errorCallBack(){

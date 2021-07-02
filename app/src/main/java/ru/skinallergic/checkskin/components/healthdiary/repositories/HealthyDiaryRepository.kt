@@ -25,11 +25,14 @@ open class HealthyDiaryRepository @Inject constructor(
         val toastyManager: ToastyManager
 ): BaseHealthyRepository(tokenService, tokenModel,networkHandler,toastyManager) {
 
-    override fun redact(date: String, data: WritingData, saved: MutableLiveData<Boolean>) {
+    override fun redact(date: String, data: WritingData, saved: MutableLiveData<Boolean>, progressBar : ObservableField<Boolean>) {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
         accesToken?.let {
             compositeDisposable.add(service.redact(it, date, data).subscribeOn(Schedulers.io())
+                    .doOnSubscribe { progressBar.set(true) }
+                    .doOnComplete { progressBar.set(false) }
+                    .doOnError { progressBar.set(false) }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         saved.value = it.message == "Ok"
@@ -37,7 +40,7 @@ open class HealthyDiaryRepository @Inject constructor(
                         Loger.log("*************************2>>> ${it.message}")
                         if (it.message == TOKENEXPIRED) {
                             toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
-                            refreshToken { redact(date, data, saved) }
+                            refreshToken { redact(date, data, saved,progressBar) }
                         }
                     }))
         }
@@ -69,12 +72,13 @@ open class HealthyDiaryRepository @Inject constructor(
                     }))
         }
     }
-    open fun date(date: String): Observable<BaseResponse<GettingData?>> {
+    open fun date(date: String?): Observable<BaseResponse<GettingData?>>? {
         Loger.log("data start for repo")
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
+        if (accesToken==null && date==null){return null}
         return accesToken?.let{
-            service.getData(accesToken, date)
+            service.getData(accesToken, date!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {

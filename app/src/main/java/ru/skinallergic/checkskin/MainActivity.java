@@ -19,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.TriggersViewModel;
 import ru.skinallergic.checkskin.components.news.NewsViewModel;
@@ -35,6 +36,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO;
@@ -53,12 +55,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
+        binding= DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         MyViewModelFactory viewModelFactory = App.instance.getAppComponent().getViewModelFactory();
         accountViewModel= new ViewModelProvider(this,viewModelFactory).get(AccountViewModelImpl.class);
         resultViewModel =new ViewModelProvider(this,viewModelFactory).get(TestResultViewModel.class);
         newsViewModel=new ViewModelProvider(this,viewModelFactory).get(NewsViewModel.class);
+        BaseViewModel baseViewModelByHealthy=new ViewModelProvider(this,viewModelFactory).get(AffectedAreaCommonViewModel.class);
+        binding.setBaseViewModelByHealthy(baseViewModelByHealthy);
 
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
         DateViewModel dateViewModel=new ViewModelProvider(this,viewModelFactory).get(DateViewModel.class);
 
         //**********************************************************************************
@@ -95,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable throwable){}
         //------------------------------------------------------------------------------
 
-        binding= DataBindingUtil.setContentView(this, R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         Locale locale = getResources().getConfiguration().locale;
         locale.setDefault(new Locale("ru","RU"));

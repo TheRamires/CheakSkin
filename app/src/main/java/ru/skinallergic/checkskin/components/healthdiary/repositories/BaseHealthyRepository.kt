@@ -26,7 +26,7 @@ abstract class BaseHealthyRepository (
     lateinit var compositeDisposable : CompositeDisposable
     lateinit var expiredRefreshToken :MutableLiveData<Boolean>
 
-    abstract fun redact(date:String, data: WritingData, saved : MutableLiveData<Boolean>)
+    abstract fun redact(date:String, data: WritingData, saved : MutableLiveData<Boolean>,progressBar : ObservableField<Boolean>)
     abstract fun getData(date:String, liveData : MutableLiveData<GettingData?>, splashScreenOn : ObservableField<Boolean>?)
 
 

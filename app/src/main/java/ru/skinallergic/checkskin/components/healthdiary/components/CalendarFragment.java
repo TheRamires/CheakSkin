@@ -101,6 +101,7 @@ public class CalendarFragment extends Fragment {
 
         String month=String.format("%02d",monthOfYear+1);
         String day=String.format("%02d",dayOfMonth);
+
         String dateString=day+"."+month+"."+year;
 
         Date date=dateViewModel.simpleFormattingToDate(dateString);

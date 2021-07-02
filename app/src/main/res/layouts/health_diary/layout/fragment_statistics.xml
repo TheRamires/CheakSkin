@@ -80,6 +80,7 @@
             android:layout_height="60dp"
             android:background="@drawable/corners_input_text"
             />
+
         <androidx.appcompat.widget.AppCompatButton
             android:textColor="@color/gray_dark"
             android:stateListAnimator="@null"

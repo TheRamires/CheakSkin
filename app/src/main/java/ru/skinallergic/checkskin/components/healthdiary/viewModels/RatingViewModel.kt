@@ -36,14 +36,14 @@ class RatingViewModel @Inject constructor(val repository: HealthyDiaryRepository
         val writingData = WritingData(
                 rating = newRating
         )
-        baseRepository.redact((date / 1000).toString(), writingData, saved)
+        baseRepository.redact((date / 1000).toString(), writingData, saved,progressBar)
     }
     fun backSave(date: Long,
     ){
         val writingData = WritingData(
                 rating = newRating
         )
-        baseRepository.redact((date / 1000).toString(), writingData, backSaved)
+        baseRepository.redact((date / 1000).toString(), writingData, backSaved,progressBar)
     }
 
     fun backLoad(date: Long){

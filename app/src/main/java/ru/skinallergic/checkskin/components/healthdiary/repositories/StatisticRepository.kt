@@ -23,7 +23,7 @@ class StatisticRepository  @Inject constructor(
         val networkHandler: NetworkHandler,
         val toastyManager: ToastyManager
 ): BaseHealthyRepository(tokenService, tokenModel,networkHandler,toastyManager) {
-    override fun redact(date: String, data: WritingData, saved: MutableLiveData<Boolean>) {
+    override fun redact(date: String, data: WritingData, saved: MutableLiveData<Boolean>, progressBar: ObservableField<Boolean>) {
     }
 
     override fun getData(date: String, liveData: MutableLiveData<GettingData?>, splashScreenOn: ObservableField<Boolean>?) {

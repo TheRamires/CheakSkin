@@ -28,7 +28,7 @@ class StateViewModel @Inject constructor(val repository: HealthyDiaryRepository)
         val writingData = WritingData(
                 health_status=health_status
                 )
-        repository.redact((date/1000).toString(), writingData, saved)
+        repository.redact((date/1000).toString(), writingData, saved,progressBar)
     }
 
     fun getData(date: Long){
@@ -43,7 +43,7 @@ class StateViewModel @Inject constructor(val repository: HealthyDiaryRepository)
         val writingData = WritingData(
                 health_status=health_status
         )
-        repository.redact((date/1000).toString(), writingData, backSaved)
+        repository.redact((date/1000).toString(), writingData, backSaved,progressBar)
     }
 
     fun backLoad(date: Long){

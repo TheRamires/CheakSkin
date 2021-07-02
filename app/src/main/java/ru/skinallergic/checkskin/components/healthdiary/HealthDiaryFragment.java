@@ -164,7 +164,14 @@ public class HealthDiaryFragment extends Fragment {
             dateObservable.set(date);
         });
 
-        viewModel.data(dateViewModel.getDateUnix());
+        Loger.log(dateViewModel.getDateUnix().toString());
+        Loger.log(dateViewModel.getDate().toString());
+
+        Long dateUnix= (dateViewModel.getDateUnix());
+        if (dateUnix!=null){
+            viewModel.data(dateViewModel.getDateUnix());
+        }
+
         viewModel.isLoadedAndCalculated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -217,7 +224,7 @@ public class HealthDiaryFragment extends Fragment {
     }
 
     public void toReminders(View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_remindersFragment3,bundle);
+       // Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_remindersFragment3,bundle);
     }
     
     public void toRate (View view){

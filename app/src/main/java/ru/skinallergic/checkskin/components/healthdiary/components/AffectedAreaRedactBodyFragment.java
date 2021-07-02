@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.List;
 import ru.skinallergic.checkskin.App;
@@ -30,16 +32,16 @@ import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
+import ru.skinallergic.checkskin.handlers.ToastyManager;
 import ru.skinallergic.checkskin.view_models.AccountViewModel;
 import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
-    private int gender;
+    private Integer gender;
     private View view;
     private ImageView [] photoImageViewArray=new ImageView[3];
     private ToggleButton[] kindButtonsArray = new ToggleButton[6];
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +76,9 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
 
         //fragment body
         FrameLayout conteiner=binding.conteiner;
-        createBody(gender, conteiner);
+        if (gender!=null){
+            createBody(gender, conteiner);
+        }
 
         viewModelCommon.getNewAreaLive().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
@@ -118,8 +122,8 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
-                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
                     viewModelCommon.getSaved().setValue(false);
+                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
                 }
             }
         });

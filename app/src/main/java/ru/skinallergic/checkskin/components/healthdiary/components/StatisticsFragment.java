@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +67,6 @@ public class StatisticsFragment extends Fragment {
 
         Button btnDateStart= binding.dateStart;
         Button btnDateEnd=binding.dateEnd;
-
 
         btnDateStart.setText(stringBuild("c",viewModel.getStart()));
         btnDateEnd.setText(stringBuild("по",viewModel.getEnd()));
@@ -183,7 +183,14 @@ public class StatisticsFragment extends Fragment {
         liveData.observe(getViewLifecycleOwner(), new Observer<List<EntityStatistic>>() {
 
             @Override
-            public void onChanged(List<EntityStatistic> entityStatistics) {
+            public void onChanged(List<EntityStatistic> entityStatistics) {/*
+                List<EntityStatistic> entityStatistics=new ArrayList<>();
+                for (EntityStatistic entity : list){
+                    if(entity.getCount()!=0){
+                        entityStatistics.add(entity);
+                    }
+                }*/
+
                 Loger.log("statistics "+entityStatistics.size());
                 if (!checkInside(entityStatistics)){
                     binding.none.setVisibility(View.VISIBLE);
@@ -192,9 +199,9 @@ public class StatisticsFragment extends Fragment {
                         entityStatistics, R.layout.item_statistic, new RecyclerCallback<ItemStatisticBinding, EntityStatistic>() {
                     @Override
                     public void bind(ItemStatisticBinding binder, EntityStatistic entity) {
-                        if (entity.getCount()==0){
-                            binder.statisticItem.setVisibility(View.INVISIBLE);
-                        }
+                       /* if (entity.getCount()==0){
+                            binder.statisticItem.setVisibility(View.GONE);
+                        }*/
 
                         Drawable drawable= AppCompatResources.getDrawable(getContext(),R.drawable.smile_01);
                         String name="";

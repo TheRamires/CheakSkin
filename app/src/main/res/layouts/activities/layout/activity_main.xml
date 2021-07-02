@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
@@ -7,6 +7,9 @@
         <variable
             name="viewModel"
             type="ru.skinallergic.checkskin.view_models.DateViewModel"/>
+        <variable
+            name="baseViewModelByHealthy"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <fragment
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
@@ -30,19 +34,43 @@
                 app:navGraph="@navigation/mobile_navigation" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
-                app:itemIconTint="@drawable/nav_view_color"
-                app:itemTextColor="@drawable/nav_view_color"
-
-                app:labelVisibilityMode="labeled"
                 android:id="@+id/nav_view"
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:background="@color/white"
                 android:visibility="@{viewModel.barVisibility ? View.VISIBLE :View.GONE}"
+                app:itemIconTint="@drawable/nav_view_color"
+                app:itemTextColor="@drawable/nav_view_color"
+                app:labelVisibilityMode="labeled"
                 app:menu="@menu/bottom_nav_menu" />
 
         </RelativeLayout>
+
+        <FrameLayout
+            android:visibility="@{baseViewModelByHealthy.splashScreenOn ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="148dp" />
+        </FrameLayout>
+
+        <ProgressBar
+            android:visibility="@{baseViewModelByHealthy.progressBar ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            android:layout_marginBottom="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
