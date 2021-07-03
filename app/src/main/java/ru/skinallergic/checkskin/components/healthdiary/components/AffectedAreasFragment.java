@@ -18,12 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
-
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
+import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapterArea;
@@ -31,13 +30,12 @@ import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
-import ru.skinallergic.checkskin.handlers.ToastyManager;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +57,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         dateViewModel= new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
 
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaViewModel.class);
+        imageViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ImageViewModel.class);
         toastyManager=App.getInstance().getAppComponent().getToastyManager();
 
         //**
@@ -163,9 +162,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         clickListenerForImageView(imageView1, area,view);
                         clickListenerForImageView(imageView2, area,view);
 
-                        String FilePath01=showByPicasso(photo1, FILE_NAME_01,imageView0);
-                        String FilePath02=showByPicasso(photo2, FILE_NAME_02,imageView1);
-                        String FilePath03=showByPicasso(photo3, FILE_NAME_03,imageView2);
+                        String FilePath01=showByPicassoWithSave(photo1, imageView0);
+                        String FilePath02=showByPicassoWithSave(photo2, imageView1);
+                        String FilePath03=showByPicassoWithSave(photo3, imageView2);
 
                         viewModelCommon.putSavedPhotoToOldMap(area, view, FilePath01,  FilePath02, FilePath03);
 
@@ -249,7 +248,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         Boolean redactMode=viewModel.getRedactModeLive().get();
         if (redactMode == null || redactMode==false){
             Navigation.findNavController(view).popBackStack();
-        } else {quitSaveLogic(view,pop);}
+        } else {quitSaveLogic(pop);}
     }
     public void redactMode(View view){
         viewModel.redactModeOn();

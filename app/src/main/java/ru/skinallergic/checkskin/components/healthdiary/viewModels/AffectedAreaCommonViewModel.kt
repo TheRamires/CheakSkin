@@ -256,8 +256,9 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     fun data(oldDate: Long){
 
-        val HOUR = (3600 * 1000).toLong() //Временное решение
-        val newData=(oldDate/1000)+12*HOUR
+       /* val HOUR = (3600 * 1000).toLong() //Временное решение
+        val newData=(oldDate/1000)+12*HOUR*/
+        val newData=oldDate/1000
         Loger.log("data start for view Model $newData")
         compositeDisposable.add(
                 repository.date((newData).toString())?.let {

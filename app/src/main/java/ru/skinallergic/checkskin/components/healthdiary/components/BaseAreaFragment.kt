@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
@@ -17,28 +16,26 @@ import com.squareup.picasso.Picasso.LoadedFrom
 import com.squareup.picasso.Target
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
-import ru.skinallergic.checkskin.components.healthdiary.CameraPermission
-import ru.skinallergic.checkskin.components.healthdiary.PhotoController
+import ru.skinallergic.checkskin.components.healthdiary.*
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel
 import ru.skinallergic.checkskin.components.profile.ActionFunction
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
 import ru.skinallergic.checkskin.components.profile.NavigationFunction
-import ru.skinallergic.checkskin.handlers.HandleOnce
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 import java.util.UUID.randomUUID
 import java.util.regex.Pattern
-import javax.inject.Inject
 
 abstract class BaseAreaFragment : Fragment() {
     lateinit var viewModelCommon: AffectedAreaCommonViewModel
     lateinit var dateViewModel: DateViewModel
+    lateinit var imageViewModel: ImageViewModel
 
     lateinit var photoController: PhotoController
     lateinit var cameraPermission: CameraPermission
@@ -46,7 +43,7 @@ abstract class BaseAreaFragment : Fragment() {
     lateinit var toastyManager: ToastyManager
 
     lateinit var imageView: ImageView
-    var currentPhotoId: Int=0
+    var currentPhotoId: Int = 0
 
     fun toPhoto(imageView: ImageView) {
         when (imageView.id) {
@@ -66,7 +63,7 @@ abstract class BaseAreaFragment : Fragment() {
                     val selectedImage = data!!.data
                     try {
                         val bitmapTemp = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
-                        bitmap =compressBitmap(bitmapTemp)
+                        bitmap = BitmapConverter.compressBitmap(bitmapTemp)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -84,7 +81,7 @@ abstract class BaseAreaFragment : Fragment() {
                         imageView.setImageBitmap(finalBitmap)
                         //viewModel.addBitMapToList(finalBitmap);
                         try {
-                            val file = fileFromBitmap(finalBitmap, currentPhotoId)
+                            val file = BitmapConverter.fileFromBitmap(finalBitmap, currentPhotoId, context!!)
                             viewModelCommon.putPhotoToMap(currentPhotoId, file!!)
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -137,37 +134,32 @@ abstract class BaseAreaFragment : Fragment() {
         } else Picasso.with(requireContext()).load(file).into(imageView)
     }
 
-    fun showByPicasso(path: String?, imageView: ImageView) {
+    //*******************************************save temp photo
+    //save image
+    fun showByPicassoWithSave(path: String?, imageView: ImageView): String? {
         if (path == null) {
-            return
+            return null
         }
         Picasso.with(requireContext())
                 .load(path)
                 .placeholder(R.drawable.no_photo)
                 .into(imageView)
+        return imageViewModel.imageDownload(path){dir->
+            viewModelCommon.photoDirectoryInMemory = dir // testing +
+        }
     }
-
-    //*******************************************save temp photo
-    //save image
-   fun showByPicasso(path: String?, name: String, imageView: ImageView):String? {
-        if (path==null){return null}
-        Picasso.with(requireContext())
-                .load(path)
-                .placeholder(R.drawable.no_photo)
-                .into(imageView)
-        return imageDownload(requireContext(), name, path)
-    }
-    fun imageDownload(ctx: Context, name: String, pathHttp: String): String? {
-        val dir=ctx.getExternalFilesDir("photo")
-        if (!dir!!.exists()){
+/*
+    fun imageDownload(ctx: Context, pathHttp: String): String? {
+        val dir = ctx.getExternalFilesDir("photo")
+        if (!dir!!.exists()) {
             dir.mkdirs()
         }
         dir.createNewFile()
 
-        viewModelCommon.photoDirectoryInMemory=dir // testing +
+        viewModelCommon.photoDirectoryInMemory = dir // testing +
         //toastyManager.toastyyyy(viewModelCommon.photoDirectoryInMemory.toString())
 
-        val filePath = dir.absolutePath + "/" + randomUUID() +".png" //testing png+ , Date+
+        val filePath = dir.absolutePath + "/" + randomUUID() + ".png" //testing png+ , Date+
         try {
             Picasso.with(ctx)
                     .load(pathHttp)
@@ -175,12 +167,12 @@ abstract class BaseAreaFragment : Fragment() {
                     .into(getTarget(filePath))
             return filePath
 
-        }catch (t: Throwable){
+        } catch (t: Throwable) {
             return null
         }
-    }
-
-    fun getTarget(filePath: String):Target{
+    }*/
+/*
+    fun getTarget(filePath: String): Target {
         return object : Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom) {
                 Thread {
@@ -206,44 +198,14 @@ abstract class BaseAreaFragment : Fragment() {
             override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
         }
     }
-    private fun compressBitmap(bitmap: Bitmap): Bitmap{
-        val halfWidth = bitmap.getWidth() / 7
-        val halfHeight = bitmap.getWidth() / 7
-
-        val bmHalf = Bitmap.createScaledBitmap(bitmap, halfWidth,
-                halfHeight, false)
-        return bmHalf
+    */
+    fun save(view: View) {
+        saving()
     }
-
-    @Throws(IOException::class, ClassNotFoundException::class)
-    fun fileFromBitmap(yourBitmap: Bitmap?, count: Int): File? {
-        //create a file to write bitmap data
-        val f = File(requireContext().cacheDir, "image$count.png")
-        f.createNewFile()
-
-        //Convert bitmap to byte array
-        val bos = ByteArrayOutputStream()
-        yourBitmap?.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
-        val bitmapdata = bos.toByteArray()
-
-        //write the bytes in file
-        val fos = FileOutputStream(f)
-        fos.write(bitmapdata)
-        fos.flush()
-        fos.close()
-        return f.absoluteFile
-    }
-
-    @Throws(IOException::class, ClassNotFoundException::class)
-    fun reportRequest() {
-
-        viewModelCommon.addReport(dateViewModel.getDateUnix())
-    }
-
-    fun save(view: View?) {
+    fun saving() {
         if (viewModelCommon.isChanged()) {
             try {
-                reportRequest()
+                viewModelCommon.addReport(dateViewModel.getDateUnix())
             } catch (e: IOException) {
                 e.printStackTrace()
             } catch (e: ClassNotFoundException) {
@@ -251,22 +213,11 @@ abstract class BaseAreaFragment : Fragment() {
             }
         } else Navigation.findNavController(requireView()).popBackStack()
     }
-    fun quitSaveLogic(view: View){
+    fun quitSaveLogic(navigation: BackNavigation){
 
         Loger.log("viewModelCommon.isChanged() " + viewModelCommon.isChanged())
         if (viewModelCommon.isChanged()) {
-            quitSaveDialog(view){
-                Navigation.findNavController(view).popBackStack()
-            }
-        } else {
-            Navigation.findNavController(view).popBackStack()
-        }
-    }
-    fun quitSaveLogic(view: View, navigation: BackNavigation){
-
-        Loger.log("viewModelCommon.isChanged() " + viewModelCommon.isChanged())
-        if (viewModelCommon.isChanged()) {
-            quitSaveDialog(view){
+            quitSaveDialog{
                 navigation.nav()
             }
         } else {
@@ -274,7 +225,7 @@ abstract class BaseAreaFragment : Fragment() {
         }
     }
 
-    fun quitSaveDialog(view: View, popBack: () -> Unit) {
+    fun quitSaveDialog(popBack: () -> Unit) {
         val negative = object : ActionFunction {
             override fun action() {
                 popBack()
@@ -282,7 +233,7 @@ abstract class BaseAreaFragment : Fragment() {
         }
         val positive = object : ActionFunction {
             override fun action() {
-                save(view)
+                saving()
             }
         }
         val navigation = object : NavigationFunction {

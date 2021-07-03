@@ -19,20 +19,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
+import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
-import ru.skinallergic.checkskin.handlers.ToastyManager;
 import ru.skinallergic.checkskin.view_models.AccountViewModel;
 import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -53,6 +52,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         AccountViewModel accountViewModel=new ViewModelProvider(requireActivity(), viewModelFactory).get(AccountViewModelImpl.class);
         gender=accountViewModel.getCurrentUser().getGender();
         viewModelCommon.getNewViewLive().setValue(0);
+        imageViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ImageViewModel.class);
 
         //**
         viewModelCommon.copyToNewMap();
@@ -139,10 +139,12 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     }
 
     public void backStack(View view){
-        BackNavigation navigationByStep=()-> {Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);};
+        BackNavigation popBack=()-> {Navigation.findNavController(view).popBackStack();};
+        BackNavigation popBackByStep=()-> {Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);};
+
         if (viewModelCommon.getNewMap().isEmpty() || viewModelCommon.getNewMap()==null){
-            quitSaveLogic(view,navigationByStep);
-        } else quitSaveLogic(view);
+            quitSaveLogic(popBackByStep);
+        } else quitSaveLogic(popBack);
 
     }
 

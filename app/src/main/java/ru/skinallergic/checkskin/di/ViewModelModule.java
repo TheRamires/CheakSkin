@@ -46,7 +46,6 @@ public abstract class ViewModelModule {
     @ViewModelKey(NewsViewModel.class)
     abstract ViewModel newsViewModel(NewsViewModel newsViewModel);
 
-
     //tests---------------------------------------------------------------------------
 
     @Binds
