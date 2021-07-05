@@ -25,15 +25,13 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
-        RemindersViewModel viewModel=new ViewModelProvider(requireActivity()).get(RemindersViewModel.class);
         FragmentRemindersDetailBinding binding= FragmentRemindersDetailBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(viewModel);
+        binding.setViewModel(getViewModel());
         initBackGround(binding.background);
 
-        dateViewModel.dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
-            String date=dateViewModel.getDate(d);
+        getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
+            String date=getDateViewModel().getDate(d);
             binding.date.setText(date);
         });
 
@@ -42,16 +40,13 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         bundle=new Bundle();
         bundle.putInt("position",position);
 
-        viewModel.getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
+        getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
             EntityReminders entity=list.get(position);
-            viewModel.getEntity().set(entity);
+            getViewModel().getEntity().set(entity);
         });
 
         View view=binding.getRoot();
         return view;
-    }
-    public void backStack (View view){
-        Navigation.findNavController(view).popBackStack();
     }
     public void toRedact(View view){
         Navigation.findNavController(view).navigate(R.id.action_remindersDetailFragment_to_reminderRedactFragment, bundle);

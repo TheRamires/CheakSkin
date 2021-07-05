@@ -7,8 +7,9 @@ import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class RemindersViewModel : ViewModel() {
+class RemindersViewModel @Inject constructor(): ViewModel() {
     val timeLive = MutableLiveData<String>()
 
     var remindsLive = MutableLiveData<ArrayList<EntityReminders>>()

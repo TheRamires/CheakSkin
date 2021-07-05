@@ -24,8 +24,4 @@ public class RemindersRepeatFragment extends BaseRemindersFragment {
         initBackGround(binding.background);
         return view;
     }
-
-    public void backStack (View view){
-        Navigation.findNavController(view).popBackStack();
-    }
 }

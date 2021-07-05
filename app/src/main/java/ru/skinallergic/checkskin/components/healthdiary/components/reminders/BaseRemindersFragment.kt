@@ -4,10 +4,21 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import ru.skinallergic.checkskin.App
 import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel
+import ru.skinallergic.checkskin.view_models.DateViewModel
 
 abstract class BaseRemindersFragment : Fragment(){
+    val viewModelFactory = App.getInstance().appComponent.viewModelFactory
+    val dateViewModel :DateViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel::class.java)
+    }
+    val viewModel: RemindersViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(RemindersViewModel::class.java)
+    }
 
     fun initBackGround(imageView: ImageView){
         val height=900

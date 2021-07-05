@@ -151,7 +151,6 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:clickable="true"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn"

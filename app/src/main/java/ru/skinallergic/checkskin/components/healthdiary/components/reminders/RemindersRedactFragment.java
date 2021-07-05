@@ -25,19 +25,15 @@ import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
 
 public class RemindersRedactFragment extends BaseRemindersFragment {
-    private RemindersViewModel viewModel;
     private int position;
     private DialogFragment dialogFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        MyViewModelFactory viewModelFactory = App.getInstance().getAppComponent().getViewModelFactory();
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(RemindersViewModel.class);
         FragmentReminderRedactBinding binding=FragmentReminderRedactBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(viewModel);
+        binding.setViewModel(getViewModel());
         initBackGround(binding.background);
 
         binding.redactTime.setOnClickListener((View v)-> {
@@ -57,18 +53,18 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
 
         });
 
-        dateViewModel.dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
-            String date=dateViewModel.getDate(d);
+        getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
+            String date=getDateViewModel().getDate(d);
             binding.date.setText(date);
         });
 
 
-        dialogFragment = new TimePickerDialogTheme(viewModel.getTimeLive());
-        viewModel.getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
+        dialogFragment = new TimePickerDialogTheme(getViewModel().getTimeLive());
+        getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
             binding.time.setText(date);
         });
 
-        position=viewModel.getEntity().get().getId();
+        position=getViewModel().getEntity().get().getId();
 
         View view=binding.getRoot();
 
@@ -76,11 +72,8 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
     }
     public void delete(View view){
         Loger.log(position);
-        viewModel.deletePosition(position);
+        getViewModel().deletePosition(position);
         Navigation.findNavController(view).popBackStack(R.id.remindersFragment3,false);
     }
 
-    public void backStack(View view){
-        Navigation.findNavController(view).popBackStack();
-    }
 }

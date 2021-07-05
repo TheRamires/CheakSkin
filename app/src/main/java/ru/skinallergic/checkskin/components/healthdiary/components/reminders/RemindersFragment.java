@@ -31,25 +31,22 @@ public class RemindersFragment extends BaseRemindersFragment {
 
     private TextView tvEmptyTextView;
     private RecyclerView mRecyclerView;
-    private RemindersViewModel viewModel;
     private Bundle bundle;
     private boolean isLoaded=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(requireActivity()).get(RemindersViewModel.class);
         FragmentRemindersBinding binding=FragmentRemindersBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(viewModel);
+        binding.setViewModel(getViewModel());
         View view=binding.getRoot();
 
         initBackGround(binding.background);
 
 //for example----------------------удалить это--------------------------------------------
         if (!isLoaded) {
-            viewModel.loadData();
+            getViewModel().loadData();
             isLoaded=true;
         }
 // --------------------------------------------------------------------------------------
@@ -57,7 +54,7 @@ public class RemindersFragment extends BaseRemindersFragment {
         bundle=new Bundle();
         String time=getArguments().getString("date");
         if (time!=null){
-            viewModel.getDateObservable().set(time);
+            getViewModel().getDateObservable().set(time);
             bundle.putString("date",time);
         }
 
@@ -65,7 +62,7 @@ public class RemindersFragment extends BaseRemindersFragment {
         mRecyclerView = binding.myRecyclerView;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        viewModel.getRemindsLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<EntityReminders>>() {
+        getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), new Observer<ArrayList<EntityReminders>>() {
             @Override
             public void onChanged(ArrayList<EntityReminders> mDataSet) {
 

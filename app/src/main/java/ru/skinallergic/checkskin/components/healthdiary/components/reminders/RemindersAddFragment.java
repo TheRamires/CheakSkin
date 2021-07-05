@@ -24,18 +24,15 @@ import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 public class RemindersAddFragment extends BaseRemindersFragment {
-    private RemindersViewModel viewModel;
     private  DialogFragment dialogfragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         MyViewModelFactory viewModelFactory = App.getInstance().getAppComponent().getViewModelFactory();
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(RemindersViewModel.class);
         FragmentRemindersAddBinding binding= FragmentRemindersAddBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(viewModel);
+        binding.setViewModel(getViewModel());
         initBackGround(binding.background);
 
         binding.redactTime.setOnClickListener((View v)-> {
@@ -52,14 +49,14 @@ public class RemindersAddFragment extends BaseRemindersFragment {
 
         });
 
-        dateViewModel.dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
-            String date=dateViewModel.getDate(d);
+        getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
+            String date=getDateViewModel().getDate(d);
             binding.date.setText(date);
         });
 
 
-        dialogfragment = new TimePickerDialogTheme(viewModel.getTimeLive());
-        viewModel.getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
+        dialogfragment = new TimePickerDialogTheme(getViewModel().getTimeLive());
+        getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
             binding.time.setText(date);
         });
         /*
@@ -69,9 +66,6 @@ public class RemindersAddFragment extends BaseRemindersFragment {
 
         View view=binding.getRoot();
         return view;
-    }
-    public void backStack( View view){
-        Navigation.findNavController(view).popBackStack();
     }
     public void redactTime(View view){
         dialogfragment.show(requireActivity().getSupportFragmentManager(), "theme2");
