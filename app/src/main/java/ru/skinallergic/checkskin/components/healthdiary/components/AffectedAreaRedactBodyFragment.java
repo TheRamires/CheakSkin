@@ -1,5 +1,6 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,9 +13,11 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -68,6 +71,10 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         photoController=new PhotoController(cameraPermission, this);
 
         setCurrentPhotoId(0);
+
+
+        ScrollView mScrollView= binding.scroll;
+        scrollingAnimation(mScrollView);
 
         initImagesView(binding);
         initToggles(binding);
@@ -265,7 +272,23 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         for (int i=0;i<photoImageViewArray.length;i++){
             photoImageViewArray[i].setImageBitmap(null);
         }
-    }/*
+    }
+    private void scrollingAnimation(ScrollView mScrollView){
+        int speed=250;
+        if (viewModelCommon.getNewMap().isEmpty()){
+            speed=1500;
+        }
+        int finalSpeed = speed;
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.setScrollY(mScrollView.getBottom());
+                ObjectAnimator anim = ObjectAnimator.ofInt(mScrollView, "scrollY", mScrollView.getTop());
+                anim.setDuration(finalSpeed);
+                anim.start();
+            }
+        });}
+    /*
     private void  reportRequest() {
         int size=3;
         List<Bitmap> bitmapList=viewModel.getBitmaps();

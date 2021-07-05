@@ -24,6 +24,8 @@ import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.entrance.EntranceActivity;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
+import static ru.skinallergic.checkskin.components.healthdiary.HealthDiaryFragment.TAG_HEALTHY;
+
 public class StateFragment extends Fragment {
     public static String TRIGGERS_HEALTHY_STATUS="healthStatus";
     private StateViewModel stateViewModel;
@@ -53,9 +55,8 @@ public class StateFragment extends Fragment {
         stateViewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<WritingData>() {
             @Override
             public void onChanged(WritingData writingData) {
-                Loger.log("stateViewModel.getLoaded() "+writingData);
+                Loger.log("stateViewModel.getLoaded() "+writingData, TAG_HEALTHY);
                 stateViewModel.getSplashScreenOn().set(false);
-                if (writingData==null){return;}
                 int count=writingData.getHealth_status();
                 for (int i=0;i<buttonsId.length;i++){
                     if (i==count){
@@ -81,7 +82,9 @@ public class StateFragment extends Fragment {
     public void backStack(View view){
         Navigation.findNavController(view).popBackStack();
     }
-    public void toRedact(View view){
+    public void toRedact(View view){navigateToRedact(view);}
+
+    public void navigateToRedact(View view){
         Bundle bundle=new Bundle();
         if (currentStatus!=null){
             bundle.putString(TRIGGERS_HEALTHY_STATUS,currentStatus.toString());
@@ -90,6 +93,7 @@ public class StateFragment extends Fragment {
         Loger.log("current status null = "+currentStatus);
         Navigation.findNavController(view).navigate(R.id.action_stateFragment_to_stateRedactFragment,bundle);
     }
+
     public void toEntrance() {
         Intent intent = new Intent(requireActivity(), EntranceActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

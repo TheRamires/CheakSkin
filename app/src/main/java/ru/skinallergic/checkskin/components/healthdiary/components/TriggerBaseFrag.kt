@@ -47,8 +47,8 @@ abstract class TriggerBaseFrag : Fragment() {
         icon4!!.setBounds(0, 0, 75, 75)
         icon5 = ContextCompat.getDrawable(requireActivity(), R.drawable.my_icon_trigger_5)
         icon5!!.setBounds(0, 0, 75, 75)
-        icon6 = ContextCompat.getDrawable(requireActivity(), R.drawable.my_icon_trigger_5)
-        icon6!!.setBounds(0, 0, 75, 75)
+        icon6 = ContextCompat.getDrawable(requireActivity(), R.drawable.my_icon_trigger_6)
+        icon6!!.setBounds(0, 0, 70, 70)
     }
 
     fun initButtons(view: View) {

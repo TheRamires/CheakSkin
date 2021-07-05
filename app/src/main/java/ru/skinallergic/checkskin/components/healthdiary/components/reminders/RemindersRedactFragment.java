@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 
 import java.util.Date;
 
+import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentReminderRedactBinding;
 
+import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
@@ -26,16 +28,34 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
     private RemindersViewModel viewModel;
     private int position;
     private DialogFragment dialogFragment;
-    private MutableLiveData<String> timeLive=new MutableLiveData<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        DateViewModel dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(requireActivity()).get(RemindersViewModel.class);
+        MyViewModelFactory viewModelFactory = App.getInstance().getAppComponent().getViewModelFactory();
+        DateViewModel dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(RemindersViewModel.class);
         FragmentReminderRedactBinding binding=FragmentReminderRedactBinding.inflate(inflater);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
+        initBackGround(binding.background);
+
+        binding.redactTime.setOnClickListener((View v)-> {
+            System.out.println("redact");
+            dialogFragment.show(getParentFragmentManager(),"time");
+
+
+        });
+        binding.redactRemind.setOnClickListener((View v)-> {
+            System.out.println("redact");
+            Navigation.findNavController(v).navigate(R.id.remindersPeriodFragment);
+
+        });
+        binding.redactRepeat.setOnClickListener((View v)-> {
+            System.out.println("redact");
+            Navigation.findNavController(v).navigate(R.id.remindersRepeatFragment);
+
+        });
 
         dateViewModel.dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
             String date=dateViewModel.getDate(d);
@@ -43,8 +63,8 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
         });
 
 
-        dialogFragment = new TimePickerDialogTheme(timeLive);
-        timeLive.observe(getViewLifecycleOwner(), (String date) ->{
+        dialogFragment = new TimePickerDialogTheme(viewModel.getTimeLive());
+        viewModel.getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
             binding.time.setText(date);
         });
 
@@ -62,8 +82,5 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
 
     public void backStack(View view){
         Navigation.findNavController(view).popBackStack();
-    }
-    public void editTime (View view){
-
     }
 }

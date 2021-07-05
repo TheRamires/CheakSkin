@@ -11,4 +11,9 @@ public class Loger {
             Log.d(LOG, "" + message);
         }
     }
+    public static void log(Object message, String TAG){
+        if (turnOn) {
+            Log.d(TAG, "" + message);
+        }
+    }
 }

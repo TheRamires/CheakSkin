@@ -3,6 +3,7 @@ package ru.skinallergic.checkskin.components.healthdiary.viewModels
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.HealthyDiaryRepository
@@ -26,6 +27,7 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
     }
 
     val isLoadedAndCalculated= MutableLiveData<Boolean>()
+    val gettingDataLive = MutableLiveData<GettingData>()
     val sum = ObservableField<Int>()
     var cacheSum = ObservableField<Int>()
     fun setCacheSum(value: Int){
@@ -89,6 +91,7 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
                                 changeMark(ratingChecked, rating)
                             }
 
+                            gettingDataLive.value=gettingData!!
                             isLoadedAndCalculated.value = true
                             setCacheSum(sum.get()!!)
                         }, {Loger.log("********************о☻ in healthyDiaryViEModel \n"+it)

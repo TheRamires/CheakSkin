@@ -6,12 +6,22 @@
         <variable
             name="fragment"
             type="ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersAddFragment" />
+        <variable
+            name="viewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+        <ImageView
+            android:id="@+id/background"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_background_alarm_clock_1"/>
 
         <RelativeLayout
             android:layout_alignParentTop="true"
@@ -31,7 +41,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="Оценка"
+                android:text="Напоминания"
                 android:layout_toRightOf="@+id/img_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
@@ -56,11 +66,9 @@
                 android:layout_height="1dp"/>
         </RelativeLayout>
         <LinearLayout
-
+            android:layout_below="@+id/title_layout"
             android:paddingHorizontal="10dp"
             android:orientation="vertical"
-            android:background="@color/white"
-            android:layout_below="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -95,97 +103,155 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
+                    android:id="@+id/type"
+                    android:layout_toRightOf="@+id/text"
                     android:text="Лечение"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
+            <RelativeLayout
+                android:paddingBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:fontFeatureSettings=""
+                    android:backgroundTint="@color/gray_2"
+                    android:textColor="@color/purple_300"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="13sp"
+                    android:text="@{viewModel.entity.name}"
+                    android:id="@+id/description"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="name"/>
+
+            </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
-            <EditText
-                android:paddingVertical="5dp"
-                android:textSize="13sp"
-                android:background="@null"
+            <RelativeLayout
+                android:clickable="true"
+                android:id="@+id/redact_time"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Название"/>
+                android:focusable="true">
+                <TextView
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Время "/>
+                <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
+                    android:clickable="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="right"
+                    android:layout_toLeftOf="@+id/btn"
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/btn"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
+                    android:layout_height="11dp"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
                 android:clickable="true"
-                android:onClick="@{fragment::redactTime}"
-                android:paddingVertical="5dp"
-                android:orientation="horizontal"
+                android:id="@+id/redact_remind"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="true">
                 <TextView
-                    android:hint="Время"
-                    android:id="@+id/time_add"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Напоминание "/>
+                <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="right"
+                    android:layout_toLeftOf="@+id/btn2"
+                    android:id="@+id/remind"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
+                <ImageView
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/btn2"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
                     />
-            </RelativeLayout>
 
+            </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
                 android:clickable="true"
-                android:onClick="@{fragment::redactRemind}"
-                android:paddingVertical="5dp"
-                android:orientation="horizontal"
+                android:id="@+id/redact_repeat"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="true">
                 <TextView
-                    android:text="Напоминание"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Повтор "/>
+                <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_centerVertical="true"
+                    android:gravity="right"
+                    android:layout_toLeftOf="@+id/btn3"
+                    android:id="@+id/repeat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
+                <ImageView
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/btn3"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
                     />
             </RelativeLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
-            <RelativeLayout
-                android:clickable="true"
-                android:onClick="@{fragment::redactRepeat}"
-                android:id="@+id/repeat"
-                android:paddingVertical="5dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="Повтор"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <ImageButton
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
-                    android:layout_height="11dp"
-                    android:layout_alignParentRight="true"
-                    />
-            </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"/>
         </LinearLayout>
     </RelativeLayout>
 </layout>

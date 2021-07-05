@@ -30,6 +30,7 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         FragmentRemindersDetailBinding binding= FragmentRemindersDetailBinding.inflate(inflater);
         binding.setFragment(this);
         binding.setViewModel(viewModel);
+        initBackGround(binding.background);
 
         dateViewModel.dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
             String date=dateViewModel.getDate(d);

@@ -21,6 +21,7 @@ public class RemindersRepeatFragment extends BaseRemindersFragment {
         binding=FragmentRemindersRepeatBinding.inflate(inflater);
         binding.setFragment(this);
         View view=binding.getRoot();
+        initBackGround(binding.background);
         return view;
     }
 

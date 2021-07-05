@@ -4,12 +4,15 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -95,6 +98,17 @@ public class DateViewModel extends ViewModel {
 
         return date;
     }
+    public Date simpleFormattingToDate(String formatedStringDate, String pattern){
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern,Locale.getDefault());
+        Date date = null;
+        try {
+            date = formatter.parse(formatedStringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
+    }
     public static Date simpleFormattingToDateWithMin(String formatedStringDate){
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd.MM.yyyy",Locale.getDefault());
         Date date = null;
@@ -107,4 +121,14 @@ public class DateViewModel extends ViewModel {
 
         return date;
     }
+/*
+    public long getTZOffset(){
+        //time zone offset in seconds
+        return (long) (TimeZone.getDefault().getOffset(System.currentTimeMillis()) / 1000);
+    }
+    public long getUnixWithOffset(){
+        long offsetInSecond=getTZOffset();
+        long currentTimeUnix=getDateUnix()/1000;
+        return currentTimeUnix+offsetInSecond;
+    }*/
 }

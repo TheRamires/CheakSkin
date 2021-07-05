@@ -142,7 +142,7 @@
                     android:textSize="14sp"
                     android:layout_width="296dp"
                     android:layout_height="wrap_content"
-                    android:text="Лехенизация (утолщение кожи в местах расчесов), трещины на згибательных поверхностях, бледно-розовые высыпания, умеренный зуд"/>
+                    android:text="Лихенизация (утолщение кожи в местах расчесов), трещины на сгибательных поверхностях, бледно-розовые высыпания, умеренный зуд"/>
                 <View
                     android:layout_marginTop="20dp"
                     android:id="@+id/line3"

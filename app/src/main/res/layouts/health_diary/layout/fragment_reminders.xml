@@ -42,7 +42,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="Оценка"
+                android:text="Напоминания"
                 android:layout_toRightOf="@+id/img_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"

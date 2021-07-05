@@ -19,11 +19,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import java.util.Date;
+import java.util.List;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 
+import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.HealthyDiaryViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentHealthDiaryBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
@@ -31,6 +33,7 @@ import ru.skinallergic.checkskin.view_models.DateViewModel;
 import ru.skinallergic.checkskin.components.fooddiary.DatePickerTheme;
 
 public class HealthDiaryFragment extends Fragment {
+    public static String TAG_HEALTHY ="healthyDiary";
     private Bundle bundle;
     private DialogFragment dialogfragment;
     public ObservableField<String> dateObservable=new ObservableField<>();
@@ -61,11 +64,12 @@ public class HealthDiaryFragment extends Fragment {
         View view=binding.getRoot();
         bundle=new Bundle();
 
+
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
 
-        Loger.log("dateViewModel *******"+dateViewModel.getDate());
+        Loger.log(dateViewModel.getDateUnix(),TAG_HEALTHY);
         //Настройка кнопок ---------------------------------------------------------------------
 
         AppCompatButton btnState = binding.buttonState;
@@ -208,27 +212,49 @@ public class HealthDiaryFragment extends Fragment {
     }
 
     public void toState(View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_stateFragment);
+        Integer healthy_status =viewModel.getGettingDataLive().getValue().getHealth_status();
+        if (gettingDataNull()|| healthy_status==null){
+            Navigation.findNavController(view).navigate(R.id.stateRedactFragment);
+        } else
+            Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_stateFragment);
+
     }
 
     public void toPhoto(View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_affectedAreasFragment);
+        if (gettingDataNull()|| viewModel.getGettingDataLive().getValue().getRashes().isEmpty()){
+            Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);
+        } else
+            Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_affectedAreasFragment);
     }
 
     public void toTriggers(View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_triggersFragment);
+        Integer[] triggers=viewModel.getGettingDataLive().getValue().getTriggers();
+        if (gettingDataNull() || triggers.length==0){
+            Navigation.findNavController(view).navigate(R.id.triggersRedactFragment);
+        } else
+            Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_triggersFragment);
     }
 
     public void toTreatment (View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_treatmentFragment);
+        String topicalTherapy=viewModel.getGettingDataLive().getValue().getTopical_therapy();
+        String systemicTherapy=viewModel.getGettingDataLive().getValue().getSystemic_therapy();
+        String otherTreatments=viewModel.getGettingDataLive().getValue().getOther_treatments();
+        if (gettingDataNull() || (topicalTherapy==null & systemicTherapy==null & otherTreatments==null)){
+            Navigation.findNavController(view).navigate(R.id.treatmentRedactFragment);
+        } else
+            Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_treatmentFragment);
     }
 
     public void toReminders(View view){
-       // Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_remindersFragment3,bundle);
+        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_remindersFragment3,bundle);
     }
     
     public void toRate (View view){
-        Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_ratingFragment);
+        Integer rate=viewModel.getGettingDataLive().getValue().getRating();
+        if (gettingDataNull() || rate==null){
+            Navigation.findNavController(view).navigate(R.id.ratingRedactFragment);
+        } else
+            Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_ratingFragment);
     }
 
     private void changeMark(AppCompatButton button, Drawable icon, Boolean on){
@@ -238,5 +264,10 @@ public class HealthDiaryFragment extends Fragment {
             button.setCompoundDrawables(icon,null,checkMarker,null);
         } else button.setCompoundDrawables(icon,null,checkMarkerOff,null);
 
+    }
+    private boolean gettingDataNull(){
+        if (viewModel.getGettingDataLive().getValue()==null){
+            return true;
+        }  else return false;
     }
 }

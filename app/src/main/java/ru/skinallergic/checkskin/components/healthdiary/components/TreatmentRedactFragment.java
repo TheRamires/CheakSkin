@@ -47,6 +47,7 @@ public class TreatmentRedactFragment extends Fragment {
     private DateViewModel dateViewModel;
     private FragmentManager fragmentManager;
     private FragmentTreatmentRedactBinding binding;
+    private static String MESSAGE="Заполните хотя бы одно поле";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,8 +142,8 @@ public class TreatmentRedactFragment extends Fragment {
     public void save(View view) {
         List<String> therapiesNew=treatmentViewModel.getTherapiesNew();
         if (!treatmentViewModel.checkMarkChanged()){
-            Toast.makeText(requireContext(),"Заполните все поля",Toast.LENGTH_SHORT).show();
-            Loger.log("Заполните все поля");
+            Toast.makeText(requireContext(),MESSAGE,Toast.LENGTH_SHORT).show();
+            Loger.log(MESSAGE);
         }else if (treatmentViewModel.isChanged()) {
             Loger.log("save");
             treatmentViewModel.save(dateViewModel.getDateUnix(), therapiesNew);
@@ -160,8 +161,8 @@ public class TreatmentRedactFragment extends Fragment {
         };
         ActionFunction positive = () -> {
             if (!treatmentViewModel.checkMarkChanged()) {
-                Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
-                Loger.log("Заполните все поля");
+                Toast.makeText(requireContext(), MESSAGE, Toast.LENGTH_SHORT).show();
+                Loger.log(MESSAGE);
             } else {
                 treatmentViewModel.backSave(dateViewModel.getDateUnix(), therapiesNew);
             }

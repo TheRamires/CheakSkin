@@ -16,6 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+        <ImageView
+            android:id="@+id/background"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_background_alarm_clock_1"/>
 
         <RelativeLayout
             android:layout_alignParentTop="true"
@@ -35,7 +42,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="Оценка"
+                android:text="Повтор"
                 android:layout_toRightOf="@+id/img_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
@@ -62,7 +69,6 @@
         <LinearLayout
             android:paddingHorizontal="10dp"
             android:orientation="vertical"
-            android:background="@color/white"
             android:layout_below="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -75,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -86,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -97,6 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -109,6 +118,7 @@
                 android:layout_height="wrap_content"/>
 
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -121,6 +131,7 @@
                 android:layout_height="wrap_content"/>
 
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -133,6 +144,7 @@
                 android:layout_height="wrap_content"/>
 
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
@@ -145,7 +157,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_0"
                 android:layout_marginTop="75dp"
                 android:theme="@style/MyRadioButton2"
@@ -153,7 +164,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_1"
                 android:layout_marginTop="30dp"
                 android:theme="@style/MyRadioButton2"
@@ -161,7 +171,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_2"
                 android:layout_marginTop="30dp"
                 android:theme="@style/MyRadioButton2"
@@ -169,7 +178,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_3"
                 android:layout_marginTop="30dp"
                 android:theme="@style/MyRadioButton2"
@@ -177,7 +185,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_4"
                 android:layout_marginTop="30dp"
                 android:theme="@style/MyRadioButton2"
@@ -185,7 +192,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <RadioButton
-                android:clickable="false"
                 android:id="@+id/radio_5"
                 android:layout_marginTop="30dp"
                 android:theme="@style/MyRadioButton2"

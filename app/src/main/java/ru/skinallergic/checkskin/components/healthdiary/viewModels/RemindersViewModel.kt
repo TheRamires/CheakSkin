@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RemindersViewModel : ViewModel() {
+    val timeLive = MutableLiveData<String>()
+
     var remindsLive = MutableLiveData<ArrayList<EntityReminders>>()
     var entity = ObservableField<EntityReminders>()
     var dateObservable = ObservableField<String>()

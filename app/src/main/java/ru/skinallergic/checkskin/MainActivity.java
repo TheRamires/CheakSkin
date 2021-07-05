@@ -34,6 +34,8 @@ import ru.skinallergic.checkskin.splash_screen.ConverterString;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -46,6 +48,7 @@ import static ru.skinallergic.checkskin.utils.UtilsKt.PROFILE_BUNDLE;
 import static ru.skinallergic.checkskin.utils.UtilsKt.SPLASH_BUNDLE;
 //Ramires //ramires
 public class MainActivity extends AppCompatActivity {
+    private static String TAG = "MainActivity";
     private ActivityMainBinding binding;
     private AccountViewModelImpl accountViewModel;
     private NewsViewModel newsViewModel;
@@ -61,11 +64,9 @@ public class MainActivity extends AppCompatActivity {
         accountViewModel= new ViewModelProvider(this,viewModelFactory).get(AccountViewModelImpl.class);
         resultViewModel =new ViewModelProvider(this,viewModelFactory).get(TestResultViewModel.class);
         newsViewModel=new ViewModelProvider(this,viewModelFactory).get(NewsViewModel.class);
+        DateViewModel dateViewModel=new ViewModelProvider(this,viewModelFactory).get(DateViewModel.class);
         BaseViewModel baseViewModelByHealthy=new ViewModelProvider(this,viewModelFactory).get(AffectedAreaCommonViewModel.class);
         binding.setBaseViewModelByHealthy(baseViewModelByHealthy);
-
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
-        DateViewModel dateViewModel=new ViewModelProvider(this,viewModelFactory).get(DateViewModel.class);
 
         //**********************************************************************************
         Loger.log("//main activity loadAccesToken ********************** "+accountViewModel.loadAccesToken());

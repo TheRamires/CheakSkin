@@ -79,12 +79,12 @@ class TreatmentViewModel @Inject constructor(val repository: HealthyDiaryReposit
         marksLive.value=checkMarks
     }
 
-    fun checkMarkChanged():Boolean{
-        var boolean=true
+    fun checkMarkChanged():Boolean{  //хотя бы одно поле заполнено
+        var boolean=false
         for(checkMark in checkMarks){
-            if (!checkMark){
+            if (checkMark){
                 Loger.log("checkMark $checkMark")
-                boolean= false
+                boolean= true
             }
         }
         Loger.log("checkMarkChanged $boolean")

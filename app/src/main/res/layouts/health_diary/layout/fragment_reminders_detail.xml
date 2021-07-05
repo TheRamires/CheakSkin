@@ -15,6 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
+        <ImageView
+            android:id="@+id/background"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_background_alarm_clock_1"/>
 
         <RelativeLayout
             android:layout_alignParentTop="true"
@@ -34,7 +41,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="Оценка"
+                android:text="Напоминания"
                 android:layout_toRightOf="@+id/img_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
@@ -61,10 +68,9 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_below="@+id/title_layout"
             android:paddingHorizontal="10dp"
             android:orientation="vertical"
-            android:background="@color/white"
-            android:layout_below="@+id/title_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -94,54 +100,58 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
             </RelativeLayout>
-
             <RelativeLayout
                 android:paddingVertical="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Тип: "/>
-                <TextView
-                    android:text="@{viewModel.entity.description}"
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
                     android:id="@+id/type"
                     android:layout_toRightOf="@+id/text"
-                    android:hint="Лечение"
+                    android:text="Лечение"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"/>
             <RelativeLayout
-                android:paddingVertical="5dp"
+                android:paddingBottom="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
+                <EditText
+                    android:enabled="false"
+                    android:fontFeatureSettings=""
+                    android:backgroundTint="@color/gray_2"
+                    android:textColor="@color/purple_300"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="13sp"
                     android:text="@{viewModel.entity.name}"
                     android:id="@+id/description"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="name"/>
 
             </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
-                android:paddingVertical="5dp"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Время "/>
                 <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
+                    android:clickable="true"
                     android:text="@{viewModel.entity.time}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
@@ -151,29 +161,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ImageButton
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/btn"
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
                     />
 
             </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
-                android:paddingVertical="5dp"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Напоминание "/>
                 <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
                     android:text="@{viewModel.entity.remind}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
@@ -183,29 +199,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ImageButton
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/btn2"
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
                     />
 
             </RelativeLayout>
             <View
+                android:layout_marginHorizontal="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
-                android:paddingVertical="5dp"
+                android:paddingVertical="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:textColor="@color/black"
+                    android:layout_marginHorizontal="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Повтор "/>
                 <TextView
+                    android:textColor="@color/purple_300"
+                    android:layout_marginHorizontal="10dp"
                     android:text="@{viewModel.entity.repeat}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
@@ -215,11 +237,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ImageButton
+                    android:layout_marginHorizontal="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_centerVertical="true"
                     android:id="@+id/btn3"
-                    android:background="@drawable/button_right"
-                    android:layout_width="7dp"
+                    android:background="@drawable/my_icon_exp_down"
+                    android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
                     />

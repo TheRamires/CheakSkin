@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 import static ru.skinallergic.checkskin.view_models.DateViewModel.DATE_NORMAL;
@@ -71,6 +72,7 @@ public class DatePickerThemeSmall extends DialogFragment implements DatePickerDi
             Date formattedDate= DateViewModel.simpleFormattingToDateWithMin("23:59 "+String.format("%02d", day)+"."+myMonth+"."+year);
             if (startDate!=null && formattedDate.compareTo(startDate)<=0){
                 Toast.makeText(requireContext(),"Конечная дата не может быть раньше начальной",Toast.LENGTH_SHORT).show();
+                Loger.log("Конечная дата не может быть раньше начальной");
 
                 Calendar myCal = new GregorianCalendar();
                 myCal.setTime(startDate);
