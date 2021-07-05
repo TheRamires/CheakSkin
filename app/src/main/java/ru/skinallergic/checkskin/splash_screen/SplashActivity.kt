@@ -52,9 +52,9 @@ class SplashActivity : AppCompatActivity() {
         val binding=DataBindingUtil.setContentView<ActivitySplashBinding>(this, R.layout.activity_splash)
 
                                         //**********************************************************************
-                                        //val intent=Intent(this,MainActivity::class.java)
-                                        //startActivity(intent)
-                                        //finish()
+                                        val intent=Intent(this,MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
                                         //***********************************************************************
 
 
@@ -162,5 +162,20 @@ class SplashActivity : AppCompatActivity() {
             newsComplite=false; profileComplite=false
             viewModel.goToHome.value=true
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Loger.log("onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Loger.log("onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Loger.log("onDestroy")
     }
 }

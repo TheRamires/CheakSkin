@@ -40,18 +40,10 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
         final EntityReminders item = list.get(position);
-
         viewHolder.binding.setEntity(list.get(position));
 
         viewHolder.binding.swipe.setShowMode(SwipeLayout.ShowMode.PullOut);
 
-        //dari kiri
-        viewHolder.binding.swipe.
-                addDrag(SwipeLayout.DragEdge.Left, viewHolder.binding.swipe.findViewById(R.id.bottom_wrapper1));
-
-        //dari kanan
-        viewHolder.binding.swipe.
-                addDrag(SwipeLayout.DragEdge.Right, viewHolder.binding.swipe.findViewById(R.id.bottom_wraper));
         viewHolder.binding.swipe.
                 addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
@@ -96,14 +88,6 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
                         navigate(R.id.action_remindersFragment3_to_remindersDetailFragment,bundle);
             }
         });
-
-        viewHolder.binding.btnLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Clicked on Information " +
-                        viewHolder.binding.name.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
 /*
         //snare green --------------------------------------------------------------------------------------
         viewHolder.Share.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +105,7 @@ public class SwipeRecyclerViewAdapter extends RecyclerSwipeAdapter<SwipeRecycler
             }
         });
 */
-        viewHolder.binding.Delete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mItemManger.removeShownLayouts(viewHolder.binding.swipe);
