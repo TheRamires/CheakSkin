@@ -72,8 +72,10 @@
                 android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_centerHorizontal="true"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:id="@+id/my_recycler_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:elevation="2dp"
@@ -90,7 +92,7 @@
                 <ImageButton
                     android:clickable="true"
                     android:layout_below="@+id/my_recycler_view"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/button_plus"
                     android:layout_centerHorizontal="true"
                     android:layout_width="40dp"

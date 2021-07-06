@@ -95,28 +95,18 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     //ViewModel
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.core:core:1.2.0'
     implementation "androidx.core:core-ktx:1.2.0"
 
     def rxjava_version="2.0.0"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     def room_version = "2.2.5"
-
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
-
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
-
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.0"
-    implementation "io.reactivex.rxjava2:rxjava:2.0.0"
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 
@@ -139,11 +129,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
 
     implementation 'us.feras.mdv:markdownview:1.1.0'
+
     implementation 'com.vk:androidsdk:2.1.1'
-
     implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
     implementation "android.arch.paging:runtime:1.0.0"

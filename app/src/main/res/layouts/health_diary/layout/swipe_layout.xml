@@ -1,80 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout android:layout_marginBottom="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
     <data>
         <variable
             name="entity"
             type="ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders" />
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
     </data>
 
-    <com.daimajia.swipe.SwipeLayout
-        android:oneshot="false"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:background="@drawable/item_back_ground"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:id="@+id/swipe"
-        app:leftEdgeSwipeOffset="0dp"
-        app:rightEdgeSwipeOffset="0dp"
-        android:layout_height="80dp"
-        android:clickable="true">
-
-
-        <ImageView
-            android:background="@android:color/transparent"
-            android:clickable="true"
-            android:id="@+id/delete"
-            android:layout_gravity="right"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"/>
-
-        <com.dd.ShadowLayout
-            android:id="@+id/shadow"
-            android:translationZ="10dp"
-            app:sl_cornerRadius="85dp"
-            app:sl_shadowColor="@color/shadow_color1"
-            android:layout_width="match_parent"
-            android:layout_height="150dp">
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="360dp"
+        android:layout_height="140dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:focusable="true"
-            android:id="@+id/click_position"
-            android:clickable="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{entity.name}"
-                android:textColor="@android:color/black"
-                />
-            <TextView
-                android:text="@{entity.description}"
-                android:id="@+id/description"
-                android:layout_below="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                />
-            <TextView
-                android:id="@+id/time"
-                android:textColor="@android:color/black"
-                android:padding="10dp"
-                android:layout_toLeftOf="@+id/btn"
-                android:text="@{entity.time}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            android:background="@drawable/button_registr_uncklicable"
+            android:layout_gravity="center"
+            android:id="@+id/view_background"
+            android:layout_width="320dp"
+            android:layout_height="100dp">
+            <ImageButton
+                android:background="@android:color/transparent"
+                android:id="@+id/delete"
+                android:layout_marginHorizontal="30dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                />
+                android:src="@drawable/ic_cros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </RelativeLayout>
+
+        <com.dd.ShadowLayout
+            android:clickable="true"
+            android:focusable="true"
+            app:sl_cornerRadius="80dp"
+            android:layout_gravity="center"
+            android:id="@+id/view_foreground"
+            app:sl_shadowRadius="20dp"
+            app:sl_shadowColor="@color/shadow_color1"
+            android:layout_width="360dp"
+            android:layout_height="140dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="@{entity.name}"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="30dp"
+                    android:id="@+id/name"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="name"/>
+
+                <TextView
+                    android:text="@{entity.description}"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/red"
+                    android:layout_below="@+id/name"
+                    android:id="@+id/text"
+                    android:hint="text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="@{entity.time}"
+                    android:id="@+id/time"
+                    android:layout_toLeftOf="@+id/image"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/red"
+                    android:textSize="15sp"
+                    android:hint="time"
+                    />
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_further_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </RelativeLayout>
         </com.dd.ShadowLayout>
-    </com.daimajia.swipe.SwipeLayout>
+    </FrameLayout>
 </layout>
