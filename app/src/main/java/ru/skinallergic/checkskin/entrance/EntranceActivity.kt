@@ -74,7 +74,7 @@ class EntranceActivity : AppCompatActivity() {
 
                     Loger.log("authorizationCompleted +\n "+"//entrance activity loadAccesToken ********************** " + accountViewModel.loadAccesToken())
                     accountViewModel.authorizationCompleted.value = false
-                    accountViewModel.redactProfile(accountViewModel.currentUser)
+                    accountViewModel.currentUser.value?.let { it1 -> accountViewModel.redactProfile(it1) }
                     Loger.log("redact profile, Current User " + accountViewModel.currentUser)
                     val intent = Intent(this@EntranceActivity, MainActivity::class.java)
                     //intent.flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK

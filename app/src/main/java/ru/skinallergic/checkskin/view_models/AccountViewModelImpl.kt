@@ -152,7 +152,10 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
 
     override fun redactProfile(user: UserEntity){
         val accesToken=loadAccesToken()
-        currentUser.name=user.name
+        var userTemp=currentUser.value
+        userTemp?.name=user.name
+        currentUser.value=userTemp
+        //currentUser.name=user.name
         var profile= ProfileRequest(
                 user.name,
                 user.gender,
@@ -246,7 +249,10 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                                 Loger.log("getProfile profile: \n" + it + "\n name " + userData.name)
                                 profileObservable.value = userData
 
-                                currentUser.setData(userData)
+                                var user=currentUser.value
+                                user?.setData(userData)
+                                currentUser.value=user
+                                //currentUser.setData(userData)
                                 NewUser.entity = lastUser()
 
                             } else if (it.code() == 401) {
@@ -518,7 +524,11 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                                 registrationCompleted.value = true
                             } else {
                                 authorizationCompleted.value = true
-                                currentUser.name=name //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 24.05
+
+                                var user=currentUser.value
+                                user?.name=name
+                                currentUser.value=user
+                                //currentUser.name=name //!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 24.05
                             }
                         }, { error ->
                             Loger.log(error.message + " ☻")
@@ -565,7 +575,10 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
 
-                    currentUser.name=it[0].firstName
+                    var user=currentUser.value
+                    user?.name=it[0].firstName
+                    currentUser.value=user
+                    //currentUser.name=it[0].firstName
                     Loger.log("name "+it[0].firstName)                    // response here
                 }, {
                     // throwable here
@@ -589,12 +602,13 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
         userModel.savefirstEntrance()
     }
     private fun clearCurrentUser(){
-        currentUser.apply {
+        /*currentUser.apply {
             name=null
             tel=null
             diagnosisId=null
             regionId=null
             gender=null
-        }
+        }*/
+        currentUser.value=null
     }
 }

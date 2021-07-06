@@ -28,6 +28,7 @@ import ru.skinallergic.checkskin.components.tests.viewModels.TestResultViewModel
 import ru.skinallergic.checkskin.databinding.ActivityMainBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.entrance.EntranceActivity;
+import ru.skinallergic.checkskin.entrance.data.UserEntity;
 import ru.skinallergic.checkskin.entrance.pojo.Datass;
 import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import ru.skinallergic.checkskin.splash_screen.ConverterString;
@@ -93,12 +94,19 @@ public class MainActivity extends AppCompatActivity {
             Loger.log("profileJson "+profileJson);
             newsViewModel.newsListLive.setValue(news);
 
-            Loger.log("profile "+profile);
+            /*Loger.log("profile "+profile);
             accountViewModel.getCurrentUser().setName(profile.getName());
             accountViewModel.getCurrentUser().setRegionId(profile.getRegion().getId());
             accountViewModel.getCurrentUser().setDiagnosisId(profile.getDiagnosis().getId());
             accountViewModel.getCurrentUser().setTel(profile.getTel());
-            accountViewModel.getCurrentUser().setGender(profile.getGender());
+            accountViewModel.getCurrentUser().setGender(profile.getGender());*/
+            UserEntity userEntity=new UserEntity();
+            userEntity.setName(profile.getName());
+            userEntity.setRegionId(profile.getRegion().getId());
+            userEntity.setDiagnosisId(profile.getDiagnosis().getId());
+            userEntity.setTel(profile.getTel());
+            userEntity.setGender(profile.getGender());
+            accountViewModel.getCurrentUser().setValue(userEntity);
         } catch (Throwable throwable){}
         //------------------------------------------------------------------------------
 

@@ -45,8 +45,8 @@ class RegistrationFragment : Fragment() {
         with(binding){
             fragment=this@RegistrationFragment
             viewModel= accountViewModel as AccountViewModelImpl?
-            if (accountViewModel.currentUser.name!=null || accountViewModel.currentUser.name!="" ){
-                editName.setText(accountViewModel.currentUser.name)
+            if (accountViewModel.currentUser.value?.name!=null || accountViewModel.currentUser.value?.name!="" ){
+                editName.setText(accountViewModel.currentUser.value?.name)
             }
         }
 
@@ -63,22 +63,33 @@ class RegistrationFragment : Fragment() {
                 val name=removeSpaces(temp)
 
                 Loger.log(name)
-                accountViewModel.currentUser.name=name
+                var userTemp=accountViewModel.currentUser.value
+                userTemp?.name=name
+                accountViewModel.currentUser.value=userTemp
             }
             if (radioGroup.checkedRadioButtonId==-1){
-                accountViewModel.currentUser.gender= GENDER_NONE
+                var userTemp=accountViewModel.currentUser.value
+                userTemp?.gender=GENDER_NONE
+                accountViewModel.currentUser.value=userTemp
             }
 
             radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                var userTemp=accountViewModel.currentUser.value
                 when(checkedId){
                     radioGroup[0].id -> {
-                        accountViewModel.currentUser.gender = GENDER_MALE
+                        var userTemp=accountViewModel.currentUser.value
+                        userTemp?.gender=GENDER_MALE
                     }
                     radioGroup[2].id -> {
-                        accountViewModel.currentUser.gender = GENDER_FEMALE
+                        var userTemp=accountViewModel.currentUser.value
+                        userTemp?.gender=GENDER_FEMALE
                     }
-                    else->accountViewModel.currentUser.gender= GENDER_NONE
+                    else->{
+                        var userTemp=accountViewModel.currentUser.value
+                        userTemp?.gender=GENDER_NONE
+                    }
                 }
+                accountViewModel.currentUser.value=userTemp
             }
         }
         //accountViewModel.logInSave()
@@ -93,13 +104,13 @@ class RegistrationFragment : Fragment() {
 
     fun clickNext(v: View){
         Loger.log("Заполненные данные пользователя: " + accountViewModel.currentUser.toString())
-        var fieldIsTrue: Boolean=validateField.validate(accountViewModel.currentUser)
+        var fieldIsTrue: Boolean=validateField.validate(accountViewModel.currentUser.value!!)
 
         if(!fieldIsTrue){
             Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
             Loger.log(" Redact Profile failed - Заполните все поля")
         } else{
-            accountViewModel.redactProfile(accountViewModel.currentUser)
+            accountViewModel.redactProfile(accountViewModel.currentUser.value!!)
             Loger.log("redact profile, Current User "+accountViewModel.currentUser)
             val intent= Intent(context, MainActivity::class.java)
                     //.putExtra("id", "3")
@@ -134,7 +145,9 @@ class RegistrationFragment : Fragment() {
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View,
                                             position: Int, id: Long) {
-                    accountViewModel.currentUser.diagnosisId = position
+                    var userTemp=accountViewModel.currentUser.value
+                    userTemp?.diagnosisId=position
+                    accountViewModel.currentUser.value=userTemp
                 }
 
                 override fun onNothingSelected(arg0: AdapterView<*>?) {}
@@ -151,7 +164,9 @@ class RegistrationFragment : Fragment() {
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View,
                                             position: Int, id: Long) {
-                    accountViewModel.currentUser.regionId = position
+                    var userTemp=accountViewModel.currentUser.value
+                    userTemp?.regionId=position
+                    accountViewModel.currentUser.value=userTemp
                 }
 
                 override fun onNothingSelected(arg0: AdapterView<*>?) {}

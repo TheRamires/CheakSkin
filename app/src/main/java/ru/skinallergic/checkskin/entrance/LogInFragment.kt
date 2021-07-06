@@ -68,7 +68,7 @@ class LogInFragment : Fragment() {
             FragmentLogInBinding.inflate(inflater)
             fragment=this@LogInFragment
 
-            val numberLast=accountViewModel.currentUser.tel?.let {
+            val numberLast=accountViewModel.currentUser.value?.tel?.let {
                 if(it != "") {
                     editText.setText(it)
                 }
@@ -79,7 +79,9 @@ class LogInFragment : Fragment() {
                 ValidatorNumber.cheackNumber(it!!)
                 if (ValidatorNumber.isEntered) {
                     var number = "+"+helpExtractNumber(it)
-                    accountViewModel.currentUser.tel=number
+                    var userTemp=accountViewModel.currentUser.value
+                    userTemp?.tel=number
+                    accountViewModel.currentUser.value=userTemp
                 }
                 logInIsTrue=ValidatorNumber.validate()
             }
@@ -110,7 +112,9 @@ class LogInFragment : Fragment() {
                     // Application code
                     val name = `object`.getString("name")
                     Loger.log("LoginActivity name")
-                    accountViewModel.currentUser.name = name
+                    var userTemp=accountViewModel.currentUser.value
+                    userTemp?.name=name
+                    accountViewModel.currentUser.value=userTemp
                 }
                 val parameters = Bundle()
                 parameters.putString("fields", "id,name,email,gender,birthday")
@@ -151,7 +155,7 @@ class LogInFragment : Fragment() {
         //------------------------------------------------------------------------------------
 
         */
-        val number=accountViewModel.currentUser.tel
+        val number=accountViewModel.currentUser.value?.tel
         Loger.log("ON Click" + number)
         accountViewModel.checkNumber(number!!)
     }
@@ -160,9 +164,9 @@ class LogInFragment : Fragment() {
         viewModel.numberIsCheacked.observe(this, Observer {
             if (it) {
                 viewModel.numberIsCheacked.value = false
-                val number = accountViewModel.currentUser.tel
+                val number = accountViewModel.currentUser.value?.tel
                 viewModel.sendingCode(number!!)
-                Loger.log("Log In " + accountViewModel.currentUser.tel)
+                Loger.log("Log In " + accountViewModel.currentUser.value?.tel)
                 Navigation.findNavController(binding.root).navigate(R.id.action_logInFragment_to_sms1Fragment)
             } else {
                 Loger.log("Такого номера не существует")

@@ -212,8 +212,8 @@ public class HealthDiaryFragment extends Fragment {
     }
 
     public void toState(View view){
-        Integer healthy_status =viewModel.getGettingDataLive().getValue().getHealth_status();
-        if (gettingDataNull()|| healthy_status==null){
+        //Integer healthy_status =viewModel.getGettingDataLive().getValue().getHealth_status();
+        if (gettingDataNull()|| viewModel.getGettingDataLive().getValue().getHealth_status()==null){
             Navigation.findNavController(view).navigate(R.id.stateRedactFragment);
         } else
             Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_stateFragment);
@@ -228,18 +228,21 @@ public class HealthDiaryFragment extends Fragment {
     }
 
     public void toTriggers(View view){
-        Integer[] triggers=viewModel.getGettingDataLive().getValue().getTriggers();
-        if (gettingDataNull() || triggers.length==0){
+        //Integer[] triggers=viewModel.getGettingDataLive().getValue().getTriggers();
+        if (gettingDataNull() || viewModel.getGettingDataLive().getValue().getTriggers().length==0){
             Navigation.findNavController(view).navigate(R.id.triggersRedactFragment);
         } else
             Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_triggersFragment);
     }
 
     public void toTreatment (View view){
-        String topicalTherapy=viewModel.getGettingDataLive().getValue().getTopical_therapy();
+        /*String topicalTherapy=viewModel.getGettingDataLive().getValue().getTopical_therapy();
         String systemicTherapy=viewModel.getGettingDataLive().getValue().getSystemic_therapy();
-        String otherTreatments=viewModel.getGettingDataLive().getValue().getOther_treatments();
-        if (gettingDataNull() || (topicalTherapy==null & systemicTherapy==null & otherTreatments==null)){
+        String otherTreatments=viewModel.getGettingDataLive().getValue().getOther_treatments();*/
+        if (gettingDataNull() ||
+                (viewModel.getGettingDataLive().getValue().getTopical_therapy()==null
+                & viewModel.getGettingDataLive().getValue().getSystemic_therapy()==null
+                & viewModel.getGettingDataLive().getValue().getOther_treatments()==null)){
             Navigation.findNavController(view).navigate(R.id.treatmentRedactFragment);
         } else
             Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_treatmentFragment);
@@ -250,8 +253,8 @@ public class HealthDiaryFragment extends Fragment {
     }
     
     public void toRate (View view){
-        Integer rate=viewModel.getGettingDataLive().getValue().getRating();
-        if (gettingDataNull() || rate==null){
+        //Integer rate=viewModel.getGettingDataLive().getValue().getRating();
+        if (gettingDataNull() || viewModel.getGettingDataLive().getValue().getRating()==null){
             Navigation.findNavController(view).navigate(R.id.ratingRedactFragment);
         } else
             Navigation.findNavController(view).navigate(R.id.action_navigation_health_diary_to_ratingFragment);

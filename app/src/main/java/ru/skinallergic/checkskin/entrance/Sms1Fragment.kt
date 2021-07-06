@@ -35,7 +35,7 @@ class Sms1Fragment : Fragment() {
 
         binding= FragmentSms1Binding.inflate(inflater).apply {
             fragment=this@Sms1Fragment
-            number.setText(accountViewModel.currentUser.tel)
+            number.setText(accountViewModel.currentUser.value?.tel)
             code.doAfterTextChanged {
                 accountViewModel.apply{
                     fieldIsFull = it.toString().length==4
@@ -86,7 +86,7 @@ class Sms1Fragment : Fragment() {
 
     fun resubmit (v:View){
         Loger.log("click")
-        val number=accountViewModel.currentUser.tel
+        val number=accountViewModel.currentUser.value?.tel
         accountViewModel.sendingCode(number!!)
         binding.resubmit.setTextColor(Color.GRAY)
         binding.resubmit.isClickable=false
@@ -95,7 +95,7 @@ class Sms1Fragment : Fragment() {
 
     fun clickNext (v:View){
         if (accountViewModel.fieldIsFull) {
-            val number=accountViewModel.currentUser.tel
+            val number=accountViewModel.currentUser.value?.tel
             Loger.log("log in "+number)
             accountViewModel.logIn(number!!)
         } else Loger.log("Неверно введен")

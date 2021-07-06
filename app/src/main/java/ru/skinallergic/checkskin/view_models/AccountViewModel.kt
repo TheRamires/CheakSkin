@@ -25,7 +25,7 @@ abstract class AccountViewModel: ViewModel() {
 
     //Registration-----
 
-    var currentUser: UserEntity = UserEntity()
+    var currentUser = MutableLiveData<UserEntity>(UserEntity())
 
     var code: String=""
     var fieldIsFull: Boolean = false

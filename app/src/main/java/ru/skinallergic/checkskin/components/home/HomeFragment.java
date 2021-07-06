@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,7 @@ import ru.skinallergic.checkskin.databinding.FragmentHomeBinding;
 import ru.skinallergic.checkskin.databinding.ItemLpuBinding;
 import ru.skinallergic.checkskin.databinding.ItemNewsBinding;
 import ru.skinallergic.checkskin.databinding.ItemTestBinding;
+import ru.skinallergic.checkskin.entrance.data.UserEntity;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
 import ru.skinallergic.checkskin.components.home.adapters.RecyclerAdapter_lpu_UNUSED;
@@ -51,7 +53,6 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
     private TestsViewModel testsViewModel;
     private NewsViewModel newsViewModel;
     private DateViewModel dateViewModel;
-    private RecyclerAdapter_lpu_UNUSED adapter;
     private AccountViewModel accountViewModel;
 
     private RecyclerView recyclerNews;
@@ -73,8 +74,13 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
 
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         binding.date.setText(dateViewModel.getDate());
-        String hello="Привет, "+accountViewModel.getCurrentUser().getName()+"!";
-        binding.name.setText(hello);
+        accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
+            @Override
+            public void onChanged(UserEntity userEntity) {
+                String hello="Привет, "+userEntity.getName()+"!";
+                binding.name.setText(hello);
+            }
+        });
 
         //--------------------------снова показываем бар
         mainViewModel.barVisibility.set(true);

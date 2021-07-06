@@ -52,9 +52,9 @@ class SplashActivity : AppCompatActivity() {
         val binding=DataBindingUtil.setContentView<ActivitySplashBinding>(this, R.layout.activity_splash)
 
                                         //**********************************************************************
-                                        val intent=Intent(this,MainActivity::class.java)
-                                        startActivity(intent)
-                                        finish()
+                                        //val intent=Intent(this,MainActivity::class.java)
+                                        //startActivity(intent)
+                                        //finish()
                                         //***********************************************************************
 
 

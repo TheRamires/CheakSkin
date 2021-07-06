@@ -53,7 +53,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         viewModelCommon=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         AccountViewModel accountViewModel=new ViewModelProvider(requireActivity(), viewModelFactory).get(AccountViewModelImpl.class);
-        gender=accountViewModel.getCurrentUser().getGender();
+        gender=accountViewModel.getCurrentUser().getValue().getGender();
         viewModelCommon.getNewViewLive().setValue(0);
         imageViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ImageViewModel.class);
 
