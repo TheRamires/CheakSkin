@@ -4,15 +4,19 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TimePickerDialogTheme extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
-    MutableLiveData<String> timeLive;
+    MutableLiveData<Date> timeLive;
     public TimePickerDialogTheme(MutableLiveData timeLive){
         this.timeLive=timeLive;
     }
@@ -33,7 +37,16 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String myHour = String.format("%02d",hourOfDay, 1);
         String myMinutes = String.format("%02d",minute, 1);
+        String timeStr=myHour+":"+ myMinutes;
 
-        timeLive.setValue(myHour+":"+ myMinutes);
+        SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
+        try {
+            Date time = formater.parse(timeStr);
+            timeLive.setValue(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //timeLive.setValue(myHour+":"+ myMinutes);
     }
 }

@@ -10,11 +10,15 @@ import java.util.*
 import javax.inject.Inject
 
 class RemindersViewModel @Inject constructor(): ViewModel() {
-    val timeLive = MutableLiveData<String>()
+    val timeLive = MutableLiveData<Date>()
 
     var remindsLive = MutableLiveData<ArrayList<EntityReminders>>()
     var entity = ObservableField<EntityReminders>()
+    fun clearEntityObservable(){entity.set(null)}
     var dateObservable = ObservableField<String>()
+
+    val creatingReminder=MutableLiveData(EntityReminders())
+    fun clearCurrent(){creatingReminder.value=EntityReminders()}
 
     // Текущее время
 
@@ -31,8 +35,8 @@ class RemindersViewModel @Inject constructor(): ViewModel() {
         //for example -----------------------------------------------------------------------------
         val list = ArrayList<EntityReminders>()
         for (i in 0..3) {
-            list.add(EntityReminders(i, "Парацетамол$i", "выпить$i", "12:00",
-                    "за $i часов", "раз в $i дней"))
+            list.add(EntityReminders(i, "Парацетамол$i", "выпить$i", Date(10800),
+                    1, 1))
         }
         remindsLive.value = list
     }

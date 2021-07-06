@@ -126,8 +126,7 @@
                     android:text="@{viewModel.entity.name}"
                     android:id="@+id/description"
                     android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:hint="name"/>
+                    android:layout_height="wrap_content"/>
 
             </RelativeLayout>
             <View
@@ -136,12 +135,12 @@
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
+                android:focusable="true"
                 android:clickable="true"
                 android:id="@+id/redact_time"
                 android:paddingVertical="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true">
+                android:layout_height="wrap_content">
                 <TextView
                     android:textColor="@color/black"
                     android:layout_marginHorizontal="10dp"
@@ -151,6 +150,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
+                    android:text="@{viewModel.entity.timeString}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn"
@@ -166,7 +166,7 @@
                     android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
-                    />
+                    android:contentDescription="time" />
 
             </RelativeLayout>
             <View
@@ -175,12 +175,10 @@
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
-                android:clickable="true"
-                android:id="@+id/redact_remind"
+                android:id="@+id/redactRemind"
                 android:paddingVertical="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true">
+                android:layout_height="wrap_content">
                 <TextView
                     android:textColor="@color/black"
                     android:layout_marginHorizontal="10dp"
@@ -190,6 +188,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
+                    android:text="@{viewModel.entity.remindText}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn2"
@@ -205,7 +204,7 @@
                     android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
-                    />
+                    android:contentDescription="remind" />
 
             </RelativeLayout>
             <View
@@ -214,12 +213,10 @@
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
             <RelativeLayout
-                android:clickable="true"
-                android:id="@+id/redact_repeat"
+                android:id="@+id/redactRepeat"
                 android:paddingVertical="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true">
+                android:layout_height="wrap_content">
                 <TextView
                     android:textColor="@color/black"
                     android:layout_marginHorizontal="10dp"
@@ -229,6 +226,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
+                    android:text="@{viewModel.entity.repeatText}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn3"
@@ -244,7 +242,7 @@
                     android:layout_width="20dp"
                     android:layout_height="11dp"
                     android:layout_alignParentRight="true"
-                    />
+                    android:contentDescription="repeat" />
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"

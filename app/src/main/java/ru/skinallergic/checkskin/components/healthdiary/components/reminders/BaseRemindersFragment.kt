@@ -10,8 +10,11 @@ import ru.skinallergic.checkskin.App
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel
 import ru.skinallergic.checkskin.view_models.DateViewModel
-
+import java.text.SimpleDateFormat
+const val TIME_PATTERN="HH:mm"
 abstract class BaseRemindersFragment : Fragment(){
+    val simpleTimeParser = SimpleDateFormat(TIME_PATTERN)
+
     val viewModelFactory = App.getInstance().appComponent.viewModelFactory
     val dateViewModel :DateViewModel by lazy {
         ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel::class.java)
@@ -37,5 +40,8 @@ abstract class BaseRemindersFragment : Fragment(){
 
     open fun backStack(view: View) {
         Navigation.findNavController(view).popBackStack()
+    }
+    companion object {
+        val simpleTimeParser = SimpleDateFormat(TIME_PATTERN)
     }
 }

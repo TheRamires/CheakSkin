@@ -2,31 +2,39 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Date;
 
-import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
 import ru.skinallergic.checkskin.databinding.FragmentReminderRedactBinding;
 
-import ru.skinallergic.checkskin.di.MyViewModelFactory;
-import ru.skinallergic.checkskin.view_models.DateViewModel;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
+
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersFragment.BUNDLE_ID_OF_REMIND;
 
 public class RemindersRedactFragment extends BaseRemindersFragment {
     private int position;
     private DialogFragment dialogFragment;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            position= getArguments().getInt(BUNDLE_ID_OF_REMIND);
+        }catch (Throwable ignore){ }
+        getViewModel().clearCurrent();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,11 +68,25 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
 
 
         dialogFragment = new TimePickerDialogTheme(getViewModel().getTimeLive());
-        getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
-            binding.time.setText(date);
+        getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (Date time) ->{
+            binding.time.setText(getSimpleTimeParser().format(time));
+            EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
+            reminder.setTime(time);
+            getViewModel().getCreatingReminder().setValue(reminder);
         });
 
-        position=getViewModel().getEntity().get().getId();
+        getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
+            EntityReminders entity=list.get(position);
+            getViewModel().getCreatingReminder().setValue(entity);
+
+        });
+
+        getViewModel().getCreatingReminder().observe(getViewLifecycleOwner(),(EntityReminders entityReminders)-> {
+            getViewModel().getEntity().set(entityReminders);
+
+        });
+
+        //position=getViewModel().getEntity().get().getId();
 
         View view=binding.getRoot();
 
@@ -76,4 +98,9 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
         Navigation.findNavController(view).popBackStack(R.id.remindersFragment3,false);
     }
 
+    @Override
+    public void backStack(View view){
+        System.out.println("save CreatingReminder"+getViewModel().getCreatingReminder());
+        Navigation.findNavController(view).popBackStack();
+    }
 }

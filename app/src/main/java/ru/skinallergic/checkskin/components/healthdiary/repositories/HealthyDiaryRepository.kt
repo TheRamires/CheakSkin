@@ -89,6 +89,6 @@ open class HealthyDiaryRepository @Inject constructor(
                             refreshToken { date(date) }
                         }}
 
-        }!!
+        }
     }
 }

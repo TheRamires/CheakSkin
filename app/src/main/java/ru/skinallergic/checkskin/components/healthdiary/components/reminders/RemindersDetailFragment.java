@@ -2,6 +2,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,14 +45,12 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         binding.setViewModel(getViewModel());
         initBackGround(binding.background);
 
-        Loger.log("positionRemid id = "+position);
+        Loger.log("positionRemind id = "+position);
 
         getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
             String date=getDateViewModel().getDate(d);
             binding.date.setText(date);
         });
-
-
 
         getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
             EntityReminders entity=list.get(position);

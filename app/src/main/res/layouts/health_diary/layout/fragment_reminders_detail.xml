@@ -152,7 +152,7 @@
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
                     android:clickable="true"
-                    android:text="@{viewModel.entity.time}"
+                    android:text="@{viewModel.entity.timeString}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn"
@@ -190,7 +190,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{viewModel.entity.remind}"
+                    android:text="@{viewModel.entity.remindText}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn2"
@@ -228,7 +228,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{viewModel.entity.repeat}"
+                    android:text="@{viewModel.entity.repeatText}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn3"

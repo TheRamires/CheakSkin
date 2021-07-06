@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:text="@{entity.time}"
+                    android:text="@{entity.timeString}"
                     android:id="@+id/time"
                     android:layout_toLeftOf="@+id/image"
                     android:layout_centerVertical="true"

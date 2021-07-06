@@ -87,13 +87,22 @@ public class RemindersFragment extends BaseRemindersFragment implements SwipeRec
         return view;
     }
 
-    public void add (View view){Navigation.findNavController(view).
-            navigate(R.id.action_remindersFragment3_to_remindersAddFragment);}
+    public void add (View view) {
+        navFunction(view, R.id.action_remindersFragment3_to_remindersAddFragment);
+    }
 
     @Override
     public void onItemClick(View view,int id) {
         Bundle bundle=new Bundle();
         bundle.putInt(BUNDLE_ID_OF_REMIND,id);
-        Navigation.findNavController(view).navigate(R.id.action_remindersFragment3_to_remindersDetailFragment, bundle);
+        navFunction(view,R.id.action_remindersFragment3_to_remindersDetailFragment,bundle);
+    }
+    private void navFunction(View view, int id, Bundle bundle){
+        getViewModel().clearEntityObservable();
+        Navigation.findNavController(view).navigate(id, bundle);
+    }
+    private void navFunction(View view, int id ){
+        getViewModel().clearEntityObservable();
+        Navigation.findNavController(view).navigate(id);
     }
 }

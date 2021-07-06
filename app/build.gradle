@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -137,6 +138,10 @@ dependencies {
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
     implementation "android.arch.paging:runtime:1.0.0"
+
+    implementation platform('com.google.firebase:firebase-bom:28.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
 }
 // Add to the bottom of the file
