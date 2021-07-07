@@ -177,19 +177,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
 
-                <TextView
-                    android:textSize="20dp"
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0 %"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
+                <ImageButton
                     app:layout_constraintBottom_toBottomOf="@+id/view"
                     app:layout_constraintEnd_toEndOf="@+id/view"
-                    app:layout_constraintHorizontal_bias="0.545"
+                    app:layout_constraintHorizontal_bias="0.49"
                     app:layout_constraintStart_toStartOf="@+id/view"
-                    app:layout_constraintTop_toTopOf="@+id/view" />
+                    app:layout_constraintTop_toTopOf="@+id/view"
+                    android:onClick="@{fragment::toReminders}"
+                    android:id="@+id/button_remind"
+                    android:layout_gravity="center"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/my_icon_healthy_5"/>
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
@@ -209,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="false"
-                        android:text="Пора заполнять дневник здоровья"
+                        android:text="Пора заполнять дневник"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -217,7 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="false"
-                        android:text="Чтобы тщательнее следить за своим  состоянием, не забывай заполнять  дневник здоровья каждый день!" />
+                        android:text="Чтобы тщательнее следить за своим  состоянием, не забывай заполнять дневник каждый день!" />
 
                 </LinearLayout>
 

@@ -31,6 +31,7 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
+import ru.skinallergic.checkskin.components.healthdiary.QuitSaveLogic;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
@@ -56,6 +57,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         gender=accountViewModel.getCurrentUser().getValue().getGender();
         viewModelCommon.getNewViewLive().setValue(0);
         imageViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ImageViewModel.class);
+        toastyManager=App.getInstance().getAppComponent().getToastyManager();
 
         //**
         viewModelCommon.copyToNewMap();
@@ -130,7 +132,13 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
                     viewModelCommon.getSaved().setValue(false);
-                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
+                    toastyManager.toastyyyy("Данные успешно сохранены");
+                    viewModelCommon.setSomeChanged(false);
+                    Loger.log("getSomeChanged "+viewModelCommon.getSomeChanged());
+                    if (getPopBackTrue()){
+                        setPopBackTrue(false);
+                        Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
+                    }
                 }
             }
         });
@@ -149,10 +157,10 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         BackNavigation popBack=()-> {Navigation.findNavController(view).popBackStack();};
         BackNavigation popBackByStep=()-> {Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);};
 
+        Loger.log("is cnahfing " +viewModelCommon.isChanged());
         if (viewModelCommon.getNewMap().isEmpty() || viewModelCommon.getNewMap()==null){
             quitSaveLogic(popBackByStep);
         } else quitSaveLogic(popBack);
-
     }
 
     @Override
@@ -248,6 +256,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     public void showAreaEntity(){
         List<File> files=viewModelCommon.getPhotosFromMap();
         List<Integer> kinds=viewModelCommon.getKindsFromMap();
+        Loger.log("files get "+files,"image");
 
         if (files!=null){
             for (int i=0;i<files.size();i++){
@@ -276,41 +285,16 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     private void scrollingAnimation(ScrollView mScrollView){
         int speed=250;
         if (viewModelCommon.getNewMap().isEmpty()){
-            speed=1500;
+            speed=550;
         }
         int finalSpeed = speed;
         mScrollView.post(new Runnable() {
             @Override
             public void run() {
                 mScrollView.setScrollY(mScrollView.getBottom());
-                ObjectAnimator anim = ObjectAnimator.ofInt(mScrollView, "scrollY", mScrollView.getTop());
+                ObjectAnimator anim = ObjectAnimator.ofInt(mScrollView, "scrollY", 0);
                 anim.setDuration(finalSpeed);
                 anim.start();
             }
         });}
-    /*
-    private void  reportRequest() {
-        int size=3;
-        List<Bitmap> bitmapList=viewModel.getBitmaps();
-
-        List<File> files=new ArrayList<>();
-        for (int i=0;i<bitmapList.size();i++){
-            if (i==size){break;}
-            Bitmap bitmap=bitmapList.get(i);
-            if (bitmap==null){
-                Loger.log("reportRequest. bitmap is null");
-                continue;
-            }
-            File file=fileFromBitmap(bitmap,i);
-            files.add(file);
-        }
-
-        viewModel.addReport(dateViewModel.getDateUnix());
-    }
-    public void save(View view){
-        if (viewModel.isChanged()){
-            reportRequest();
-
-        } else Navigation.findNavController(view).popBackStack(R.id.affectedAreasFragment, false);
-    }*/
 }

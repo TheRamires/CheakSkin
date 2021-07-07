@@ -6,8 +6,9 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.*
 
-object BitmapConverter {
+object BitmapManager {
 
     fun compressBitmap(bitmap: Bitmap): Bitmap {
         val halfWidth = bitmap.getWidth() / 7
@@ -19,9 +20,9 @@ object BitmapConverter {
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
-    fun fileFromBitmap(yourBitmap: Bitmap?, count: Int, context: Context): File? {
+    fun SaveFileFromBitmap(yourBitmap: Bitmap?, count: Int, context: Context): File? {
         //create a file to write bitmap data
-        val f = File(context.cacheDir, "image$count.png")
+        val f = File(context.cacheDir, "image${UUID.randomUUID()}.png")
         f.createNewFile()
 
         //Convert bitmap to byte array

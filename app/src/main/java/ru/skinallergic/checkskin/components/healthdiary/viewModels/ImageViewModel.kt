@@ -1,11 +1,8 @@
 package ru.skinallergic.checkskin.components.healthdiary.viewModels
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -43,7 +40,7 @@ class ImageViewModel @Inject constructor(val context: Context, val model :ImageM
     }
 }
 class ImageModel @Inject constructor(){
-    fun getTarget(filePath: String): Target {
+    fun getTarget(filePath: String?): Target? {
         return object : Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom) {
                 Thread {

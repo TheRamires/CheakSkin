@@ -149,11 +149,11 @@
                         android:layout_height="wrap_content">
                         <View
                             android:id="@+id/view"
-                            android:layout_width="75dp"
+                            android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/hexagon_2"
+                            android:background="@drawable/hexagon"
                             android:layout_gravity="center"/>
-
+<!--
                         <TextView
                             android:textColor="@color/gray_dark"
                             android:textSize="20dp"
@@ -161,7 +161,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"/> -->
+                        <ImageButton
+                            android:onClick="@{fragment::toReminders}"
+                            android:id="@+id/button_remind"
+                            android:layout_gravity="center"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/my_icon_healthy_5"/>
                     </FrameLayout>
 
                     <LinearLayout
@@ -301,33 +308,8 @@
 
                         </com.dd.ShadowLayout>
                         <com.dd.ShadowLayout
-                            android:layout_marginTop="320dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:sl_cornerRadius="86dp"
-                            app:sl_dx="0dp"
-                            app:sl_dy="5dp"
-                            app:sl_shadowColor="@color/shadow_color1"
-                            app:sl_shadowRadius="30dp">
-
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:onClick="@{fragment::toReminders}"
-                                android:gravity="center_vertical|left"
-                                android:drawablePadding="20dp"
-                                android:id="@+id/button_remind"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/height_btn"
-                                android:background="@drawable/button_pressed_white"
-                                android:paddingHorizontal="35dp"
-                                android:text="Напоминание"
-                                android:textAllCaps="false"
-                                android:textColor="@color/purple_300"
-                                android:textSize="13sp" />
-
-                        </com.dd.ShadowLayout>
-                        <com.dd.ShadowLayout
                             android:layout_marginBottom="@dimen/margin_normal"
-                            android:layout_marginTop="400dp"
+                            android:layout_marginTop="320dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:sl_cornerRadius="86dp"

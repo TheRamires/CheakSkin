@@ -12,4 +12,10 @@ class ToastyManager @Inject constructor(val context: Context, val handleOnce: Ha
         }
         Loger.log("╝§toasty manager $message")
     }
+    fun toastyyyy(message: String, noneOneHandle: Boolean){
+        if (noneOneHandle){
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            Loger.log("╝§toasty manager $message")
+        } else toastyyyy(message)
+    }
 }

@@ -78,10 +78,11 @@ class LogInFragment : Fragment() {
             editText.doAfterTextChanged {
                 ValidatorNumber.cheackNumber(it!!)
                 if (ValidatorNumber.isEntered) {
-                    var number = "+"+helpExtractNumber(it)
-                    var userTemp=accountViewModel.currentUser.value
-                    userTemp?.tel=number
+                    val number = "+"+helpExtractNumber(it)
+                    val userTemp=accountViewModel.getCurrentUserNonNull()
+                    userTemp.tel=number
                     accountViewModel.currentUser.value=userTemp
+                    println("userTemp "+userTemp)
                 }
                 logInIsTrue=ValidatorNumber.validate()
             }
@@ -112,7 +113,7 @@ class LogInFragment : Fragment() {
                     // Application code
                     val name = `object`.getString("name")
                     Loger.log("LoginActivity name")
-                    var userTemp=accountViewModel.currentUser.value
+                    val userTemp=accountViewModel.currentUser.value
                     userTemp?.name=name
                     accountViewModel.currentUser.value=userTemp
                 }
@@ -120,8 +121,6 @@ class LogInFragment : Fragment() {
                 parameters.putString("fields", "id,name,email,gender,birthday")
                 request.parameters = parameters
                 request.executeAsync()
-
-
             }
 
             override fun onCancel() {
@@ -157,7 +156,7 @@ class LogInFragment : Fragment() {
         */
         val number=accountViewModel.currentUser.value?.tel
         Loger.log("ON Click" + number)
-        accountViewModel.checkNumber(number!!)
+        accountViewModel.checkNumber(number)
     }
 
     private fun subscribeCheakNumber(viewModel: AccountViewModel){

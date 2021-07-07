@@ -54,7 +54,7 @@ public class HealthDiaryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getSum().set(0);
+        //viewModel.getSum().set(0);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -91,11 +91,11 @@ public class HealthDiaryFragment extends Fragment {
         Drawable icon4 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_4);
         icon4.setBounds(0, 0, 75, 75);
         changeMark(btnHealth, icon4,false);
-
+/*
         AppCompatButton btnRemind = binding.buttonRemind;
         Drawable icon5 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_5);
         icon5.setBounds(0, 0, 75, 75);
-        changeMark(btnRemind, icon5,false);
+        changeMark(btnRemind, icon5,false);*/
 
         AppCompatButton btnRate = binding.buttonRate;
         Drawable icon6 = ContextCompat.getDrawable(getActivity(), R.drawable.my_icon_healthy_6);
@@ -138,7 +138,7 @@ public class HealthDiaryFragment extends Fragment {
             } else changeMark(button, drawable,false);
 
         });
-        viewModel.getRemindersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+       /* viewModel.getRemindersChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
             Loger.log("getRemindersChecked "+aBoolean);
             AppCompatButton button = btnRemind;
             Drawable drawable=icon5;
@@ -146,7 +146,7 @@ public class HealthDiaryFragment extends Fragment {
                 changeMark(button, drawable,true);
             } else changeMark(button, drawable,false);
 
-        });
+        });*/
         viewModel.getRatingChecked().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
             Loger.log("getRatingChecked "+aBoolean);
             AppCompatButton button = btnRate;
@@ -175,7 +175,7 @@ public class HealthDiaryFragment extends Fragment {
         if (dateUnix!=null){
             viewModel.data(dateViewModel.getDateUnix());
         }
-
+/*
         viewModel.isLoadedAndCalculated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
@@ -192,7 +192,7 @@ public class HealthDiaryFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {

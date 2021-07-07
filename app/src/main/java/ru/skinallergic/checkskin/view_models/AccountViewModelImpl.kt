@@ -152,11 +152,11 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
 
     override fun redactProfile(user: UserEntity){
         val accesToken=loadAccesToken()
-        var userTemp=currentUser.value
+        val userTemp=currentUser.value
         userTemp?.name=user.name
         currentUser.value=userTemp
         //currentUser.name=user.name
-        var profile= ProfileRequest(
+        val profile= ProfileRequest(
                 user.name,
                 user.gender,
                 user.regionId,
@@ -233,7 +233,6 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
 
     override fun getProfile(){
         val accesToken=loadAccesToken()
-        Loger.log("*************************/ 2 "+accesToken)
         compositeDisposable.add(
                 accountRepo.getProfile(accesToken.toString())
                         .subscribeOn(Schedulers.io())
@@ -247,6 +246,11 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                                 val userData: Datass = it.body()?.data!!
                                 Loger.log("getProfile profile: ")
                                 Loger.log("getProfile profile: \n" + it + "\n name " + userData.name)
+                                Loger.log("getProfile profile: \n" + it + "\n userData " + userData)
+                                /*if (userData.isNullUser()){
+                                    nullUser.value=true
+                                    toastyManager.toastyyyy("У вас не заполнены данные о пользователе, пожалуйста заполните все поля")
+                                }*/
                                 profileObservable.value = userData
 
                                 var user=currentUser.value
@@ -272,7 +276,7 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                             }
                         }, {
                            // toastyManager.toastyyyy("THROWABLE: " + it + "☻☻")
-                            toastyManager.toastyyyy("Не удалось обновить данные. "+it.message)
+                            //toastyManager.toastyyyy("Не удалось обновить данные. "+it.message)
                             Loger.log("getProfile THROWABLE: " + it + "☻☻")
                         })
         )
@@ -450,28 +454,35 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
 
     //-------------------------Registration---------------------------------------------------
 
-    override fun checkNumber(number_: String){
+    override fun checkNumber(number_: String?){
         var number=number_
-        if (number_[0].toString().equals("+")){number=number_.substring(1)}
+        if (number_?.get(0)?.toString().equals("+")){
+            if (number_ != null) {
+                number=number_.substring(1)
+            }
+        }
+        if (number==null || number==""){return}
         compositeDisposable.add(
-                registrationRepo.checkNumber(number)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({ response ->
-                            if (response.data?.success == false) {
-                                toastyManager.toastyyyy("Такого номера не существует")
-                            } else {
-                                Loger.log("cheakNumber")
-                            }
-                            val result = response.data?.success; Loger.log(result)
-                            Loger.log("number is exist")
-                            numberIsCheacked.value = result!!  //for log_in
-                            //changeNumber.value=true //for profile change_number
+                number?.let {
+                    registrationRepo.checkNumber(it)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({ response ->
+                                if (response.data?.success == false) {
+                                    toastyManager.toastyyyy("Такого номера не существует")
+                                } else {
+                                    Loger.log("cheakNumber")
+                                }
+                                val result = response.data?.success; Loger.log(result)
+                                Loger.log("number is exist")
+                                numberIsCheacked.value = result!!  //for log_in
+                                //changeNumber.value=true //for profile change_number
 
-                        }, { error ->
-                            Loger.log(error.message + " ♦")
-                            error.printStackTrace()
-                        })
+                            }, { error ->
+                                Loger.log(error.message + " ♦")
+                                error.printStackTrace()
+                            })
+                }
         )
     }
 

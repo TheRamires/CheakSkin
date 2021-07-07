@@ -49,7 +49,11 @@ data class Datass(
         @SerializedName("diagnosis")
         @Expose
         val diagnosis: Diagnos?
-)
+) {
+        fun isNullUser(): Boolean{
+                return name==null || gender==null || region==null || diagnosis==null
+        }
+}
 
 data class Diagnos (
 

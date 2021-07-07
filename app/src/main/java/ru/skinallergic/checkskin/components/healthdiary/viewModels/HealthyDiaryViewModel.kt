@@ -26,14 +26,14 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
 
-    val isLoadedAndCalculated= MutableLiveData<Boolean>()
+    //val isLoadedAndCalculated= MutableLiveData<Boolean>()
     val gettingDataLive = MutableLiveData<GettingData>()
-    val sum = ObservableField<Int>()
-    var cacheSum = ObservableField<Int>()
+   /* //val sum = ObservableField<Int>()
+    //var cacheSum = ObservableField<Int>()
     fun setCacheSum(value: Int){
         cacheSum.set(value)
-    }
-
+    }*/
+/*
     fun getSumaryPercent(): Int{
         var sum: Int? = sum.get()
         if (sum == null) {
@@ -42,7 +42,7 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
             sum = 100
         }
         return sum
-    }
+    }*/
     val state = MutableLiveData<String>()
 
     val stateChecked=MutableLiveData<Boolean>()
@@ -72,13 +72,13 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
 
                             defineStateString(state)
 
-                            sumPlus(state, STATE_PERCENT)
+                         /*   sumPlus(state, STATE_PERCENT)
                             sumPlus(rashPhotos, RASHPHOTOS_PERCENT)
                             sumPlus(triggers, TRIGGERS_PERCENT)
                             sumPlus(topicalTherapy, TOPIC_THERAPY_PERCENT)
                             sumPlus(systemicTherapy, SYSTEMATIC_THERAPY_PERCENT)
                             sumPlus(otherTherapy, OTHER_THERAPY_PERCENT)
-                            sumPlus(rating, RATE_PERCENT)
+                            sumPlus(rating, RATE_PERCENT)*/
                             //8
                             changeMark(stateChecked, state)
                             changeMark(rashPhotosChecked, rashPhotos)
@@ -92,21 +92,21 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
                             }
 
                             gettingDataLive.value=gettingData!!
-                            isLoadedAndCalculated.value = true
-                            setCacheSum(sum.get()!!)
+                            /*isLoadedAndCalculated.value = true
+                            setCacheSum(sum.get()!!)*/
                         }, {Loger.log("********************о☻ in healthyDiaryViEModel \n"+it)
-                            errorCallBack()
+                            //errorCallBack()
                         })
 
                 }
         )
     }
-    fun errorCallBack(){
+   /* fun errorCallBack(){
         //user cacheSum
         Loger.log("cacheSum ${cacheSum.get()}")
         sum.set(cacheSum.get())
         isLoadedAndCalculated.value = true
-    }
+    }*/
 
     fun <T> changeMark(liveData: MutableLiveData<Boolean>, any:T?){
         var bool=false
@@ -126,11 +126,11 @@ class HealthyDiaryViewModel  @Inject constructor(val repository: HealthyDiaryRep
         liveData.value=bool
     }
 
-    fun <T> sumPlus(value: T, percent: Int){
+   /* fun <T> sumPlus(value: T, percent: Int){
         var temp=sum.get()?:0
         temp = temp.plus(checkFullness(value, percent))
         sum.set(temp)
-    }
+    }*/
 
     fun <T>checkFullness(value: T, percent: Int): Int{
         when(value){

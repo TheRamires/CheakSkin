@@ -1,5 +1,6 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ import static ru.skinallergic.checkskin.components.healthdiary.viewModels.Affect
 public class AffectedAreasFragment extends BaseAreaFragment {
     private AffectedAreaViewModel viewModel;
     private RecyclerView recyclerView;
+    private ScrollView scrollView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +115,12 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean){
                     viewModelCommon.getSaved().setValue(false);
-                    Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
+                    toastyManager.toastyyyy("Данные успешно сохранены");
+                    viewModelCommon.setSomeChanged(false);
+                    if (getPopBackTrue()){
+                        setPopBackTrue(false);
+                        Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
+                    }
                 }
             }
         });
@@ -120,6 +128,8 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         List<String> listExample=new ArrayList<>();
         listExample.add("Крупная сыпь");
         listExample.add("Мулкая сыпь");
+
+        scrollView=binding.scrollView;
 
 
         return view;
@@ -215,20 +225,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             container.addView(item);
         }
     }
-/*
-    private void completionKindList (KindTemp kind, LinearLayout container, int position, int area, int view){
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View item = inflater.inflate(R.layout.item_rash, container,false);
-        TextView text=item.findViewById(R.id.text);
-        text.setText(kind.getTitle());
-        ImageButton button=item.findViewById(R.id.btn_close);
-        button.setOnClickListener((View v)-> {
-            if (!stumpForButtonClose){
-                //deleteKindPosition(position, container,area,view);
-            }
-        });
-        container.addView(item);
-    }*/
+
     private void deleteKindPosition(List<KindTemp> kindTemps,int indx, LinearLayout container, int area, int view){
         Loger.log("delete indx "+indx+" container"+container);
         container.removeAllViews();
@@ -250,8 +247,10 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             Navigation.findNavController(view).popBackStack();
         } else {quitSaveLogic(pop);}
     }
+
     public void redactMode(View view){
         viewModel.redactModeOn();
+        scrollingAnimation(scrollView);
     }
     public void toRedactBody(View view){
         Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);
@@ -267,53 +266,18 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             toPhoto(imageView);
         }
     }
-/*
-    //*******************************************save temp photo
-    //save image
-    public String imageDownload(Context ctx, String name, String pathHttp){
-        String filePath=ctx.getExternalFilesDir("photo").getAbsolutePath()+"/" + name;
-        Picasso.with(ctx)
-                .load(pathHttp)
-                .into(getTarget(filePath));
-        return filePath;
-    }
 
-    //target to save
-    private static Target getTarget(final String filePath){
-        Target target = new Target(){
-
+    private void scrollingAnimation(ScrollView mScrollView){
+        //mScrollView.scrollTo(0,mScrollView.getBottom());
+        int speed=250;
+        int finalSpeed = speed;
+        mScrollView.post(new Runnable() {
             @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-
-                        File file = new File(filePath);
-                        try {
-                            file.createNewFile();
-                            FileOutputStream ostream = new FileOutputStream(file);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
-                            ostream.flush();
-                            ostream.close();
-                        } catch (IOException e) {
-                            System.out.println("IOException"+ e.getLocalizedMessage());
-                        }
-                    }
-                }).start();
-
+            public void run() {
+                //mScrollView.scrollTo(0,mScrollView.getBottom());
+                ObjectAnimator anim = ObjectAnimator.ofInt(mScrollView, "scrollY", mScrollView.getBottom());
+                anim.setDuration(finalSpeed);
+                anim.start();
             }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        return target;
-    }*/
+        });}
 }

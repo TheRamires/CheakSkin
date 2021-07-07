@@ -5,7 +5,7 @@ import ru.skinallergic.checkskin.components.profile.ActionFunction
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
 import ru.skinallergic.checkskin.components.profile.NavigationFunction
 
-class QuitSaveLogic {
+object QuitSaveLogic {
     fun logic(condition: Boolean, popBack: () -> Unit, save: () -> Unit, fragmentManager: FragmentManager){
         if (condition) {
             quitSaveDialog({ popBack() }, { save() }, fragmentManager

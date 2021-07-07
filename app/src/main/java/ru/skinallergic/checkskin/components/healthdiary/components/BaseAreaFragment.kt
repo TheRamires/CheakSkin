@@ -1,10 +1,8 @@
 package ru.skinallergic.checkskin.components.healthdiary.components
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
@@ -12,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Picasso.LoadedFrom
-import com.squareup.picasso.Target
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.*
@@ -21,15 +17,10 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaC
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel
 import ru.skinallergic.checkskin.components.profile.ActionFunction
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
-import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
-import ru.skinallergic.checkskin.components.profile.NavigationFunction
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.view_models.DateViewModel
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.util.UUID.randomUUID
 import java.util.regex.Pattern
 
 abstract class BaseAreaFragment : Fragment() {
@@ -44,6 +35,8 @@ abstract class BaseAreaFragment : Fragment() {
 
     lateinit var imageView: ImageView
     var currentPhotoId: Int = 0
+
+    var popBackTrue=false
 
     fun toPhoto(imageView: ImageView) {
         when (imageView.id) {
@@ -63,7 +56,7 @@ abstract class BaseAreaFragment : Fragment() {
                     val selectedImage = data!!.data
                     try {
                         val bitmapTemp = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
-                        bitmap = BitmapConverter.compressBitmap(bitmapTemp)
+                        bitmap = BitmapManager.compressBitmap(bitmapTemp)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -81,7 +74,9 @@ abstract class BaseAreaFragment : Fragment() {
                         imageView.setImageBitmap(finalBitmap)
                         //viewModel.addBitMapToList(finalBitmap);
                         try {
-                            val file = BitmapConverter.fileFromBitmap(finalBitmap, currentPhotoId, context!!)
+                            val file = BitmapManager.SaveFileFromBitmap(finalBitmap, currentPhotoId, context!!)
+
+                            Loger.log("file put  $file", "image")
                             viewModelCommon.putPhotoToMap(currentPhotoId, file!!)
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -130,6 +125,7 @@ abstract class BaseAreaFragment : Fragment() {
         if (isServerPath) {
             Picasso.with(requireContext())
                     .load(file.toString())
+                    .placeholder(R.drawable.no_photo)
                     .into(imageView)
         } else Picasso.with(requireContext()).load(file).into(imageView)
     }
@@ -144,7 +140,7 @@ abstract class BaseAreaFragment : Fragment() {
                 .load(path)
                 .placeholder(R.drawable.no_photo)
                 .into(imageView)
-        return imageViewModel.imageDownload(path){dir->
+        return imageViewModel.imageDownload(path){ dir->
             viewModelCommon.photoDirectoryInMemory = dir // testing +
         }
     }
@@ -214,35 +210,6 @@ abstract class BaseAreaFragment : Fragment() {
         } else Navigation.findNavController(requireView()).popBackStack()
     }
     fun quitSaveLogic(navigation: BackNavigation){
-
-        Loger.log("viewModelCommon.isChanged() " + viewModelCommon.isChanged())
-        if (viewModelCommon.isChanged()) {
-            quitSaveDialog{
-                navigation.nav()
-            }
-        } else {
-            navigation.nav()
-        }
-    }
-
-    fun quitSaveDialog(popBack: () -> Unit) {
-        val negative = object : ActionFunction {
-            override fun action() {
-                popBack()
-            }
-        }
-        val positive = object : ActionFunction {
-            override fun action() {
-                saving()
-            }
-        }
-        val navigation = object : NavigationFunction {
-            override fun navigate() {
-                //empty
-            }
-        }
-        val dialog = DialogTwoFunctionFragment(
-                "Сохранить изменения", negative, positive, navigation)
-        dialog.show(manager, "dialog")
+        QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, { this.popBackTrue =true ;saving() }, manager)
     }
 }

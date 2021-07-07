@@ -1,5 +1,6 @@
 package ru.skinallergic.checkskin.view_models
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.skinallergic.checkskin.entrance.data.UserEntity
@@ -26,6 +27,12 @@ abstract class AccountViewModel: ViewModel() {
     //Registration-----
 
     var currentUser = MutableLiveData<UserEntity>(UserEntity())
+    fun getCurrentUserNonNull():UserEntity{
+        if (currentUser.value==null){currentUser.value= UserEntity()
+        }
+        return currentUser.value!!
+    }
+    val nullUser = MutableLiveData<Boolean>()
 
     var code: String=""
     var fieldIsFull: Boolean = false
@@ -35,7 +42,7 @@ abstract class AccountViewModel: ViewModel() {
 
     //redact-----------
 
-    abstract fun checkNumber(number_: String)
+    abstract fun checkNumber(number_: String?)
     abstract fun sendingCode(number_: String)
     abstract fun logIn(number_: String)
     abstract fun netWorkLogIn(network: String, token: String)

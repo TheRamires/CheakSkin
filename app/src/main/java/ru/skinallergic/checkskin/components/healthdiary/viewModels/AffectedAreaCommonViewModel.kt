@@ -17,7 +17,7 @@ import java.util.regex.Pattern
 import javax.inject.Inject
 
 
-const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание:"
+const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание."
 
 const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
 
@@ -123,18 +123,18 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     fun addReport(date: Long){
         val allAreas=newMap.keys
-        if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
+        if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
         if (!checkFullyFields(allAreas)){return} // **самая важная проверка -- "есть ли незаполненные поля"**
         for (area in allAreas){
             val allViews=newMap[area]?.keys
-            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
+            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
 
             for (view in allViews){
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE);return}
+                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
                 Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date, area, view, kind, files)
@@ -144,14 +144,14 @@ class AffectedAreaCommonViewModel@Inject constructor(
     fun checkFullyFields(allAreas: MutableSet<Int>): Boolean{
         for (area in allAreas){
             val allViews=newMap[area]?.keys
-            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE);return false}
+            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return false}
 
             for (view in allViews){
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE);return false}
+                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return false}
 
             }
         }
@@ -171,7 +171,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
     private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
         val fieldsIsEmpty=!checkReportField(files, area, view, kinds)
         if (fieldsIsEmpty) {
-            toastyManager.toastyyyy(MESSAGE);return}
+            toastyManager.toastyyyy(MESSAGE,true);return}
 
         val newArea: RequestBody =multipartManager.createPartFromString(area)
         val newView: RequestBody =multipartManager.createPartFromString(view)
@@ -180,7 +180,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
         //remove all null**************
         val finalFiles = files.removeNulls()
-        Loger.log("************☺ finalFiles $finalFiles")
 
         //ceate file name**************
         for(count in finalFiles.indices){
@@ -194,7 +193,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
             val finalFile=tempFile
 
-            Loger.log("************☺ last finalFile $finalFiles")
             if (finalFile!=null){
                 multiParts.add(
                         multipartManager.prepareFilePart(name, finalFile))
@@ -214,7 +212,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
                             newKinds: RequestBody,
                             files: List<MultipartBody.Part>){
 
-        Loger.log("addPosition \n area = " + newArea + "\n view= " + newView + "\n" + "files 2 //************************************ $files")
         compositeDisposable.add(repository.add(date / 1000, newArea, newView, newKinds, files)
                 .doOnSubscribe { progressBar.set(true) }
                 .doOnComplete { progressBar.set(false) }
@@ -249,7 +246,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         }
     }
     fun notSaving(){
-        toastyManager.toastyyyy(MESSAGE)
+        toastyManager.toastyyyy(MESSAGE,true)
         notSaving.value=true
 
     }
@@ -289,6 +286,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     fun isChanged(): Boolean{
         //toastyManager.toastyyyy("someChanged $someChanged")
+        if(someChanged==null){return false}
         return someChanged
     }
 
@@ -343,7 +341,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         putKindsToMap(kinds, area, view)
     }
 
-    fun putPhotoToMap(id: Int, bitmap: File){
+    fun putPhotoToMap(id: Int, file: File){
         val area=getNewArea()!!
         val view=getNewView()
         //************** вынести в отдельный метод
@@ -365,7 +363,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         if (bitmaps==null || bitmaps.size<3){
             newMap[area]!![view]!!.photos= mutableListOf(null, null, null)
         }
-        newMap[area]!![view]!!.photos!![id] = bitmap
+        newMap[area]!![view]!!.photos!![id] = file
     }
     fun putSavedPhotoToOldMap(
             area: Int, view: Int,

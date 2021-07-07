@@ -349,7 +349,7 @@ public class ProfileFragment extends Fragment {
     private void showSplashScreen(){
         binding.splashScreen.setVisibility(View.VISIBLE);
     }
-    private void hideSplashScreen(){
+    public void hideSplashScreen(){
         binding.splashScreen.setVisibility(View.GONE);
     }
 }

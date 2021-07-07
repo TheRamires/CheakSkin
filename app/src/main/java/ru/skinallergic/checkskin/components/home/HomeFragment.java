@@ -139,6 +139,10 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
     public void toFoodDiary(View view){
         //Navigation.findNavController(view).navigate(R.id.navigation_food_diary);
     }
+    public void toReminders(View view){
+        Navigation.findNavController(view).navigate(R.id.remindersFragment3);
+
+    }
 
 //ВКЛЮЧИТЬ КНОПКИ-----------------------------------------------------------------------------------
 
