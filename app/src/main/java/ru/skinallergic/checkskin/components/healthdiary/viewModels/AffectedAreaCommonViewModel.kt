@@ -43,9 +43,13 @@ class AffectedAreaCommonViewModel@Inject constructor(
     var photoDirectoryInMemory: File?=null
 
     var oldMap : List<Rash> = listOf()
-    val newMap : MutableMap<Int, MutableMap<Int, AreaEntity>> = mutableMapOf()
+    var newMap : MutableMap<Int, MutableMap<Int, AreaEntity>> = mutableMapOf()
     //to init in onCreate of AffectedAreaRedactBodyFragment --NONE!!
     //to init in getData function
+    fun clearMaps(){
+        oldMap=listOf()
+        newMap=mutableMapOf()
+    }
     fun copyToNewMap (){
         if (oldMap.isEmpty()){return}
 

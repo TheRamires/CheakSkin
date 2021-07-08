@@ -16,6 +16,7 @@ import java.util.Date;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentCalendarBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -27,12 +28,14 @@ import static ru.skinallergic.checkskin.view_models.DateViewModel.YEAR_FORMAT;
 public class CalendarFragment extends Fragment {
     private DateViewModel dateViewModel;
     private DatePicker datePicker;
+    private AffectedAreaCommonViewModel commonViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MyViewModelFactory viewModelFactory = App.getInstance().getAppComponent().getViewModelFactory();
         dateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel.class);
+        commonViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
     }
 
     @Override
@@ -106,11 +109,11 @@ public class CalendarFragment extends Fragment {
 
         Date date=dateViewModel.simpleFormattingToDate(dateString);
         dateViewModel.dateLive.setValue(date);
+
         Loger.log("unix "+dateViewModel.getDateUnix());
         Loger.log("calendar "+dateViewModel.getDate());
+        commonViewModel.clearMaps();
     }
 
-    public void backStack (View view){
-        Navigation.findNavController(view).popBackStack();
-    }
+    public void backStack (View view){Navigation.findNavController(view).popBackStack();}
 }

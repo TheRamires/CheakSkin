@@ -262,9 +262,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModelCommon.getNewViewLive().setValue(view);
     }
 
-    public void clickPhoto(View view_){
+    public void clickPhoto(ImageView imageView_){
         if (viewModel.redactModeIsOn()){
-            imageView= view_.findViewById(view_.getId());
+            imageView= imageView_;
             toPhoto(imageView);
         }
     }
