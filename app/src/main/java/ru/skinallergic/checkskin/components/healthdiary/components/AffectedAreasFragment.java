@@ -98,9 +98,11 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModelCommon.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Loger.log("aBoolean "+aBoolean);
+                viewModelCommon.setSomeChanged(false);          //testing
+                Loger.log("getLoaded aBoolean "+aBoolean);
                 if (aBoolean==null){return;}
                 viewModelCommon.getLoaded().setValue(null);
+
                 if (aBoolean){
                     viewModelCommon.getLoaded().setValue(null);
                     if (viewModelCommon.getOldMap().isEmpty() || viewModelCommon.getOldMap().size()==0){
@@ -120,7 +122,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                     if (getPopBackTrue()){
                         setPopBackTrue(false);
                         Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary, false);
-                    }
+                    } else viewModelCommon.data(dateViewModel.getDateUnix(), viewModelCommon.getProgressBar());
                 }
             }
         });

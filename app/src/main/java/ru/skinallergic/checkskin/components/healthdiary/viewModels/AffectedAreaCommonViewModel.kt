@@ -1,6 +1,7 @@
 package ru.skinallergic.checkskin.components.healthdiary.viewModels
 
 import android.graphics.Bitmap
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -250,8 +251,14 @@ class AffectedAreaCommonViewModel@Inject constructor(
         notSaving.value=true
 
     }
-
+    fun data(oldDate: Long, progress: ObservableField<Boolean>){
+        letsGetData(oldDate, progress)
+    }
     fun data(oldDate: Long){
+        letsGetData(oldDate, splashScreenOn)
+    }
+
+    fun letsGetData(oldDate: Long, progress: ObservableField<Boolean>){
 
        /* val HOUR = (3600 * 1000).toLong() //Временное решение
         val newData=(oldDate/1000)+12*HOUR*/
@@ -259,8 +266,8 @@ class AffectedAreaCommonViewModel@Inject constructor(
         Loger.log("data start for view Model $newData")
         compositeDisposable.add(
                 repository.date((newData).toString())?.let {
-                    it.doOnSubscribe { splashScreenOn.set(true) }
-                            .doOnComplete { splashScreenOn.set(false) }
+                    it.doOnSubscribe { progress.set(true) }
+                            .doOnComplete { progress.set(false) }
                             .subscribe({
                                 val data: List<Rash>
                                 Loger.log("**************data $it")
@@ -274,7 +281,9 @@ class AffectedAreaCommonViewModel@Inject constructor(
                                     copyToNewMap()
                                     loaded.value = true
                                 }
-                            }, {})
+                            }, {
+                                splashScreenOn.set(false) //testing
+                            })
 
                 }
         )

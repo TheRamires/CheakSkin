@@ -132,7 +132,7 @@
                     android:textSize="14sp"
                     android:layout_width="266dp"
                     android:layout_height="wrap_content"
-                    android:text="Наносятся непосредственно на пораженные участки кожи."/>
+                    android:text="Наносятся непосредственно на пораженные участки кожи"/>
                 <EditText
                     android:onTextChanged="@{fragment::topicalTherapyChanged}"
                     android:layout_marginLeft="15dp"

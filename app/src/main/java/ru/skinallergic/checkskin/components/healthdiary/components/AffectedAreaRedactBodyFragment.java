@@ -74,7 +74,6 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
 
         setCurrentPhotoId(0);
 
-
         ScrollView mScrollView= binding.scroll;
         scrollingAnimation(mScrollView);
 
