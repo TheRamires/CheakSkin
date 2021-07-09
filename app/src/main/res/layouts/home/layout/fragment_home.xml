@@ -168,7 +168,7 @@
 
                 <View
                     android:id="@+id/view"
-                    android:layout_width="80dp"
+                    android:layout_width="73dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="@dimen/margin_min"

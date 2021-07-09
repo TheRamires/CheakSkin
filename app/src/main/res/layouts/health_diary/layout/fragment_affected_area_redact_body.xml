@@ -148,6 +148,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     android:clickable="true"
                     android:focusable="true"
@@ -173,6 +174,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     android:clickable="true"
                     android:focusable="true"
@@ -198,6 +200,7 @@
                     android:layout_height="wrap_content"/>
 
                 <ImageView
+                    android:scaleType="centerCrop"
                     android:layout_gravity="center"
                     android:clickable="true"
                     android:focusable="true"

@@ -67,9 +67,19 @@ public class DatePickerThemeSmall extends DialogFragment implements DatePickerDi
         //day of
         int day=day_;
 
+        Date formattedDate= DateViewModel.simpleFormattingToDateWithMin("23:59 "+String.format("%02d", day)+"."+myMonth+"."+year);
+        Date current=new Date();
+        if (formattedDate.getTime()>current.getTime()){
+            Toast.makeText(requireContext(),"Дата не может быть больше текущей",Toast.LENGTH_SHORT).show();
+            Loger.log("Дата не может быть больше текущей");
+            String stringDate= DateViewModel.formating(current,DATE_NORMAL);
+            calendarListener.getDate(stringDate);
+            return;
+
+        }
+
         //Если dataEnd меньше startData, то увеличиваем день на один
         if (isEndDate){
-            Date formattedDate= DateViewModel.simpleFormattingToDateWithMin("23:59 "+String.format("%02d", day)+"."+myMonth+"."+year);
             if (startDate!=null && formattedDate.compareTo(startDate)<=0){
                 Toast.makeText(requireContext(),"Конечная дата не может быть раньше начальной",Toast.LENGTH_SHORT).show();
                 Loger.log("Конечная дата не может быть раньше начальной");

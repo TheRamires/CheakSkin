@@ -149,7 +149,7 @@
                         android:layout_height="wrap_content">
                         <View
                             android:id="@+id/view"
-                            android:layout_width="80dp"
+                            android:layout_width="73dp"
                             android:layout_height="80dp"
                             android:background="@drawable/hexagon_2"
                             android:layout_gravity="center"/>
