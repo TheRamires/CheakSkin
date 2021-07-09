@@ -173,7 +173,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="@dimen/margin_min"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/hexagon"
+                    android:background="@drawable/hexagon_2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -186,9 +186,9 @@
                     android:onClick="@{fragment::toReminders}"
                     android:id="@+id/button_remind"
                     android:layout_gravity="center"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/my_icon_healthy_5"/>
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/my_icon_remind"/>
 
                 <LinearLayout
                     android:id="@+id/linearLayout"

@@ -59,41 +59,35 @@ public class CalendarFragment extends Fragment {
         int month=Integer.parseInt(dateViewModel.getDate(MONTH_FORMAT))-1;
         int year=Integer.parseInt(dateViewModel.getDate(YEAR_FORMAT));
         datePicker.updateDate(year,month,day);
-/*
+
         datePicker.setOnDateChangedListener(new DatePicker.OnDateChangedListener() {
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                //"dd.MM.yyyy"
+                /*int monthOfYearTemp=datePicker.getMonth();
+                int dayOfMonthTemp=datePicker.getDayOfMonth();
+                int yearTemp=datePicker.getYear();*/
+
                 String month=String.format("%02d",monthOfYear+1);
                 String day=String.format("%02d",dayOfMonth);
+
                 String dateString=day+"."+month+"."+year;
 
                 Date date=dateViewModel.simpleFormattingToDate(dateString);
                 dateViewModel.dateLive.setValue(date);
+
                 Loger.log("unix "+dateViewModel.getDateUnix());
                 Loger.log("calendar "+dateViewModel.getDate());
+                commonViewModel.clearMaps();
 
-                //проверка
-/*
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd", Locale.US);
-                String ttt=formatter.format(dateViewModel.getDateUnix()*1000);
+                backStack(view);
 
-                //---------------------------
-                dateViewModel.setCurrentDate();
-                Loger.log("unix current "+dateViewModel.getDateUnix());
-
-                //------------------------------
-
-                Loger.log("new date "+ttt);
-          //  }
-       // });
-
- */
+            }
+        });
 
 
         return view;
     }
-
+/*
     @Override
     public void onPause() {
         super.onPause();
@@ -114,6 +108,6 @@ public class CalendarFragment extends Fragment {
         Loger.log("calendar "+dateViewModel.getDate());
         commonViewModel.clearMaps();
     }
-
+*/
     public void backStack (View view){Navigation.findNavController(view).popBackStack();}
 }

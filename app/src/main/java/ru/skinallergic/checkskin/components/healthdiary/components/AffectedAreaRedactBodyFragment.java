@@ -1,8 +1,11 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,7 +16,6 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
@@ -31,20 +34,24 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
-import ru.skinallergic.checkskin.components.healthdiary.QuitSaveLogic;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
+import ru.skinallergic.checkskin.components.profile.ActionFunction;
+import ru.skinallergic.checkskin.components.profile.DialogFunctionFragment;
+import ru.skinallergic.checkskin.components.profile.NavigationFunction;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreaRedactBodyBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.AccountViewModel;
 import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
-public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener {
+public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements Body.ClickListener, CompoundButton.OnCheckedChangeListener, Body.AreaListener{
     private Integer gender;
     private View view;
     private ImageView [] photoImageViewArray=new ImageView[3];
     private ToggleButton[] kindButtonsArray = new ToggleButton[6];
+    private List<ImageView> imageViewList = new ArrayList<>();
+    private FragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +78,10 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
         view=binding.getRoot();
         cameraPermission=new CameraPermission(requireActivity());
         photoController=new PhotoController(cameraPermission, this);
+        imageViewList.add(binding.photoRash0);
+        imageViewList.add(binding.photoRash1);
+        imageViewList.add(binding.photoRash2);
+        fragmentManager=requireActivity().getSupportFragmentManager();
 
         setCurrentPhotoId(0);
 
@@ -169,6 +180,7 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     private void createBody(int yourGender, View conteiner){
         Body bodyFragment=Body.newInstance(yourGender,"nothing");
         bodyFragment.setClickListener(this);
+        bodyFragment.setAreaListener(this::clickArea);
 
         FragmentManager fragmentManager=getParentFragmentManager();
         FragmentTransaction ft =fragmentManager.beginTransaction();
@@ -177,6 +189,15 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     }
 
     public void clickPhoto(View view_){
+        if (hasImage((ImageView)view_)){
+            for (int i=0;i<imageViewList.size();i++){
+                if (imageViewList.get(i)==view_){
+                    System.out.println("Do you want to delete this? "+i);
+                    dialogForDelete(i,imageViewList.get(i));
+                    return;
+                }
+            }
+        }
         imageView= view.findViewById(view_.getId());
         if (viewModelCommon.getNewArea()==null){
             Toast.makeText(getContext(),"Выберите пораженный участок тела", Toast.LENGTH_SHORT).show();
@@ -296,4 +317,57 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
                 anim.start();
             }
         });}
+
+    @Override
+    public void clickArea() { //если фото еще нет, то заполняем первую imageView
+        if (viewModelCommon.cleanPosition()){
+            clickPhoto(imageViewList.get(0));
+            return;
+        }
+
+        if (viewModelCommon.allPositionIsNull()){
+            clickPhoto(imageViewList.get(0));
+        }
+
+        //в противном случае ищем null позицию в мэпе и по ее индексу выбираем imageView
+        /*List<File> fileList = viewModelCommon.getNewMap().get(
+                viewModelCommon.getNewArea()
+        ).get(
+                viewModelCommon.getNewView()
+        ).getPhotos();
+        for (int i=0; i<fileList.size();i++){
+            if (fileList.get(i)!=null){
+                clickPhoto(imageViewList.get(i));
+            }
+        }*/
+    }
+    private boolean hasImage(@NonNull ImageView view) {
+        Drawable drawable = view.getDrawable();
+        boolean hasImage = (drawable != null);
+        if (hasImage && (drawable instanceof BitmapDrawable)) {
+            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
+        } return hasImage;
+    }
+    private void dialogForDelete(int index, ImageView imageView){
+        ActionFunction action=()-> {
+            List<File> newPhotoList=viewModelCommon.getNewMap().get(
+                    viewModelCommon.getNewArea()
+            ).get(
+                    viewModelCommon.getNewView()
+            ).getPhotos();
+            newPhotoList.set(index,null);
+            System.out.println("new photo list "+newPhotoList);
+            viewModelCommon.getNewMap().get(
+                    viewModelCommon.getNewArea()
+            ).get(
+                    viewModelCommon.getNewView()).setPhotos(newPhotoList);
+            imageView.setImageDrawable(null);
+        };
+        NavigationFunction stump=()->{};
+        String message="Удалить фотографию?";
+
+        DialogFunctionFragment dialog=new DialogFunctionFragment(message,action,stump);
+        dialog.show(fragmentManager,"deleteDialog");
+
+    }
 }

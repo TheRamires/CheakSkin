@@ -151,7 +151,7 @@
                             android:id="@+id/view"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
-                            android:background="@drawable/hexagon"
+                            android:background="@drawable/hexagon_2"
                             android:layout_gravity="center"/>
 <!--
                         <TextView
@@ -166,9 +166,9 @@
                             android:onClick="@{fragment::toReminders}"
                             android:id="@+id/button_remind"
                             android:layout_gravity="center"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="@drawable/my_icon_healthy_5"/>
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/my_icon_remind"/>
                     </FrameLayout>
 
                     <LinearLayout
@@ -182,7 +182,8 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:text="Состояние:"
+                            android:layout_marginTop="20dp"
+                            android:text="Напоминания"
                             android:id="@+id/textView13"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -192,7 +193,7 @@
                             android:textStyle="bold"
                             android:textSize="18sp"
                             android:textColor="@color/purple_300"
-                            android:text="Не заполнено"
+                            android:text=""
                             android:id="@+id/state_string"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

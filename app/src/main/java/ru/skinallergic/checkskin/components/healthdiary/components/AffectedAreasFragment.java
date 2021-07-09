@@ -93,7 +93,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         photoController=new PhotoController(cameraPermission, this);
         viewModelCommon.data(dateViewModel.getDateUnix());
 
-
         recyclerView=binding.recycler;
         viewModelCommon.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
@@ -132,7 +131,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         listExample.add("Мулкая сыпь");
 
         scrollView=binding.scrollView;
-
 
         return view;
     }

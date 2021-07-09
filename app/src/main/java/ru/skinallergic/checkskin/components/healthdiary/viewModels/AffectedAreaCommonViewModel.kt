@@ -128,18 +128,18 @@ class AffectedAreaCommonViewModel@Inject constructor(
 
     fun addReport(date: Long){
         val allAreas=newMap.keys
-        if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
+        if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
         if (!checkFullyFields(allAreas)){return} // **самая важная проверка -- "есть ли незаполненные поля"**
         for (area in allAreas){
             val allViews=newMap[area]?.keys
-            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
+            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
 
             for (view in allViews){
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return}
+                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
                 Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date, area, view, kind, files)
@@ -149,14 +149,14 @@ class AffectedAreaCommonViewModel@Inject constructor(
     fun checkFullyFields(allAreas: MutableSet<Int>): Boolean{
         for (area in allAreas){
             val allViews=newMap[area]?.keys
-            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return false}
+            if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return false}
 
             for (view in allViews){
                 if(view ==null){continue}
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE,true);return false}
+                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return false}
 
             }
         }
@@ -176,7 +176,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
     private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
         val fieldsIsEmpty=!checkReportField(files, area, view, kinds)
         if (fieldsIsEmpty) {
-            toastyManager.toastyyyy(MESSAGE,true);return}
+            toastyManager.toastyyyy(MESSAGE, true);return}
 
         val newArea: RequestBody =multipartManager.createPartFromString(area)
         val newView: RequestBody =multipartManager.createPartFromString(view)
@@ -251,7 +251,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         }
     }
     fun notSaving(){
-        toastyManager.toastyyyy(MESSAGE,true)
+        toastyManager.toastyyyy(MESSAGE, true)
         notSaving.value=true
 
     }
@@ -424,6 +424,49 @@ class AffectedAreaCommonViewModel@Inject constructor(
             photoDirectoryInMemory=null
         }
     }
+    fun cleanPosition():Boolean?{
+
+        if (newMap.get(getNewArea()) == null) {
+            return true
+        }
+        if (newMap.get(getNewArea())?.get(getNewView()) == null) {
+            return true
+        }
+        return false
+    }
+    fun allPositionIsNull(): Boolean{
+        var boolean=true
+
+
+        //в противном случае ищем null позицию в мэпе и по ее индексу выбираем imageView
+        val fileList: MutableList<File?>? = newMap.get(
+                getNewArea()
+        )?.get(
+                getNewView()
+        )?.photos
+        if (fileList==null){return true}
+        for (i in fileList?.indices!!) {
+            if (fileList[i] != null) {
+                boolean=false
+            }
+        }
+        return boolean
+    }
+
+    /*fun findCleanImageViewIndex():Int?{
+        var result: Int?=null
+
+        //в противном случае ищем null позицию в мэпе и по ее индексу выбираем imageView
+        val fileList = newMap[getNewArea()]?.get(getNewKind())?.photos
+        if (fileList==null){return null}
+        for (i in fileList.indices) {
+            if (fileList[i] == null) {
+                result=i
+            }
+        }
+        return result
+    }*/
+
 }
 fun <T>List<T>?.removeNulls() : List<T>{
     val finalList = mutableListOf<T>()

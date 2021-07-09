@@ -196,8 +196,8 @@ public class HealthDiaryFragment extends Fragment {
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s!=null){
-                    binding.stateString.setText(s);
+                if (s!=null){ //сосотояние убрали
+                    //binding.stateString.setText(s);
                 }
             }
         });

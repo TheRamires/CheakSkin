@@ -199,6 +199,8 @@ public class StatisticsFragment extends Fragment {
                         entityStatistics, R.layout.item_statistic, new RecyclerCallback<ItemStatisticBinding, EntityStatistic>() {
                     @Override
                     public void bind(ItemStatisticBinding binder, EntityStatistic entity) {
+                        binder.statisticItem.setOnClickListener((View v) ->{}); //stump for adapter interface
+
                        /* if (entity.getCount()==0){
                             binder.statisticItem.setVisibility(View.GONE);
                         }*/

@@ -46,9 +46,11 @@ public class Body extends Fragment{
     private List<ToggleButton> toggles=new ArrayList<>();
 
     ClickListener clickListener;
+    AreaListener areaListener;
     public void setClickListener(ClickListener clickListener){
         this.clickListener=clickListener;
     }
+    public void setAreaListener(AreaListener areaListener){this.areaListener=areaListener;}
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -159,9 +161,13 @@ public class Body extends Fragment{
             bodyBack=getResources().getDrawable(R.drawable.ic_body_woman_back);
         }
     }
+    public interface AreaListener{
+        void clickArea();
+
+    }
 
     public interface ClickListener{
-        public void arround();
+        void arround();
     }
     private void toggleListener(ToggleButton toggleButton){
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -173,6 +179,7 @@ public class Body extends Fragment{
                     Integer area=
                             AreaManager.INSTANCE.getIdOfArea(buttonView.getId());
                     viewModel.getNewAreaLive().setValue(area);
+                    areaListener.clickArea();
                 }else if (nonChecked()){
                     viewModel.getNewAreaLive().setValue(null);
                 }

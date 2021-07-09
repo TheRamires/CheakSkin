@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 <FrameLayout
+    android:clickable="true"
     android:id="@+id/statistic_item"
     android:layout_marginHorizontal="@dimen/margin_min"
     xmlns:android="http://schemas.android.com/apk/res/android"
