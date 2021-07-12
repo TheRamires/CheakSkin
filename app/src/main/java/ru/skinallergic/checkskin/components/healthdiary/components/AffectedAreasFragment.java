@@ -1,6 +1,7 @@
 package ru.skinallergic.checkskin.components.healthdiary.components;
 
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -224,8 +225,16 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     }
     private void clickListenerForImageView(ImageView imageView, int area, int view, int index){
         imageView.setOnClickListener((View v) ->{
+            if (!viewModel.redactModeIsOn()){
+                Drawable drawable=imageView.getDrawable();
+                if (drawable!=null){
+                    showPhotoDialog(drawable);
+                }
+            }
+
             clickPhoto(imageView,index);
-            setAreaAndView(area,view);});
+            setAreaAndView(area,view);
+        });
     }
 
     private void completionKindList(List<KindTemp> kindTemps, LinearLayout container, int area, int view){
@@ -275,10 +284,11 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     }
 
     public void redactMode(View view){
-        Loger.log("redact");
+        /*Loger.log("redact");
         savePhotoPath();
         viewModel.redactModeOn();
-        scrollingAnimation(scrollView);
+        scrollingAnimation(scrollView);*/
+        toRedactBody(view); //testing
     }
     public void toRedactBody(View view){
         Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);

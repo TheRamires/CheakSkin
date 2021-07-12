@@ -1,12 +1,22 @@
 package ru.skinallergic.checkskin.components.healthdiary.components
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
@@ -69,7 +79,8 @@ abstract class BaseAreaFragment : Fragment() {
                     extras?.let { bitmap = extras["data"] as Bitmap? }
                 }
             }
-            val finalBitmap = PhotoController.cropToSquare(bitmap)
+            //val finalBitmap = PhotoController.cropToSquare(bitmap)  //testing **
+            val finalBitmap = bitmap
             if (finalBitmap != null) {
                 val actionFunction = object : ActionFunction {
                     override fun action() {
@@ -260,5 +271,19 @@ abstract class BaseAreaFragment : Fragment() {
         val message = "Удалить фотографию?"
         val dialog = DialogFunctionFragment(message, action, stump)
         dialog.show(parentFragmentManager, "deleteDialog")
+    }
+    fun showPhotoDialog(photo: Drawable){
+        val dialog= Dialog(requireActivity())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.photo_dialog)
+        val container=dialog.findViewById<FrameLayout>(R.id.container)
+        container.clipToOutline=true
+        val imageView=dialog.findViewById<ImageView>(R.id.image_view)
+        imageView?.setImageDrawable(photo)
+        //val buttonClose=dialog.findViewById<Button>(R.id.button_close)
+       // buttonClose?.setOnClickListener { dialog.dismiss() }
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 }
