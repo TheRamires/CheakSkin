@@ -3,6 +3,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
@@ -16,7 +17,9 @@ import ru.skinallergic.checkskin.components.healthdiary.*
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel
 import ru.skinallergic.checkskin.components.profile.ActionFunction
+import ru.skinallergic.checkskin.components.profile.DialogFunctionFragment
 import ru.skinallergic.checkskin.components.profile.DialogOnlyOneFunc
+import ru.skinallergic.checkskin.components.profile.NavigationFunction
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.io.File
@@ -53,7 +56,7 @@ abstract class BaseAreaFragment : Fragment() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 PhotoController.GALLERY_REQUEST -> {
-                    val selectedImage = data!!.data
+                    val selectedImage = data?.data
                     try {
                         val bitmapTemp = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, selectedImage)
                         bitmap = BitmapManager.compressBitmap(bitmapTemp)
@@ -62,8 +65,8 @@ abstract class BaseAreaFragment : Fragment() {
                     }
                 }
                 PhotoController.REQUEST_TAKE_PHOTO -> {
-                    val extras = data!!.extras
-                    bitmap = extras!!["data"] as Bitmap?
+                    val extras = data?.extras
+                    extras?.let { bitmap = extras["data"] as Bitmap? }
                 }
             }
             val finalBitmap = PhotoController.cropToSquare(bitmap)
@@ -210,6 +213,36 @@ abstract class BaseAreaFragment : Fragment() {
         } else Navigation.findNavController(requireView()).popBackStack()
     }
     fun quitSaveLogic(navigation: BackNavigation){
-        QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, { this.popBackTrue =true ;saving() }, manager)
+        QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, { this.popBackTrue = true;saving() }, manager)
+    }
+
+    open fun hasImage(view: ImageView): Boolean {
+        val drawable = view.drawable
+        var hasImage = drawable != null
+        if (hasImage && drawable is BitmapDrawable) {
+            hasImage = drawable.bitmap != null
+        }
+        return hasImage
+    }
+
+    open fun dialogForDelete(index: Int, imageView: ImageView) {
+        val action = object : ActionFunction {
+            override fun action() {
+                val newPhotoList = viewModelCommon.newMap[viewModelCommon.getNewArea()]!![viewModelCommon.getNewView()]!!.photos
+                newPhotoList!![index] = null
+                println("new photo list $newPhotoList")
+                viewModelCommon.newMap[viewModelCommon.getNewArea()]!![viewModelCommon.getNewView()]!!.photos = newPhotoList
+                imageView.setImageDrawable(null)
+                viewModelCommon.someChanging() // testing
+            }
+        }
+        val stump = object : NavigationFunction {
+            override fun navigate() {
+
+            }
+        }
+        val message = "Удалить фотографию?"
+        val dialog = DialogFunctionFragment(message, action, stump)
+        dialog.show(parentFragmentManager, "deleteDialog")
     }
 }

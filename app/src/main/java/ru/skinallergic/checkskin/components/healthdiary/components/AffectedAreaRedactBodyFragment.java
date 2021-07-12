@@ -341,33 +341,4 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             }
         }*/
     }
-    private boolean hasImage(@NonNull ImageView view) {
-        Drawable drawable = view.getDrawable();
-        boolean hasImage = (drawable != null);
-        if (hasImage && (drawable instanceof BitmapDrawable)) {
-            hasImage = ((BitmapDrawable)drawable).getBitmap() != null;
-        } return hasImage;
-    }
-    private void dialogForDelete(int index, ImageView imageView){
-        ActionFunction action=()-> {
-            List<File> newPhotoList=viewModelCommon.getNewMap().get(
-                    viewModelCommon.getNewArea()
-            ).get(
-                    viewModelCommon.getNewView()
-            ).getPhotos();
-            newPhotoList.set(index,null);
-            System.out.println("new photo list "+newPhotoList);
-            viewModelCommon.getNewMap().get(
-                    viewModelCommon.getNewArea()
-            ).get(
-                    viewModelCommon.getNewView()).setPhotos(newPhotoList);
-            imageView.setImageDrawable(null);
-        };
-        NavigationFunction stump=()->{};
-        String message="Удалить фотографию?";
-
-        DialogFunctionFragment dialog=new DialogFunctionFragment(message,action,stump);
-        dialog.show(fragmentManager,"deleteDialog");
-
-    }
 }

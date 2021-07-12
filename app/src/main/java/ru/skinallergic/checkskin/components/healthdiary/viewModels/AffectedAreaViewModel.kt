@@ -14,19 +14,22 @@ class AffectedAreaViewModel @Inject constructor(val repository: AffectedArreaRep
         baseRepository.compositeDisposable=this.compositeDisposable
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
-    val redactModeLive= ObservableField<Boolean>()
+    val redactModeLive= MutableLiveData<Boolean>()
+    val redactModeobservable= ObservableField<Boolean>()
 
     var stumpForImageView: Boolean = false
     var stumpForButtonClose: Boolean = false
 
     fun redactModeOn(){
-        redactModeLive.set(true)
+        redactModeLive.value=true
+        redactModeobservable.set(true)
     }
     fun redactModeOff(){
-        redactModeLive.set(false)
+        redactModeLive.value=false
+        redactModeobservable.set(false)
     }
 
     fun redactModeIsOn():Boolean{
-        return !(redactModeLive.get() ==null || redactModeLive.get()==false)
+        return !(redactModeLive.value ==null || redactModeLive.value==false)
     }
 }

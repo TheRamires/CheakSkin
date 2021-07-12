@@ -52,7 +52,7 @@
                 android:text="Фото высыпаний"
                 />
             <ImageView
-                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.GONE : View.VISIBLE ,default=visible}"
+                android:visibility="@{affectedAreaVM.redactModeobservable.booleanValue() ? View.GONE : View.VISIBLE ,default=visible}"
                 android:onClick="@{fragment::redactMode}"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"/>
 
             <ImageButton
-                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
+                android:visibility="@{affectedAreaVM.redactModeobservable.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="bottom|center_horizontal"
                 android:onClick="@{fragment::toRedactBody}"
@@ -96,7 +96,7 @@
                 android:layout_height="80dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:visibility="@{affectedAreaVM.redactModeLive.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
+                android:visibility="@{affectedAreaVM.redactModeobservable.booleanValue() ? View.VISIBLE : View.GONE ,default=gone}"
                 android:layout_gravity="bottom"
                 android:onClick="@{fragment::save}"
                 android:layout_marginBottom="30dp"

@@ -11,8 +11,8 @@ import java.util.*
 object BitmapManager {
 
     fun compressBitmap(bitmap: Bitmap): Bitmap {
-        val halfWidth = bitmap.getWidth() / 7
-        val halfHeight = bitmap.getWidth() / 7
+        val halfWidth = bitmap.width / 7
+        val halfHeight = bitmap.height / 7
 
         val bmHalf = Bitmap.createScaledBitmap(bitmap, halfWidth,
                 halfHeight, false)

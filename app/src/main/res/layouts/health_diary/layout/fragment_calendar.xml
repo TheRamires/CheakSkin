@@ -51,11 +51,15 @@
             android:background="@color/gray"/>
     </RelativeLayout>
 
-        <RelativeLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:padding="@dimen/margin_normal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content">
 
             <com.dd.ShadowLayout
                 android:layout_width="match_parent"
@@ -67,6 +71,8 @@
                 app:sl_shadowRadius="10dp">
 
                 <DatePicker
+                    android:clickable="true"
+                    android:focusable="true"
                     android:paddingHorizontal="5dp"
                     style="@style/date_picker_theme"
 
@@ -78,8 +84,20 @@
                     android:id="@+id/datePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
             </com.dd.ShadowLayout>
-        </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/accept_button"
+                android:onClick="@{fragment::toAccept}"
+                android:layout_marginHorizontal="@dimen/norm_button_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_pressed_blue"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:text="Принять дату"
+                />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 </layout>

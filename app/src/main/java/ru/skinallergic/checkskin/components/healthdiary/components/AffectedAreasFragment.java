@@ -92,6 +92,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         View view=binding.getRoot();
         photoController=new PhotoController(cameraPermission, this);
         viewModelCommon.data(dateViewModel.getDateUnix());
+        viewModelCommon.setSomeChanged(false);
 
         recyclerView=binding.recycler;
         viewModelCommon.getLoaded().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -128,9 +129,19 @@ public class AffectedAreasFragment extends BaseAreaFragment {
 
         List<String> listExample=new ArrayList<>();
         listExample.add("Крупная сыпь");
-        listExample.add("Мулкая сыпь");
+        listExample.add("Мелкая сыпь");
 
         scrollView=binding.scrollView;
+        viewModel.getRedactModeLive().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+
+
+                if (!aBoolean && viewModelCommon.getSomeChanged()){
+                    viewModelCommon.data(dateViewModel.getDateUnix());
+                }
+            }
+        });
 
         return view;
     }
@@ -168,13 +179,14 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         /*imageView0.setOnClickListener((View v) ->{clickPhoto(imageView0);setAreaAndView(area,view);});
                         imageView1.setOnClickListener((View v) ->{clickPhoto(imageView1);setAreaAndView(area,view);});
                         imageView2.setOnClickListener((View v) ->{clickPhoto(imageView2);setAreaAndView(area,view);});*/
-                        clickListenerForImageView(imageView0, area,view);
-                        clickListenerForImageView(imageView1, area,view);
-                        clickListenerForImageView(imageView2, area,view);
+                        clickListenerForImageView(imageView0, area,view,0);
+                        clickListenerForImageView(imageView1, area,view,1);
+                        clickListenerForImageView(imageView2, area,view,2);
 
                         String FilePath01=showByPicassoWithSave(photo1, imageView0);
                         String FilePath02=showByPicassoWithSave(photo2, imageView1);
                         String FilePath03=showByPicassoWithSave(photo3, imageView2);
+                        Loger.log("path photo 1, "+FilePath01+"\n path photo 2 "+FilePath02+"\n path photo 3 "+FilePath03);
 
                         viewModelCommon.putSavedPhotoToOldMap(area, view, FilePath01,  FilePath02, FilePath03);
 
@@ -187,7 +199,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         for (Integer index : kindList){
                             String kindTitle=AreaManager.INSTANCE.getKindTitle(index);
                             kindTemps.add(new KindTemp(index,kindTitle));
-
                         }
 
                         LinearLayout kindContainer=binder.kindContainer;
@@ -196,9 +207,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         });
         recyclerView.setAdapter(adapter);
     }
-    private void clickListenerForImageView(ImageView imageView, int area, int view){
+    private void clickListenerForImageView(ImageView imageView, int area, int view, int index){
         imageView.setOnClickListener((View v) ->{
-            clickPhoto(imageView);
+            clickPhoto(imageView,index);
             setAreaAndView(area,view);});
     }
 
@@ -242,13 +253,14 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     public void backStack(View view){
         BackNavigation pop=() ->{ viewModel.redactModeOff();};
 
-        Boolean redactMode=viewModel.getRedactModeLive().get();
+        Boolean redactMode=viewModel.getRedactModeLive().getValue();
         if (redactMode == null || redactMode==false){
             Navigation.findNavController(view).popBackStack();
         } else {quitSaveLogic(pop);}
     }
 
     public void redactMode(View view){
+        Loger.log("redact");
         viewModel.redactModeOn();
         scrollingAnimation(scrollView);
     }
@@ -260,8 +272,13 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModelCommon.getNewViewLive().setValue(view);
     }
 
-    public void clickPhoto(ImageView imageView_){
+    public void clickPhoto(ImageView imageView_, int index){
         if (viewModel.redactModeIsOn()){
+            if (hasImage(imageView_)){
+                System.out.println("Do you want to delete this? "+index);
+                dialogForDelete(index,imageView_);
+                return;
+            }
             imageView= imageView_;
             toPhoto(imageView);
         }

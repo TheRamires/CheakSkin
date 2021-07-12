@@ -4,6 +4,7 @@ import android.content.Context;
 
 import ru.skinallergic.checkskin.entrance.helper_classes.ValidatorField;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
