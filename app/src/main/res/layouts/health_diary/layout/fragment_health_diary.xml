@@ -5,18 +5,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="fragment"
             type="ru.skinallergic.checkskin.components.healthdiary.HealthDiaryFragment" />
         <variable
             name="viewModel"
-            type="ru.skinallergic.checkskin.components.healthdiary.HealthDiaryFragment" />
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent">
-
 
         <LinearLayout
             android:orientation="vertical"
@@ -334,11 +334,21 @@
                                 android:textSize="13sp" />
 
                         </com.dd.ShadowLayout>
-
                     </RelativeLayout>
-
                 </RelativeLayout>
             </ScrollView>
         </LinearLayout>
+
+        <FrameLayout
+            android:visibility="@{viewModel.splashScreenOn ? View.VISIBLE : View.GONE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

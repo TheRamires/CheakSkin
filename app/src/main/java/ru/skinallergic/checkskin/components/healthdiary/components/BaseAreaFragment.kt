@@ -133,6 +133,15 @@ abstract class BaseAreaFragment : Fragment() {
         } else Picasso.with(requireContext()).load(file).into(imageView)
     }
 
+    fun showByPicasso(path: String?, imageView: ImageView) {
+        if (path == null) {
+            return
+        }
+        Picasso.with(requireContext())
+                .load(path)
+                .placeholder(R.drawable.no_photo)
+                .into(imageView)
+    }
     //*******************************************save temp photo
     //save image
     fun showByPicassoWithSave(path: String?, imageView: ImageView): String? {
@@ -145,6 +154,13 @@ abstract class BaseAreaFragment : Fragment() {
                 .into(imageView)
         return imageViewModel.imageDownload(path){ dir->
             viewModelCommon.photoDirectoryInMemory = dir // testing +
+        }
+    }
+    fun savePath(path: String?): String?{
+        return path?.let {
+            imageViewModel.imageDownload(path) { dir ->
+                viewModelCommon.photoDirectoryInMemory = dir // testing +
+            }
         }
     }
 /*

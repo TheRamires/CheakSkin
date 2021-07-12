@@ -85,6 +85,20 @@ public class DateViewModel extends ViewModel {
         return sdf.format(date);
     }
 
+    //**********************************часовыой пояс
+    public Date simpleFormattingToDateStump(String formatedStringDate){
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm dd.MM.yyyy",Locale.getDefault());
+        Date date = null;
+        try {
+            date = formatter.parse(formatedStringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long unixTime = (long)date.getTime()/1000;
+
+        return date;
+    }
+    //**********************************часовыой пояс
 
     public Date simpleFormattingToDate(String formatedStringDate){
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy",Locale.getDefault());

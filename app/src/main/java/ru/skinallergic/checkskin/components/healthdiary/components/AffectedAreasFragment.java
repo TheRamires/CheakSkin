@@ -72,7 +72,6 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModelCommon.getNewViewLive().setValue(null);
         viewModelCommon.setSomeChanged(false);
         viewModel.redactModeOff();
-
     }
 
     @Override
@@ -107,7 +106,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                     viewModelCommon.getLoaded().setValue(null);
                     if (viewModelCommon.getOldMap().isEmpty() || viewModelCommon.getOldMap().size()==0){
                         toRedactBody(view);
-                    } else createAdapter();
+                    } else {
+                        createAdapter();
+                    }
                 } else {toRedactBody(view);}
             }
         });
@@ -136,9 +137,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             @Override
             public void onChanged(Boolean aBoolean) {
 
-
                 if (!aBoolean && viewModelCommon.getSomeChanged()){
                     viewModelCommon.data(dateViewModel.getDateUnix());
+
                 }
             }
         });
@@ -146,8 +147,22 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         return view;
     }
 
+    private void savePhotoPath(){
+        List<Rash> rashList = viewModelCommon.getOldMap();
+        if (rashList==null){return;}
+        for (Rash rash: rashList){
+            if (rash==null){continue;}
+            String filePath01=savePath(rash.getPhoto_1());
+            String filePath02=savePath(rash.getPhoto_2());
+            String filePath03=savePath(rash.getPhoto_3());
+            viewModelCommon.putSavedPhotoToOldMap(rash.getArea(), rash.getView(), filePath01,  filePath02, filePath03);
+        }
+        viewModelCommon.copyToNewMap();
+    }
+
     private void createAdapter(){
         Loger.log("************ in createAdapter. oldMap "+viewModelCommon.getOldMap());
+
         RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModelCommon.getOldMap(),
                 new RecyclerAdapterArea.RecyclerCallback() {
                     @Override
@@ -183,14 +198,13 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         clickListenerForImageView(imageView1, area,view,1);
                         clickListenerForImageView(imageView2, area,view,2);
 
-                        String FilePath01=showByPicassoWithSave(photo1, imageView0);
-                        String FilePath02=showByPicassoWithSave(photo2, imageView1);
-                        String FilePath03=showByPicassoWithSave(photo3, imageView2);
-                        Loger.log("path photo 1, "+FilePath01+"\n path photo 2 "+FilePath02+"\n path photo 3 "+FilePath03);
+                        showByPicasso(photo1, imageView0);
+                        showByPicasso(photo2, imageView1);
+                        showByPicasso(photo3, imageView2);
+                        //   Loger.log("path photo 1, "+FilePath01+"\n path photo 2 "+FilePath02+"\n path photo 3 "+FilePath03);
 
-                        viewModelCommon.putSavedPhotoToOldMap(area, view, FilePath01,  FilePath02, FilePath03);
-
-                        viewModelCommon.copyToNewMap();
+                        // viewModelCommon.putSavedPhotoToOldMap(area, view, FilePath01,  FilePath02, FilePath03);
+                        // viewModelCommon.copyToNewMap();
 
                         //kindTemps.clear();
                          List<KindTemp> kindTemps = new ArrayList<>();
@@ -202,6 +216,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         }
 
                         LinearLayout kindContainer=binder.kindContainer;
+                        kindContainer.removeAllViews();
                         completionKindList(kindTemps, kindContainer, area,view);
                     }
         });
@@ -261,6 +276,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
 
     public void redactMode(View view){
         Loger.log("redact");
+        savePhotoPath();
         viewModel.redactModeOn();
         scrollingAnimation(scrollView);
     }

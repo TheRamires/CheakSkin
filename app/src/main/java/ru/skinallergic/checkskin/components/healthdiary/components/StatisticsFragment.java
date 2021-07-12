@@ -84,6 +84,7 @@ public class StatisticsFragment extends Fragment {
 
         return view;
     }
+
     public void backStack(View view){
         Navigation.findNavController(view).popBackStack();
     }

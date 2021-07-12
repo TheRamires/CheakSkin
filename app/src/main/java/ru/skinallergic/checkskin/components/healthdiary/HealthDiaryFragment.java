@@ -49,6 +49,10 @@ public class HealthDiaryFragment extends Fragment {
         checkMarkOff=AppCompatResources.getDrawable(requireContext(),R.drawable.ic_cheakbox_blue_off);
         checkMark.setBounds(0, 0, 45, 45);
         checkMarkOff.setBounds(0, 0, 45, 45);
+
+        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
     }
 
     @Override
@@ -61,13 +65,9 @@ public class HealthDiaryFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         FragmentHealthDiaryBinding binding= FragmentHealthDiaryBinding.inflate(inflater);
         binding.setFragment(this);
+        binding.setViewModel(viewModel);
         View view=binding.getRoot();
         bundle=new Bundle();
-
-
-        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
-        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
-        viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
 
         Loger.log(dateViewModel.getDateUnix(),TAG_HEALTHY);
         //Настройка кнопок ---------------------------------------------------------------------
@@ -167,10 +167,6 @@ public class HealthDiaryFragment extends Fragment {
             bundle.putString("date",date);
             dateObservable.set(date);
         });
-
-        Loger.log(dateViewModel.getDateUnix().toString());
-        Loger.log(dateViewModel.getDate().toString());
-
         Long dateUnix= (dateViewModel.getDateUnix());
         if (dateUnix!=null){
             viewModel.data(dateViewModel.getDateUnix());

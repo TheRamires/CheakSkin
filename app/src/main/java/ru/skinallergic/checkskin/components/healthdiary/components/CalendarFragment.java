@@ -76,10 +76,14 @@ public class CalendarFragment extends Fragment {
                     String month=String.format("%02d",monthOfYear+1);
                     String day=String.format("%02d",dayOfMonth);
 
-                    String dateString=day+"."+month+"."+year;
+                    //**********************************часовыой пояс
+                    //String dateString=day+"."+month+"."+year;
+                    //Date date=dateViewModel.simpleFormattingToDate(dateString);
 
-                    Date date=dateViewModel.simpleFormattingToDate(dateString);
+                    String dateString="12:00 "+day+"."+month+"."+year;  //stump
+                    Date date=dateViewModel.simpleFormattingToDateStump(dateString); //stump
                     setDateLive(date);
+                    //**********************************часовыой пояс
 
                     Loger.log("unix "+dateViewModel.getDateUnix());
                     Loger.log("calendar "+dateViewModel.getDate());
@@ -92,6 +96,7 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
+
 /*
     @Override
     public void onPause() {
@@ -124,9 +129,14 @@ public class CalendarFragment extends Fragment {
         String month=String.format("%02d",monthOfYear+1);
         String day=String.format("%02d",dayOfMonth);
 
-        String dateString=day+"."+month+"."+year;
+//**********************************часовыой пояс
+        //String dateString=day+"."+month+"."+year;
+        //Date date=dateViewModel.simpleFormattingToDate(dateString);
 
-        Date date=dateViewModel.simpleFormattingToDate(dateString);
+        String dateString="12:00 "+day+"."+month+"."+year;  //stump
+        Date date=dateViewModel.simpleFormattingToDateStump(dateString); //stump
+//**********************************часовыой пояс
+
         setDateLive(date);
 
         Loger.log("unix "+dateViewModel.getDateUnix());

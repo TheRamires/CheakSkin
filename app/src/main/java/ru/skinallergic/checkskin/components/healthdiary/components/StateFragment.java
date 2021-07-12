@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class StateFragment extends Fragment {
     public static String TRIGGERS_HEALTHY_STATUS="healthStatus";
     private StateViewModel stateViewModel;
     private DateViewModel dateViewModel;
-    private int[] buttonsId=new int[3];
+    private final int[] buttonsId=new int[3];
     private Integer currentStatus=null;
 
     @Override
@@ -55,12 +56,21 @@ public class StateFragment extends Fragment {
         stateViewModel.getLoaded().observe(getViewLifecycleOwner(), new Observer<WritingData>() {
             @Override
             public void onChanged(WritingData writingData) {
-                Loger.log("stateViewModel.getLoaded() "+writingData, TAG_HEALTHY);
-                stateViewModel.getSplashScreenOn().set(false);
+                //stateViewModel.getSplashScreenOn().set(false);
+                if (writingData==null){
+                    Loger.log("writingData is null");
+                    return;
+                }
+                if (writingData.getHealth_status()==null){
+                    Loger.log("writingData.getHealth_status() is null");
+                    return;
+                }
                 int count=writingData.getHealth_status();
+                Loger.log("count "+count);
                 for (int i=0;i<buttonsId.length;i++){
                     if (i==count){
                         currentStatus=buttonsId[i];
+                        Loger.log("currentStatus "+currentStatus);
                         radioGroup.check(buttonsId[i]);
                         stateViewModel.getLoaded().setValue(null);
                     }

@@ -233,6 +233,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
                                newView: RequestBody,
                                newKinds: RequestBody,
                                files: List<MultipartBody.Part>){
+        //Loger.log("redactPositions "+files[0]+files[1]+files[2])
         var finalFiles = mutableListOf<File>()
 
         val observable =repository.redact(id, newArea, newView, newKinds, files)
