@@ -228,6 +228,7 @@ abstract class BaseAreaFragment : Fragment() {
     fun save(view: View) {
         saving()
     }
+
     fun saving() {
         if (viewModelCommon.isChanged()) {
             try {
@@ -239,6 +240,7 @@ abstract class BaseAreaFragment : Fragment() {
             }
         } else Navigation.findNavController(requireView()).popBackStack()
     }
+
     fun quitSaveLogic(navigation: BackNavigation){
         QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, { this.popBackTrue = true;saving() }, manager)
     }

@@ -79,6 +79,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     public void onDestroy() {
         super.onDestroy();
         //testing -
+        Loger.log("AffectedAreasFragment. onDestroy and clearPhotoDirectory");
         viewModelCommon.clearPhotoDirectory(viewModelCommon.getPhotoDirectoryInMemory());
     }
 
@@ -288,7 +289,10 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         savePhotoPath();
         viewModel.redactModeOn();
         scrollingAnimation(scrollView);*/
-        toRedactBody(view); //testing
+        //testing********************************
+        savePhotoPath();
+        toRedactBody(view);
+        //testing********************************
     }
     public void toRedactBody(View view){
         Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);

@@ -117,7 +117,6 @@
                         android:background="@drawable/statistic"
                         android:onClick="@{fragment::statistics}" />
 
-
                     <ImageView
                         android:layout_toLeftOf="@+id/date"
                         android:id="@+id/imageView2"
@@ -149,7 +148,7 @@
                         android:layout_height="wrap_content">
                         <View
                             android:id="@+id/view"
-                            android:layout_width="73dp"
+                            android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:background="@drawable/hexagon"
                             android:layout_gravity="center"/>

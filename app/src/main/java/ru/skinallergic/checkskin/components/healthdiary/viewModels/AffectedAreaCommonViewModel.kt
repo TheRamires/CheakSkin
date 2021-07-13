@@ -130,6 +130,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         val allAreas=newMap.keys
         if (allAreas.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
         if (!checkFullyFields(allAreas)){return} // **самая важная проверка -- "есть ли незаполненные поля"**
+
         for (area in allAreas){
             val allViews=newMap[area]?.keys
             if (allViews==null || allViews.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
@@ -197,6 +198,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
             val tempFile=finalFiles.get(count)
 
             val finalFile=tempFile
+            Loger.log("finalFile "+finalFile)
 
             if (finalFile!=null){
                 multiParts.add(
@@ -246,7 +248,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
                         saved.value = true
                         Loger.log(it.string())
                     }, {
-                        Loger.log("throwable $it")
+                        Loger.log("redactPosition throwable $it")
                     })
             )
         }
@@ -418,6 +420,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
     }
 
     override fun onCleared() {
+        Loger.log("Common view model onCleared")
         super.onCleared()
         unsubscribe()
         photoDirectoryInMemory?.let { directory->
