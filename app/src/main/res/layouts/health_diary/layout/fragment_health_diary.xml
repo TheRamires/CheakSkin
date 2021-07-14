@@ -181,6 +181,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:textColor="@color/purple_300"
                             android:layout_marginTop="20dp"
                             android:text="Напоминания"
                             android:id="@+id/textView13"

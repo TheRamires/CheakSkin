@@ -58,7 +58,7 @@ public class Body extends Fragment{
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private int gender=0;
+    private int gender=GENDER_MALE;
     private String mParam2;
 
     // TODO: Rename and change types and number of parameters
