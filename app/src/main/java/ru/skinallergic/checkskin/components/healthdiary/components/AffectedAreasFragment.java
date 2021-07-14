@@ -21,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
@@ -29,7 +28,6 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
-import ru.skinallergic.checkskin.components.healthdiary.adapters.DeletePositionArea;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapterArea;
 import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
@@ -37,7 +35,6 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaC
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
-import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaSwipeBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -108,7 +105,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                 if (aBoolean){
                     viewModelCommon.getLoaded().setValue(null);
                     if (viewModelCommon.getOldMap().isEmpty() || viewModelCommon.getOldMap().size()==0){
-                        Loger.log("viewModelCommon.getOldMap() •1");
+                        Loger.log("viewModelCommon.getOldMap() •1 -- "+viewModelCommon.getOldMap().isEmpty()+", "+viewModelCommon.getOldMap().size());
                         toRedactBody(view);
                     } else {
                         Loger.log("viewModelCommon.getOldMap() •2");
@@ -176,7 +173,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                 new RecyclerAdapterArea.RecyclerCallback() {
                     @Override
                     public void bind(ItemAreaSwipeBinding itemAreaSwipeBinding, Rash entity ) {
-                        ItemAreaBinding binder=itemAreaSwipeBinding.include;  //*** testing
+                        ItemAreaSwipeBinding binder=itemAreaSwipeBinding;  //*** testing
 
                         entity.getId();
 

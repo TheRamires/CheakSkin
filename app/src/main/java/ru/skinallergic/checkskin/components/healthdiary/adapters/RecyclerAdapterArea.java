@@ -1,10 +1,8 @@
 package ru.skinallergic.checkskin.components.healthdiary.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
-import com.daimajia.swipe.implments.SwipeItemRecyclerMangerImpl;
 
 import java.util.List;
 
@@ -21,10 +18,8 @@ import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
-import ru.skinallergic.checkskin.components.profile.DialogActionFragment;
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment;
 import ru.skinallergic.checkskin.components.profile.NavigationFunction;
-import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaSwipeBinding;
 
 public class RecyclerAdapterArea extends RecyclerSwipeAdapter<RecyclerAdapterArea.Item> {
@@ -90,7 +85,7 @@ public class RecyclerAdapterArea extends RecyclerSwipeAdapter<RecyclerAdapterAre
             public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
 
                 ActionFunction positive= ()-> {
-                    deleteFunction(holder, position, item.getId());
+                    deleteFunction(holder, item, position, item.getId());
                 };
                 ActionFunction negative= ()-> {
 
@@ -141,14 +136,14 @@ public class RecyclerAdapterArea extends RecyclerSwipeAdapter<RecyclerAdapterAre
     public interface RecyclerCallback{
         void bind(ItemAreaSwipeBinding binder, Rash entity);
     }
-    public void deleteFunction(Item viewHolder, int position, int id){
+    public void deleteFunction(Item viewHolder, Rash entity, int position, int id){
         mItemManger.removeShownLayouts(viewHolder.swipeLayout);
         if (position<list.size()){
             list.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, list.size());
             mItemManger.closeAllItems();
-            viewModel.delete(id);
+            viewModel.delete(id, entity.getArea(), entity.getView());
         }
     }
 }

@@ -51,7 +51,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         newMap=mutableMapOf()
     }
     fun copyToNewMap (){
-        if (oldMap.isEmpty()){return}
+        //if (oldMap.isEmpty()){return}  //**delete for testing
 
         newMap.clear()
         for (rash in oldMap){
@@ -213,6 +213,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
             redactPosition(id, newArea, newView, newKinds, multiParts)
         }
     }
+
     private fun addPosition(date: Long,
                             newArea: RequestBody,
                             newView: RequestBody,
@@ -229,6 +230,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
                     Loger.log("throwable $it")
                 }))
     }
+
     private fun redactPosition(id: Int,
                                newArea: RequestBody,
                                newView: RequestBody,
@@ -252,15 +254,25 @@ class AffectedAreaCommonViewModel@Inject constructor(
             )
         }
     }
-    fun delete(id: Int){
+
+    fun delete(id: Int, area: Int, view: Int){  //area, view - testing
+        Loger.log("delete **1  oldMap $oldMap")
+        Loger.log("delete **1  newMap $newMap")
         compositeDisposable.add(repository.delete(id)
                 .doOnSubscribe { splashScreenOn.set(true) }
                 .doOnComplete { splashScreenOn.set(false) }
-                .subscribe ({ toastyManager.toastyyyy("Позиция успешно удалена") },{
+                .subscribe ({
+                    toastyManager.toastyyyy("Позиция успешно удалена")
+                    //****************************
+                    Loger.log("oldMap 1 $oldMap")
+                    copyToNewMap()
+                    Loger.log("oldMap 2 $oldMap")
+                    Loger.log("newMap 2 $newMap")
+
+                            },{
                     toastyManager.toastyyyy("При удалении позиции произошел сбой")
                 })
         )
-
     }
 
     fun notSaving(){
@@ -294,7 +306,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
                                 } else {
                                     data = it.data?.rashes!!
                                     Loger.log("**********2 *letsGetData* data $data")
-                                    loaded.value=true
                                     Loger.log("*************2.1 *letsGetData**message loaded "+loaded.value)
                                     oldMap = emptyList()
                                     oldMap = data //**************************************************

@@ -58,7 +58,7 @@ public class Body extends Fragment{
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private int gender;
+    private int gender=0;
     private String mParam2;
 
     // TODO: Rename and change types and number of parameters
@@ -91,6 +91,8 @@ public class Body extends Fragment{
                              Bundle savedInstanceState) {
         init(gender,inflater);
         viewModel.getFront().setValue(true);
+
+        if (binding==null){binding=BodyManBinding.inflate(inflater);} //??????? Повторно
 
         View view=binding.getRoot();
         imageView=view.findViewById(R.id.body);
