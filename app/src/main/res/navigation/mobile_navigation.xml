@@ -302,21 +302,14 @@
     <fragment
         android:id="@+id/affectedAreaRedactBodyFragment"
         android:name="ru.skinallergic.checkskin.components.healthdiary.components.AffectedAreaRedactBodyFragment"
-        android:label="AffectedAreaRedactBodyFragment" />
-    <fragment
-        android:id="@+id/affectedAreaRedactFragment"
-        android:name="ru.skinallergic.checkskin.components.healthdiary.components.AffectedAreaRedactFragment"
-        android:label="AffectedAreaRedactFragment" >
-        <action
-            android:id="@+id/action_affectedAreaRedactFragment_to_affectedAreaRedactBodyFragment"
-            app:destination="@id/affectedAreaRedactBodyFragment" />
-    </fragment>
+        android:label="AffectedAreaRedactBodyFragment"
+        />
     <fragment
         android:id="@+id/affectedAreasFragment"
         android:name="ru.skinallergic.checkskin.components.healthdiary.components.AffectedAreasFragment"
         android:label="AffectedAreasFragment" >
         <action
-            android:id="@+id/action_affectedAreasFragment_to_affectedAreaRedactFragment"
-            app:destination="@id/affectedAreaRedactFragment" />
+            android:id="@+id/action_affectedAreasFragment_to_affectedAreaRedactBodyFragment"
+            app:destination="@id/affectedAreaRedactBodyFragment" />
     </fragment>
 </navigation>

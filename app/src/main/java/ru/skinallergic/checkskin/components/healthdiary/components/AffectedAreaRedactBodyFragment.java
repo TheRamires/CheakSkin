@@ -34,6 +34,7 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
+import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
@@ -143,6 +144,12 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
                 if (aBoolean){
                     viewModelCommon.getSaved().setValue(false);
                     toastyManager.toastyyyy("Данные успешно сохранены");
+
+                    //******
+                    viewModelCommon.data(dateViewModel.getDateUnix());
+                    //*/****
+
+
                     viewModelCommon.setSomeChanged(false);
                     Loger.log("getSomeChanged "+viewModelCommon.getSomeChanged());
                     if (getPopBackTrue()){
@@ -153,8 +160,29 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
             }
         });
 
+        viewModelCommon.getLoaded().observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean !=null && aBoolean){
+                //viewModelCommon.getLoaded().setValue(false);  //WHATA?!!!!
+                savePhotoPath(); //testing ************************************************************
+            }
+        });
+
         return view;
     }
+    //testing *****************************************************************************************
+    private void savePhotoPath(){
+        List<Rash> rashList = viewModelCommon.getOldMap();
+        if (rashList==null){return;}
+        for (Rash rash: rashList){
+            if (rash==null){continue;}
+            String filePath01=savePath(rash.getPhoto_1());
+            String filePath02=savePath(rash.getPhoto_2());
+            String filePath03=savePath(rash.getPhoto_3());
+            viewModelCommon.putSavedPhotoToOldMap(rash.getArea(), rash.getView(), filePath01,  filePath02, filePath03);
+        }
+        viewModelCommon.copyToNewMap();
+    }
+    //testing *****************************************************************************************
 
     @Override
     public void onDestroyView() {
@@ -164,13 +192,20 @@ public class AffectedAreaRedactBodyFragment extends BaseAreaFragment implements 
     }
 
     public void backStack(View view){
-        BackNavigation popBack=()-> {Navigation.findNavController(view).popBackStack();};
-        BackNavigation popBackByStep=()-> {Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);};
+
+        BackNavigation popBack=()-> {
+            Navigation.findNavController(view).popBackStack();
+        };
+        BackNavigation popBackByStep=()-> {
+            Navigation.findNavController(view).popBackStack(R.id.navigation_health_diary,false);
+        };
 
         Loger.log("is cnahfing " +viewModelCommon.isChanged());
         if (viewModelCommon.getNewMap().isEmpty() || viewModelCommon.getNewMap()==null){
             quitSaveLogic(popBackByStep);
-        } else quitSaveLogic(popBack);
+        } else {
+            quitSaveLogic(popBack);
+        };
     }
 
     @Override

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <com.daimajia.swipe.SwipeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:id="@+id/swipe"
+        app:leftEdgeSwipeOffset="0dp"
+        app:rightEdgeSwipeOffset="0dp"
+        android:layout_height="wrap_content">
+
+   <!--     <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            /> -->
+
+        <LinearLayout
+            android:background="@android:color/transparent"
+            android:id="@+id/bottom_wraper"
+            android:layout_width="70dp"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+<!--
+                    <TextView
+                        android:id="@+id/Edit"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#0076a5"
+                        android:gravity="center"
+                        android:text="Edit"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:id="@+id/Share"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#2cbb00"
+                        android:gravity="center"
+                        android:text="Share"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:id="@+id/Delete"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#ff0000"
+                        android:gravity="center"
+                        android:text="Delete"
+                        android:textColor="#fff"/>
+-->
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/item_area"
+                />
+        </FrameLayout>
+    </com.daimajia.swipe.SwipeLayout>
+
+</layout>

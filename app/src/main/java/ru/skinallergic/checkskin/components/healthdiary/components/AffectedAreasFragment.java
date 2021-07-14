@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
@@ -28,6 +29,7 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
+import ru.skinallergic.checkskin.components.healthdiary.adapters.DeletePositionArea;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapterArea;
 import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
@@ -36,15 +38,12 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaV
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentAffectedAreasBinding;
 import ru.skinallergic.checkskin.databinding.ItemAreaBinding;
+import ru.skinallergic.checkskin.databinding.ItemAreaSwipeBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_01;
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_02;
-import static ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModelKt.FILE_NAME_03;
 
 public class AffectedAreasFragment extends BaseAreaFragment {
     private AffectedAreaViewModel viewModel;
@@ -63,9 +62,9 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaViewModel.class);
         imageViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ImageViewModel.class);
         toastyManager=App.getInstance().getAppComponent().getToastyManager();
-
         //**
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -101,17 +100,25 @@ public class AffectedAreasFragment extends BaseAreaFragment {
             public void onChanged(Boolean aBoolean) {
                 viewModelCommon.setSomeChanged(false);          //testing
                 Loger.log("getLoaded aBoolean "+aBoolean);
-                if (aBoolean==null){return;}
+                if (aBoolean==null){
+                    return;
+                }
                 viewModelCommon.getLoaded().setValue(null);
 
                 if (aBoolean){
                     viewModelCommon.getLoaded().setValue(null);
                     if (viewModelCommon.getOldMap().isEmpty() || viewModelCommon.getOldMap().size()==0){
+                        Loger.log("viewModelCommon.getOldMap() •1");
                         toRedactBody(view);
                     } else {
+                        Loger.log("viewModelCommon.getOldMap() •2");
                         createAdapter();
                     }
-                } else {toRedactBody(view);}
+                } else {
+
+                    Loger.log("viewModelCommon.getOldMap() •3");
+                    toRedactBody(view);
+                }
             }
         });
 
@@ -165,10 +172,14 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     private void createAdapter(){
         Loger.log("************ in createAdapter. oldMap "+viewModelCommon.getOldMap());
 
-        RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModelCommon.getOldMap(),
+        RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModelCommon,getParentFragmentManager(),viewModelCommon.getOldMap(),
                 new RecyclerAdapterArea.RecyclerCallback() {
                     @Override
-                    public void bind(ItemAreaBinding binder, Rash entity) {
+                    public void bind(ItemAreaSwipeBinding itemAreaSwipeBinding, Rash entity ) {
+                        ItemAreaBinding binder=itemAreaSwipeBinding.include;  //*** testing
+
+                        entity.getId();
+
                         Integer area=entity.getArea();
                         Integer view=entity.getView();
                         String photo1=entity.getPhoto_1();
@@ -220,10 +231,12 @@ public class AffectedAreasFragment extends BaseAreaFragment {
                         LinearLayout kindContainer=binder.kindContainer;
                         kindContainer.removeAllViews();
                         completionKindList(kindTemps, kindContainer, area,view);
+
                     }
         });
         recyclerView.setAdapter(adapter);
     }
+
     private void clickListenerForImageView(ImageView imageView, int area, int view, int index){
         imageView.setOnClickListener((View v) ->{
             if (!viewModel.redactModeIsOn()){
@@ -295,7 +308,7 @@ public class AffectedAreasFragment extends BaseAreaFragment {
         //testing********************************
     }
     public void toRedactBody(View view){
-        Navigation.findNavController(view).navigate(R.id.affectedAreaRedactBodyFragment);
+        Navigation.findNavController(view).navigate(R.id.action_affectedAreasFragment_to_affectedAreaRedactBodyFragment);
     }
     private void setAreaAndView(int area, int view) {
         viewModelCommon.getNewAreaLive().setValue(area);

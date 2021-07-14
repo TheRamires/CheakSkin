@@ -47,7 +47,7 @@ public class TreatmentRedactFragment extends Fragment {
     private DateViewModel dateViewModel;
     private FragmentManager fragmentManager;
     private FragmentTreatmentRedactBinding binding;
-    private static String MESSAGE="Заполните хотя бы одно поле";
+    private static final String MESSAGE="Заполните хотя бы одно поле";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class TreatmentRedactFragment extends Fragment {
         dateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel.class);
         fragmentManager = getChildFragmentManager();
         try {
-            Loger.log("bindle "+getArguments().getStringArrayList(THERAPIES_BUNDLE));
+            Loger.log("bundle "+getArguments().getStringArrayList(THERAPIES_BUNDLE));
             treatmentViewModel.initTherapiesOld(
                     getArguments().getStringArrayList(THERAPIES_BUNDLE)
             );
@@ -182,16 +182,17 @@ public class TreatmentRedactFragment extends Fragment {
         startActivity(intent);
     }
     public void topicalTherapyChanged(CharSequence s,int start, int count, int after){
-        changeTherapyNew(s, TOPICAL_THERAPY_INDEX);
+        Loger.log("EDIT TEXT.. "+" start "+start+"; count "+count+"; after "+after);
+        changeTherapyNew(s, TOPICAL_THERAPY_INDEX, after);
     }
     public void systemicTherapyChanged(CharSequence s,int start, int count, int after){
-        changeTherapyNew(s, SYSTEMATIC_THERAPY_INDEX);
+        changeTherapyNew(s, SYSTEMATIC_THERAPY_INDEX, after);
     }
     public void otherTreatmentsChanged(CharSequence s,int start, int count, int after){
-        changeTherapyNew(s, OTHER_TREATMENTS_INDEX);
+        changeTherapyNew(s, OTHER_TREATMENTS_INDEX, after);
     }
-    private void changeTherapyNew(CharSequence s, int index){
-        if (s.length()>1){
+    private void changeTherapyNew(CharSequence s, int index, int after){
+        if (s.length()>1 || after==0){  //если набираем текст, то должно быть больше 2 символов, если убавляем (after=0), то любое кол-во символов
             String string=s.toString();
             treatmentViewModel.getTherapiesNew().set(index,string);
             treatmentViewModel.changeMark(index, true);

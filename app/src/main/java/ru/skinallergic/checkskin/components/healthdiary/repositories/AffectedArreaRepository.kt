@@ -88,6 +88,15 @@ class AffectedArreaRepository  @Inject constructor(
                 .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
     }
+    fun delete(id : Int):Observable<String>{
+        val accesToken=tokenModel_.loadAccesToken()!!
+        return service_.deletePosition(accesToken,id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { response->response.string() }
+
+    }
+
     override fun date(date: String?): Observable<BaseResponse<GettingData?>>?{
         Loger.log("data start for repo")
         networkHandler.check()

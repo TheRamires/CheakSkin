@@ -35,8 +35,8 @@ public class SwipeRecyclerAdapter extends
 
     @Override
     public void onItemDismiss(int position) {
-        list.remove(position);
-        notifyItemRemoved(position);
+        /*list.remove(position);
+        notifyItemRemoved(position);*/
     }
 
     @Override
@@ -69,8 +69,6 @@ public class SwipeRecyclerAdapter extends
         holder.binding.setEntity(entity);
         holder.viewForeground.setOnClickListener((View view)->{
             itemListener.onItemClick(view,entity.getId());});
-
-
     }
 
     @Override

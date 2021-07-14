@@ -78,5 +78,9 @@ interface HealthyService {
             @Part("kinds") kinds: RequestBody,
             @Part vararg  file: MultipartBody.Part
     ):Observable<ResponseBody>
+
+    @DELETE("/journals/health/rashes/{id}/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun deletePosition(@Header("Authorization") key:String,@Path ("id") id:Int): Observable<ResponseBody>
 }
 

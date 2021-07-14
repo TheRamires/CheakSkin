@@ -7,16 +7,10 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.provider.MediaStore
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.RelativeLayout
-import androidx.appcompat.widget.AppCompatButton
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
@@ -242,7 +236,9 @@ abstract class BaseAreaFragment : Fragment() {
     }
 
     fun quitSaveLogic(navigation: BackNavigation){
-        QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, { this.popBackTrue = true;saving() }, manager)
+        QuitSaveLogic.logic(viewModelCommon.isChanged(), { navigation.nav() }, {
+            this.popBackTrue = true;saving()
+        }, manager)
     }
 
     open fun hasImage(view: ImageView): Boolean {

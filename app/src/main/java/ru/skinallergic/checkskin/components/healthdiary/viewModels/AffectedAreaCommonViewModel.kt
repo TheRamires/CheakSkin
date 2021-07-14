@@ -218,7 +218,6 @@ class AffectedAreaCommonViewModel@Inject constructor(
                             newView: RequestBody,
                             newKinds: RequestBody,
                             files: List<MultipartBody.Part>){
-
         compositeDisposable.add(repository.add(date / 1000, newArea, newView, newKinds, files)
                 .doOnSubscribe { progressBar.set(true) }
                 .doOnComplete { progressBar.set(false) }
@@ -253,6 +252,17 @@ class AffectedAreaCommonViewModel@Inject constructor(
             )
         }
     }
+    fun delete(id: Int){
+        compositeDisposable.add(repository.delete(id)
+                .doOnSubscribe { splashScreenOn.set(true) }
+                .doOnComplete { splashScreenOn.set(false) }
+                .subscribe ({ toastyManager.toastyyyy("Позиция успешно удалена") },{
+                    toastyManager.toastyyyy("При удалении позиции произошел сбой")
+                })
+        )
+
+    }
+
     fun notSaving(){
         toastyManager.toastyyyy(MESSAGE, true)
         notSaving.value=true
@@ -279,19 +289,22 @@ class AffectedAreaCommonViewModel@Inject constructor(
                                 val data: List<Rash>
                                 Loger.log("**************data $it")
                                 if (it.message == null) {
+                                    Loger.log("**********1 *letsGetData**message  ${it.message}")
                                     loaded.value = false
                                 } else {
                                     data = it.data?.rashes!!
-                                    Loger.log("*********** data $data")
+                                    Loger.log("**********2 *letsGetData* data $data")
+                                    loaded.value=true
+                                    Loger.log("*************2.1 *letsGetData**message loaded "+loaded.value)
                                     oldMap = emptyList()
                                     oldMap = data //**************************************************
                                     copyToNewMap()
-                                    loaded.value = true
+                                    loaded.value=true
+                                    Loger.log("*************2.2 *letsGetData**message loaded "+loaded.value)
                                 }
                             }, {
                                 splashScreenOn.set(false) //testing
                             })
-
                 }
         )
     }
@@ -470,6 +483,13 @@ class AffectedAreaCommonViewModel@Inject constructor(
         }
         return result
     }*/
+
+    fun clearComposite(){
+        Loger.log("clearComposite")
+        compositeDisposable.clear()
+        splashScreenOn.set(false)
+        progressBar.set(false)
+    }
 
 }
 fun <T>List<T>?.removeNulls() : List<T>{
