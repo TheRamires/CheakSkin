@@ -14,6 +14,8 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:focusable="true"
+            android:clickable="true"
             android:background="@drawable/button_registr_uncklicable"
             android:layout_gravity="center"
             android:id="@+id/view_background"
@@ -89,7 +91,6 @@
                     android:src="@drawable/ic_further_orange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
 
             </RelativeLayout>
         </com.dd.ShadowLayout>

@@ -49,6 +49,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
         void onItemMove(int fromPosition, int toPosition);
 
         void onItemDismiss(int position);
+
     }
     ////////////
 
@@ -56,7 +57,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((SwipeRecyclerAdapter.Item) viewHolder).viewForeground;
+            final View foregroundView = ((SwipeRecyclerAdapterReminder.Item) viewHolder).viewForeground;
 
             getDefaultUIUtil().onSelected(foregroundView);
         }
@@ -67,18 +68,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView,
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                 int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((SwipeRecyclerAdapter.Item) viewHolder).viewForeground;
-
+        final View foregroundView = ((SwipeRecyclerAdapterReminder.Item) viewHolder).viewForeground;
 /*
-
-        float dX2=dX;
-        if (dX<-320){
-            dX2=-320;
+        float dX2 = dX;
+        if (dX<-50){
+            dX2=-50;
             System.out.println(dX2);
         }
-
 */
-
 
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
@@ -86,7 +83,7 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        final View foregroundView = ((SwipeRecyclerAdapter.Item) viewHolder).viewForeground;
+        final View foregroundView = ((SwipeRecyclerAdapterReminder.Item) viewHolder).viewForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
@@ -94,17 +91,28 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView,
                             RecyclerView.ViewHolder viewHolder, float dX, float dY,
                             int actionState, boolean isCurrentlyActive) {
-/*
-        float dX2=dX;
-        if (dX<-320){
-            dX2=-320;
-            System.out.println(dX2);
-        }
-*/
-        final View foregroundView = ((SwipeRecyclerAdapter.Item) viewHolder).viewForeground;
 
-        getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
+        final View foregroundView = ((SwipeRecyclerAdapterReminder.Item) viewHolder).viewForeground;
+
+        float dX2 = dX;
+        if (dX<-300){
+            dX2=-300;
+            System.out.println(dX2);
+           /* toRight(c, recyclerView, foregroundView, dX2, dY, actionState, isCurrentlyActive);*/
+            return;
+        }
+
+        getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX2, dY,
                 actionState, isCurrentlyActive);
+    }
+    public void toRight(
+                        Canvas c, RecyclerView recyclerView, View foregroundView,
+                        float dX, float dY, int actionState, boolean isCurrentlyActive){
+
+        for (float x=dX; x<0;x++){
+            getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, x, dY,
+                    actionState, isCurrentlyActive);
+        }
     }
 
     @Override

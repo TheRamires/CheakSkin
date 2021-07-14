@@ -8,28 +8,33 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 
-import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.profile.ActionFunction;
+import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment;
+import ru.skinallergic.checkskin.components.profile.NavigationFunction;
 import ru.skinallergic.checkskin.databinding.SwipeLayoutBinding;
 
-public class SwipeRecyclerAdapter extends
-        RecyclerView.Adapter<SwipeRecyclerAdapter.Item>
-        implements SimpleItemTouchHelperCallback.ItemTouchHelperAdapter
-{
-    List<EntityReminders> list;
-    public SwipeRecyclerAdapter.OnItemClickListener itemListener;
+public class SwipeRecyclerAdapterReminder extends RecyclerView.Adapter<SwipeRecyclerAdapterReminder.Item>
+        implements SimpleItemTouchHelperCallback.ItemTouchHelperAdapter {
 
-    public SwipeRecyclerAdapter( List<EntityReminders> list){
+    private FragmentManager fragmentManager;
+    List<EntityReminders> list;
+    public SwipeRecyclerAdapterReminder.OnItemClickListener itemListener;
+
+    public SwipeRecyclerAdapterReminder(List<EntityReminders> list, FragmentManager fragmentManager){
         this.list=list;
+        this.fragmentManager=fragmentManager;
     }
 
-    public void setOnItemClickListener(SwipeRecyclerAdapter.OnItemClickListener listener){
+    public void setOnItemClickListener(SwipeRecyclerAdapterReminder.OnItemClickListener listener){
         this.itemListener=listener;
     }
 
@@ -69,6 +74,11 @@ public class SwipeRecyclerAdapter extends
         holder.binding.setEntity(entity);
         holder.viewForeground.setOnClickListener((View view)->{
             itemListener.onItemClick(view,entity.getId());});
+/*
+        holder.binding.delete.setOnClickListener((View view)->{
+            Loger.log("delete click "+view);
+            runDeleteDialog(position,fragmentManager);
+        });*/
     }
 
     @Override
@@ -87,9 +97,28 @@ public class SwipeRecyclerAdapter extends
             assert binding != null;
             viewBackground=binding.viewBackground;
             viewForeground=binding.viewForeground;
+            viewBackground.setOnClickListener((View view)->{
+                runDeleteDialog(getPosition(),fragmentManager);
+            });
         }
     }
     public interface OnItemClickListener{
         void onItemClick(View view,int id);
+    }
+    public void runDeleteDialog(int position, FragmentManager fragmentManager){
+
+        ActionFunction positive= ()-> {
+            deleteFunction(position);
+        };
+        ActionFunction negative= ()-> {
+
+        };
+        NavigationFunction stump=()->{};
+        DialogTwoFunctionFragment dialog=new DialogTwoFunctionFragment("Удалить",negative,positive,stump);
+        dialog.show(fragmentManager,"dialog");
+    }
+    private void deleteFunction(int position){
+        list.remove(position);
+        notifyItemRemoved(position);
     }
 }

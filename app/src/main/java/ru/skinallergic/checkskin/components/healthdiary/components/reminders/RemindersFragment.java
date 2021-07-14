@@ -9,23 +9,21 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.daimajia.swipe.util.Attributes;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.SimpleItemTouchHelperCallback;
-import ru.skinallergic.checkskin.components.healthdiary.adapters.SwipeRecyclerAdapter;
+import ru.skinallergic.checkskin.components.healthdiary.adapters.SwipeRecyclerAdapterReminder;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersBinding;
 
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
 
 import java.util.ArrayList;
 
-public class RemindersFragment extends BaseRemindersFragment implements SwipeRecyclerAdapter.OnItemClickListener {
+public class RemindersFragment extends BaseRemindersFragment implements SwipeRecyclerAdapterReminder.OnItemClickListener {
 
     public static String BUNDLE_ID_OF_REMIND="idOfRemind";
     private TextView tvEmptyTextView;
@@ -78,7 +76,7 @@ public class RemindersFragment extends BaseRemindersFragment implements SwipeRec
                     tvEmptyTextView.setVisibility(View.GONE);
                 }
 
-                SwipeRecyclerAdapter adapter=new SwipeRecyclerAdapter(mDataSet);
+                SwipeRecyclerAdapterReminder adapter=new SwipeRecyclerAdapterReminder(mDataSet,getParentFragmentManager());
                 adapter.setOnItemClickListener(RemindersFragment.this);
 
                 mRecyclerView.setAdapter(adapter);

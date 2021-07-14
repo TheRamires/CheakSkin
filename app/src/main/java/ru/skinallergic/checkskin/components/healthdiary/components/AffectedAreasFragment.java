@@ -28,7 +28,7 @@ import ru.skinallergic.checkskin.components.healthdiary.AreaManager;
 import ru.skinallergic.checkskin.components.healthdiary.BackNavigation;
 import ru.skinallergic.checkskin.components.healthdiary.CameraPermission;
 import ru.skinallergic.checkskin.components.healthdiary.PhotoController;
-import ru.skinallergic.checkskin.components.healthdiary.adapters.RecyclerAdapterArea;
+import ru.skinallergic.checkskin.components.healthdiary.adapters.SwipeRecyclerAdapterArea;
 import ru.skinallergic.checkskin.components.healthdiary.data.KindTemp;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
@@ -169,8 +169,8 @@ public class AffectedAreasFragment extends BaseAreaFragment {
     private void createAdapter(){
         Loger.log("************ in createAdapter. oldMap "+viewModelCommon.getOldMap());
 
-        RecyclerView.Adapter adapter = new RecyclerAdapterArea(viewModelCommon,getParentFragmentManager(),viewModelCommon.getOldMap(),
-                new RecyclerAdapterArea.RecyclerCallback() {
+        RecyclerView.Adapter adapter = new SwipeRecyclerAdapterArea(viewModelCommon,getParentFragmentManager(),viewModelCommon.getOldMap(),
+                new SwipeRecyclerAdapterArea.RecyclerCallback() {
                     @Override
                     public void bind(ItemAreaSwipeBinding itemAreaSwipeBinding, Rash entity ) {
                         ItemAreaSwipeBinding binder=itemAreaSwipeBinding;  //*** testing

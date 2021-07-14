@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         Drawable cheakBox1 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_blue_off);
         icon1.setBounds(0, 0, 75, 75);
         cheakBox1.setBounds(0, 0, 45, 45);
+        cheakBox1=null; //***************************************testing
         btnHealth.setCompoundDrawables(icon1, null, cheakBox1, null);
 
         AppCompatButton btnEat=binding.eatBtn;
@@ -115,6 +116,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         Drawable cheakBox2 = ContextCompat.getDrawable(getActivity(), R.drawable.ic_cheakbox_red_off);
         icon2.setBounds(0,0,75,75);
         cheakBox2.setBounds(0, 0, 45, 45);
+        cheakBox2=null; //***************************************testing
         btnEat.setCompoundDrawables(icon2,null,cheakBox2,null);
 
         AppCompatButton btnLpu=binding.btnLpu;

@@ -27,13 +27,13 @@ import static ru.skinallergic.checkskin.components.healthdiary.components.remind
 
 public class RemindersDetailFragment extends BaseRemindersFragment {
     private Bundle bundle;
-    int position;
+    int positionId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            position= getArguments().getInt(BUNDLE_ID_OF_REMIND);
+            positionId= getArguments().getInt(BUNDLE_ID_OF_REMIND);
         }catch (Throwable ignore){ }
     }
 
@@ -45,7 +45,7 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         binding.setViewModel(getViewModel());
         initBackGround(binding.background);
 
-        Loger.log("positionRemind id = "+position);
+        Loger.log("positionRemind id = "+positionId);
 
         getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
             String date=getDateViewModel().getDate(d);
@@ -53,7 +53,12 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         });
 
         getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
-            EntityReminders entity=list.get(position);
+            EntityReminders entity = null;
+            for (EntityReminders entity_ : list){
+                if (entity_.getId()==positionId);
+                entity=entity_;
+                break;
+            }
             getViewModel().getEntity().set(entity);
         });
 
@@ -62,7 +67,7 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
     }
     public void toRedact(View view){
         bundle=new Bundle();
-        bundle.putInt(BUNDLE_ID_OF_REMIND,position);
+        bundle.putInt(BUNDLE_ID_OF_REMIND,positionId);
         Navigation.findNavController(view).navigate(R.id.action_remindersDetailFragment_to_reminderRedactFragment, bundle);
     }
 }

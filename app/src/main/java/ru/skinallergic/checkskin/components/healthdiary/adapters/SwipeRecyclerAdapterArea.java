@@ -22,16 +22,16 @@ import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment;
 import ru.skinallergic.checkskin.components.profile.NavigationFunction;
 import ru.skinallergic.checkskin.databinding.ItemAreaSwipeBinding;
 
-public class RecyclerAdapterArea extends RecyclerSwipeAdapter<RecyclerAdapterArea.Item> {
+public class SwipeRecyclerAdapterArea extends RecyclerSwipeAdapter<SwipeRecyclerAdapterArea.Item> {
     private final RecyclerCallback bindingInterface;
     List<Rash> list;
     FragmentManager fragmentManager;
     AffectedAreaCommonViewModel viewModel;
 
-    public RecyclerAdapterArea( AffectedAreaCommonViewModel viewModel,
-                                FragmentManager fragmentManager,
-                                List<Rash> list,
-                                RecyclerCallback bindingInterface){
+    public SwipeRecyclerAdapterArea(AffectedAreaCommonViewModel viewModel,
+                                    FragmentManager fragmentManager,
+                                    List<Rash> list,
+                                    RecyclerCallback bindingInterface){
         this.bindingInterface = bindingInterface;
         this.list=list;
         this.fragmentManager=fragmentManager;
@@ -40,14 +40,14 @@ public class RecyclerAdapterArea extends RecyclerSwipeAdapter<RecyclerAdapterAre
 
     @NonNull
     @Override
-    public RecyclerAdapterArea.Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SwipeRecyclerAdapterArea.Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(parent.getContext());
         ItemAreaSwipeBinding binding=ItemAreaSwipeBinding.inflate(inflater,parent,false);
-        return new RecyclerAdapterArea.Item(binding.getRoot());
+        return new SwipeRecyclerAdapterArea.Item(binding.getRoot());
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapterArea.Item holder, int position) {
+    public void onBindViewHolder(@NonNull SwipeRecyclerAdapterArea.Item holder, int position) {
         Rash item=list.get(position);
         holder.bindData(item);
 
