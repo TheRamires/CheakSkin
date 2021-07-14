@@ -46,6 +46,7 @@ import ru.skinallergic.checkskin.view_models.AccountViewModelImpl;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
@@ -58,6 +59,8 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
     private RecyclerView recyclerNews;
     private RecyclerView recyclerTests;
     private RecyclerView recyclerLpu;
+
+    private Bundle bundle=new Bundle();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +83,12 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
                 String hello="Привет, "+userEntity.getName()+"!";
                 binding.name.setText(hello);
             }
+        });
+
+        //*********************************---------------------------------****
+        dateViewModel.dateLive.observe(getViewLifecycleOwner(), (Date d)-> {
+            String date=dateViewModel.getDate(d);
+            bundle.putString("date",date);
         });
 
         //--------------------------снова показываем бар
@@ -140,7 +149,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         //Navigation.findNavController(view).navigate(R.id.navigation_food_diary);
     }
     public void toReminders(View view){
-        Navigation.findNavController(view).navigate(R.id.remindersFragment3);
+        Navigation.findNavController(view).navigate(R.id.remindersFragment3,bundle);
 
     }
 

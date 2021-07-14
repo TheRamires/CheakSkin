@@ -2,6 +2,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -31,6 +32,11 @@ public class RemindersFragment extends BaseRemindersFragment implements SwipeRec
     private RecyclerView mRecyclerView;
     private Bundle bundle;
     private boolean isLoaded=false;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
