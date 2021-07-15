@@ -3,7 +3,7 @@ package ru.skinallergic.checkskin
 import android.app.Activity
 import android.app.Application
 import androidx.room.Room
-import ru.skinallergic.checkskin.components.fooddiary.data.AppDatabase
+import ru.skinallergic.checkskin.components.fooddiary.data_unused.AppDatabase
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector

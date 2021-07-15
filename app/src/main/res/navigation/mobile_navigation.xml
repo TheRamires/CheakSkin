@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -19,22 +20,6 @@
         <action
             android:id="@+id/action_navigation_home_to_LPUDetailedFragment"
             app:destination="@id/LPUDetailedFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_food_diary"
-        android:name="ru.skinallergic.checkskin.components.fooddiary.FoodDiaryFragment"
-        android:label="@string/title_food_diary"
-        tools:layout="@layout/fragment_food_diary" >
-        <action
-            android:id="@+id/action_navigation_food_diary_to_addFoodFragment"
-            app:destination="@id/addFoodFragment" />
-        <action
-            android:id="@+id/action_navigation_food_diary_to_redactFoodFragment"
-            app:destination="@id/redactFoodFragment" />
-        <action
-            android:id="@+id/action_navigation_food_diary_to_searchFoodFragment"
-            app:destination="@id/searchFoodFragment" />
     </fragment>
 
     <fragment
@@ -112,18 +97,6 @@
         android:id="@+id/LPUReviewFragment"
         android:name="ru.skinallergic.checkskin.components.home.lpu.LPUReviewFragment"
         android:label="LPUReviewFragment" />
-    <fragment
-        android:id="@+id/addFoodFragment"
-        android:name="ru.skinallergic.checkskin.components.fooddiary.components.AddFoodFragment"
-        android:label="AddFoodFragment" />
-    <fragment
-        android:id="@+id/redactFoodFragment"
-        android:name="ru.skinallergic.checkskin.components.fooddiary.components.RedactFoodFragment"
-        android:label="RedactFoodFragment" />
-    <fragment
-        android:id="@+id/searchFoodFragment"
-        android:name="ru.skinallergic.checkskin.components.fooddiary.components.SearchFoodFragment"
-        android:label="SearchFoodFragment" />
     <fragment
         android:id="@+id/stateFragment"
         android:name="ru.skinallergic.checkskin.components.healthdiary.components.StateFragment"
@@ -312,4 +285,54 @@
             android:id="@+id/action_affectedAreasFragment_to_affectedAreaRedactBodyFragment"
             app:destination="@id/affectedAreaRedactBodyFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_foodDiary"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.FoodDiaryFragment"
+        android:label="FoodDiaryFragment" >
+        <action
+            android:id="@+id/action_foodDiaryFragment_to_foodCalendarFragment"
+            app:destination="@id/foodCalendarFragment" />
+        <action
+            android:id="@+id/action_foodDiaryFragment_to_allergicListFragment"
+            app:destination="@id/allergicListFragment" />
+        <action
+            android:id="@+id/action_foodDiaryFragment_to_detailFoodFragment"
+            app:destination="@id/detailFoodFragment" />
+        <action
+            android:id="@+id/action_foodDiaryFragment_to_addFoodFragment2"
+            app:destination="@id/addFoodFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodCalendarFragment"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.FoodCalendarFragment"
+        android:label="FoodCalendarFragment" >
+        <action
+            android:id="@+id/action_foodCalendarFragment_to_searchFoodFragment2"
+            app:destination="@id/searchFoodFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/allergicListFragment"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.AllergicListFragment"
+        android:label="AllergicListFragment" />
+    <fragment
+        android:id="@+id/detailFoodFragment"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragment"
+        android:label="DetailFoodFragment" >
+        <action
+            android:id="@+id/action_detailFoodFragment_to_redactFoodFragment"
+            app:destination="@id/redactFoodFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFoodFragment2"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.AddFoodFragment"
+        android:label="RedactFoodFragment" />
+    <fragment
+        android:id="@+id/searchFoodFragment2"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.SearchFoodFragment"
+        android:label="SearchFoodFragment" />
+    <fragment
+        android:id="@+id/redactFoodFragment"
+        android:name="ru.skinallergic.checkskin.components.fooddiary.components.RedactFoodFragment"
+        android:label="RedactFoodFragment" />
+
 </navigation>

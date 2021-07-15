@@ -1,11 +1,11 @@
-package ru.skinallergic.checkskin.components.fooddiary.viewModels;
+package ru.skinallergic.checkskin.components.fooddiary.viewModels_unused;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import ru.skinallergic.checkskin.Loger;
-import ru.skinallergic.checkskin.components.fooddiary.data.EntityFoodPosition;
-import ru.skinallergic.checkskin.components.fooddiary.data.FoodRepositoriy;
+import ru.skinallergic.checkskin.components.fooddiary.data_unused.EntityFoodPosition;
+import ru.skinallergic.checkskin.components.fooddiary.data_unused.FoodRepositoriy;
 
 import java.util.List;
 

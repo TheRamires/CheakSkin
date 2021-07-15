@@ -3,7 +3,7 @@ import android.app.Application;
 
 import androidx.room.Room;
 
-import ru.skinallergic.checkskin.components.fooddiary.data.AppDatabase;
+import ru.skinallergic.checkskin.components.fooddiary.data_unused.AppDatabase;
 import ru.skinallergic.checkskin.di.AppComponent;
 import ru.skinallergic.checkskin.di.DaggerAppComponent;
 

@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".components.fooddiary.FoodDiaryFragment"
+        tools:context=".components.fooddiary.FoodDiaryFragment_UNUSED"
         android:background="@color/gray">
 
         <RelativeLayout

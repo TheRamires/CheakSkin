@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="fragment"
+            type="ru.skinallergic.checkskin.components.fooddiary.components.BaseFoodFragment" />
+    </data>
+    <LinearLayout android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".components.fooddiary.components.DetailFoodFragment"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+        <RelativeLayout
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:id="@+id/title_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white"
+                android:src="@drawable/ic_back" />
+            <TextView
+                android:text="Поиск"
+                android:layout_toEndOf="@+id/back_btn"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:textColor="@color/purple_300"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <View
+                android:layout_alignParentBottom="true"
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </RelativeLayout>
+
+        <com.dd.ShadowLayout
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sl_cornerRadius="50dp"
+            app:sl_shadowRadius="20dp"
+            app:sl_shadowColor="@color/shadow_color1">
+
+            <EditText
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/margin_min"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:hint="eat"
+                android:layout_marginHorizontal="20dp"
+                />
+            <ImageView
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/my_icon_search"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right|center_vertical"/>
+
+        </com.dd.ShadowLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginStart="20dp"
+                android:id="@+id/imageView2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/my_icon_sun"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:hint="date"
+                android:text="@{fragment.dateObservable}"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</layout>

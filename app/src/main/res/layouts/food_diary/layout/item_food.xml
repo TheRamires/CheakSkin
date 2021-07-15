@@ -1,48 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <data>
-        <variable
-            name="entity"
-            type="ru.skinallergic.checkskin.components.fooddiary.data.EntityFoodPosition" />
-    </data>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TableLayout
-        android:paddingHorizontal="23dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <TableRow
-            android:layout_gravity="center_vertical"
+    <FrameLayout
+        android:layout_width="360dp"
+        android:layout_height="140dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@drawable/button_registr_uncklicable"
+            android:layout_gravity="center"
+            android:id="@+id/view_background"
+            android:layout_width="320dp"
+            android:layout_height="100dp">
+
+            <ImageButton
+                android:focusable="true"
+                android:background="@android:color/transparent"
+                android:layout_marginHorizontal="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_cros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Delete" />
+
+        </RelativeLayout>
+
+        <com.daimajia.swipe.SwipeLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            <ImageView
-                android:id="@+id/image"
-                android:visibility="invisible"
-                android:src="@drawable/exclamation2"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                />
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_marginLeft="7dp"
-                android:hint="Кукурузные хлопья"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                />
-            <TextView
-                android:id="@+id/weight"
-                android:layout_marginLeft="50dp"
-                android:hint="вес"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                />
+            <FrameLayout
+                android:background="@android:color/transparent"
+                android:id="@+id/bottom_wraper"
+                android:layout_width="80dp"
+                android:weightSum="3"
+                android:orientation="horizontal"
+                android:layout_height="match_parent">
 
-        </TableRow>
-    </TableLayout>
-</FrameLayout>
+                <ImageButton
+                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="9dp"
+                    android:id="@+id/delete_reminder"
+                    android:layout_gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+
+            </FrameLayout>
+
+            <com.dd.ShadowLayout
+                android:clickable="true"
+                android:focusable="true"
+                app:sl_cornerRadius="80dp"
+                android:layout_gravity="center"
+                app:sl_shadowRadius="20dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                android:layout_width="360dp"
+                android:layout_height="140dp">
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:id="@+id/container_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <TextView
+                        android:hint="Завтрак"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:id="@+id/name"
+                        />
+
+                </LinearLayout>
+            </com.dd.ShadowLayout>
+        </com.daimajia.swipe.SwipeLayout>
+    </FrameLayout>
 </layout>

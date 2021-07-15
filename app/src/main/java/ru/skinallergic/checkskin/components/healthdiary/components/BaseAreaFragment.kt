@@ -168,57 +168,6 @@ abstract class BaseAreaFragment : Fragment() {
             }
         }
     }
-/*
-    fun imageDownload(ctx: Context, pathHttp: String): String? {
-        val dir = ctx.getExternalFilesDir("photo")
-        if (!dir!!.exists()) {
-            dir.mkdirs()
-        }
-        dir.createNewFile()
-
-        viewModelCommon.photoDirectoryInMemory = dir // testing +
-        //toastyManager.toastyyyy(viewModelCommon.photoDirectoryInMemory.toString())
-
-        val filePath = dir.absolutePath + "/" + randomUUID() + ".png" //testing png+ , Date+
-        try {
-            Picasso.with(ctx)
-                    .load(pathHttp)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(getTarget(filePath))
-            return filePath
-
-        } catch (t: Throwable) {
-            return null
-        }
-    }*/
-/*
-    fun getTarget(filePath: String): Target {
-        return object : Target {
-            override fun onBitmapLoaded(bitmap: Bitmap?, from: LoadedFrom) {
-                Thread {
-                    val file = File(filePath)
-                    if (!file.parentFile.exists())
-                        file.parentFile.mkdirs();
-
-                    if (!file.exists())
-                        file.createNewFile();
-                    try {
-                        val ostream = FileOutputStream(file)
-                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, ostream)
-                        ostream.flush()
-                        ostream.close()
-                        println(filePath)
-                    } catch (e: IOException) {
-                        println("IOException" + e.localizedMessage)
-                    }
-                }.start()
-            }
-
-            override fun onBitmapFailed(errorDrawable: Drawable) {}
-            override fun onPrepareLoad(placeHolderDrawable: Drawable) {}
-        }
-    }
-    */
     fun save(view: View) {
         saving()
     }

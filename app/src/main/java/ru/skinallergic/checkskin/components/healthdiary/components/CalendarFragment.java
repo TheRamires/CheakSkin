@@ -64,7 +64,6 @@ public class CalendarFragment extends Fragment {
         int year=Integer.parseInt(dateViewModel.getDate(YEAR_FORMAT));
         datePicker.updateDate(year,month,day);
 
-
         if (Build.VERSION.SDK_INT>=26){
             Loger.log("version "+Build.VERSION.SDK_INT);
             binding.acceptButton.setVisibility(View.GONE);

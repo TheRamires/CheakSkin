@@ -1,4 +1,4 @@
-package ru.skinallergic.checkskin.components.fooddiary.data;
+package ru.skinallergic.checkskin.components.fooddiary.data_unused;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;

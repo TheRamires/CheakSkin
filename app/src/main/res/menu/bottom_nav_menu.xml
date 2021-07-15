@@ -8,6 +8,7 @@
 
     <!-- android:id="@+id/navigation_food_diary" -->
     <item
+        android:id="@+id/navigation_foodDiary"
         android:icon="@drawable/icon_food"
         android:title="@string/title_food_diary" />
 

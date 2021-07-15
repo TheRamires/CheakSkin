@@ -31,7 +31,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="Питание"
+                android:text="title"
                 android:layout_toEndOf="@+id/back_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"
@@ -40,12 +40,13 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint="title"
                 />
             <ImageView
-                android:id="@+id/ok_btn"
+                android:id="@+id/redact_btn"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/cheak_mark"
+                android:background="@drawable/my_icon_pencil"
                 android:layout_marginRight="20dp"
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
@@ -56,9 +57,36 @@
                 android:layout_height="1dp"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="65dp">
 
-        <LinearLayout
-            android:orientation="vertical"
+            <ImageView
+                android:layout_toLeftOf="@+id/date"
+                android:id="@+id/imageView2"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/my_icon_sun"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:hint="date"
+                android:text="@{fragment.dateObservable}"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </RelativeLayout>
+
+        <FrameLayout
             android:background="@drawable/ic_food_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -67,15 +95,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_marginHorizontal="@dimen/margin_normal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_food_button_add"
-                />
-
-        </LinearLayout>
+        </FrameLayout>
     </LinearLayout>
 </layout>

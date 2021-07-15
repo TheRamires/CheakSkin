@@ -89,16 +89,28 @@
                     android:text="No Records"
                     android:visibility="gone" />
 
-                <ImageButton
-                    android:clickable="true"
+                <com.dd.ShadowLayout
                     android:layout_below="@+id/my_recycler_view"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/button_plus"
+                    android:layout_marginTop="8dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:sl_cornerRadius="80dp"
+                    android:layout_gravity="center"
+                    app:sl_shadowRadius="20dp"
+                    app:sl_shadowColor="@color/shadow_color1"
+                    android:layout_width="360dp"
+                    android:layout_height="140dp"
                     android:onClick="@{fragment::add}"
-                    android:layout_marginBottom="40dp"/>
+                    android:layout_marginBottom="40dp">
+
+                    <ImageView
+                        android:src="@drawable/ic_vector_plus"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </com.dd.ShadowLayout>
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>

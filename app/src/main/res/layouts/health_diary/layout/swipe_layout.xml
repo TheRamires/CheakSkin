@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="entity"
@@ -7,7 +7,6 @@
     </data>
 
     <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="360dp"
         android:layout_height="140dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,77 +21,103 @@
             android:layout_width="320dp"
             android:layout_height="100dp">
             <ImageButton
+                android:focusable="true"
                 android:background="@android:color/transparent"
-                android:id="@+id/delete"
                 android:layout_marginHorizontal="30dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_cros"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="Delete" />
 
         </RelativeLayout>
 
-        <com.dd.ShadowLayout
-            android:clickable="true"
-            android:focusable="true"
-            app:sl_cornerRadius="80dp"
-            android:layout_gravity="center"
-            android:id="@+id/view_foreground"
-            app:sl_shadowRadius="20dp"
-            app:sl_shadowColor="@color/shadow_color1"
-            android:layout_width="360dp"
-            android:layout_height="140dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+        <com.daimajia.swipe.SwipeLayout
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:background="@android:color/transparent"
+                android:id="@+id/bottom_wraper"
+                android:layout_width="80dp"
+                android:weightSum="3"
+                android:orientation="horizontal"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:text="@{entity.name}"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginTop="30dp"
-                    android:id="@+id/name"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="name"/>
+                <ImageButton
+                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="9dp"
+                    android:id="@+id/delete_reminder"
+                    android:layout_gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
 
-                <TextView
-                    android:text="@{entity.description}"
-                    android:layout_marginStart="35dp"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/red"
-                    android:layout_below="@+id/name"
-                    android:id="@+id/text"
-                    android:hint="text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+            </FrameLayout>
 
-                <TextView
-                    android:text="@{entity.timeString}"
-                    android:id="@+id/time"
-                    android:layout_toLeftOf="@+id/image"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red"
-                    android:textSize="15sp"
-                    android:hint="time"
-                    />
+            <com.dd.ShadowLayout
+                android:clickable="true"
+                android:focusable="true"
+                app:sl_cornerRadius="80dp"
+                android:layout_gravity="center"
+                app:sl_shadowRadius="20dp"
+                app:sl_shadowColor="@color/shadow_color1"
+                android:layout_width="360dp"
+                android:layout_height="140dp">
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_further_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:id="@+id/clickable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            </RelativeLayout>
-        </com.dd.ShadowLayout>
+                    <TextView
+                        android:text="@{entity.name}"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="30dp"
+                        android:id="@+id/name"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="name"/>
+
+                    <TextView
+                        android:text="@{entity.description}"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/red"
+                        android:layout_below="@+id/name"
+                        android:id="@+id/text"
+                        android:hint="text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="@{entity.timeString}"
+                        android:id="@+id/time"
+                        android:layout_toStartOf="@+id/image"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:hint="time"
+                        />
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_further_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </RelativeLayout>
+            </com.dd.ShadowLayout>
+        </com.daimajia.swipe.SwipeLayout>
     </FrameLayout>
 </layout>

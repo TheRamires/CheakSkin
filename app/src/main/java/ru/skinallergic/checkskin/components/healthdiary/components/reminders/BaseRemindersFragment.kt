@@ -33,7 +33,8 @@ abstract class BaseRemindersFragment : Fragment(){
         params.width=width
 
         val drawable=ResourcesCompat.getDrawable(resources, R.drawable.ic_background_alarm_clock_1, null)
-        imageView.background=drawable
+        //imageView.background=drawable
+        imageView.setImageDrawable(drawable)
         imageView.layoutParams = params
         imageView.y=offset
     }

@@ -55,10 +55,13 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
             EntityReminders entity = null;
             for (EntityReminders entity_ : list){
-                if (entity_.getId()==positionId);
-                entity=entity_;
-                break;
+                if (entity_.getId()==positionId) {
+                    entity = entity_;
+                    break;
+                }
             }
+            Loger.log("positionId "+positionId);
+            Loger.log("entity name"+entity.getName()+"; id "+entity.getId());
             getViewModel().getEntity().set(entity);
         });
 
