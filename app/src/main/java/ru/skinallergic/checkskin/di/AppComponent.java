@@ -17,7 +17,8 @@ import ru.skinallergic.checkskin.handlers.ToastyManager;
         SharedPrefModule.class,
         ViewModelModule.class,
         HomeViewModuleModules.class,
-        HealthyViewModelModules.class
+        HealthyViewModelModules.class,
+        FoodViewModelModules.class
 })
 @Singleton
 public interface AppComponent {

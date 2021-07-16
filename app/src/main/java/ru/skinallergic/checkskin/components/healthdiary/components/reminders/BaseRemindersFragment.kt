@@ -24,9 +24,9 @@ abstract class BaseRemindersFragment : Fragment(){
     }
 
     fun initBackGround(imageView: ImageView){
-        val height=900
-        val width=900
         val offset=+170f
+        /*val height=900
+        val width=900
 
         val params = imageView.layoutParams
         params.height=height
@@ -35,7 +35,7 @@ abstract class BaseRemindersFragment : Fragment(){
         val drawable=ResourcesCompat.getDrawable(resources, R.drawable.ic_background_alarm_clock_1, null)
         //imageView.background=drawable
         imageView.setImageDrawable(drawable)
-        imageView.layoutParams = params
+        imageView.layoutParams = params*/
         imageView.y=offset
     }
 

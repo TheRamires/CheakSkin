@@ -90,83 +90,64 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Spinner
-                android:layout_marginHorizontal="10dp"
-                android:id="@+id/eat_time"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"/>
-
-            <LinearLayout
-                android:layout_marginHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:singleLine="true"
-                    android:maxLines="1"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Наименование продукта"
-                    android:id="@+id/name"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <EditText
-                    android:id="@+id/weight"
-                    android:layout_marginStart="10dp"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Вес"/>
+                android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/delete_button"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_cros"/>
+                    android:background="@drawable/ic_food_background"/>
 
-            </LinearLayout>
+                <LinearLayout
+                    android:background="@color/white_alpha"
+                    android:id="@+id/linear"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"
-                />
+                    <FrameLayout
+                        android:id="@+id/frame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <Spinner
+                            android:layout_marginHorizontal="5dp"
+                            android:id="@+id/eat_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <ImageView
+                            android:background="@drawable/my_icon_spinner_down"
+                            android:layout_marginRight="20dp"
+                            android:layout_width="20dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="right|center_vertical"/>
+                    </FrameLayout>
+                    <View
+                        android:layout_marginTop="10dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/gray"/>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/container"
+                        />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_marginHorizontal="@dimen/margin_normal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_food_button_add"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                </LinearLayout>
 
-                android:background="@drawable/ic_food_background"/>
-
-        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button_add"
+                    android:layout_below="@+id/linear"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_food_button_add"/>
+            </RelativeLayout>
         </ScrollView>
     </LinearLayout>
 </layout>

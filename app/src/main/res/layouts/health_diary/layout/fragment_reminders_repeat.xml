@@ -17,11 +17,12 @@
         android:layout_height="match_parent"
         tools:context=".components.healthdiary.components.reminders.RemindersAddFragment">
         <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/background"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:background="@drawable/ic_background_alarm_clock_1"/>
 
         <RelativeLayout
