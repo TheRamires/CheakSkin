@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
-import ru.skinallergic.checkskin.components.fooddiary.adapters.ProductFoodDiffUtilCallback
 import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.components.fooddiary.view_models.AddingFoodViewModel
@@ -29,7 +26,8 @@ class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChanged
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = RecyclerProductAdapter(listOf())
+        adapter = RecyclerProductAdapter(mutableListOf())
+        adapter.setListeners(this,this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -64,10 +62,14 @@ class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChanged
             })
         }
         addButton.setOnClickListener {
-            println("click")
+
+            adapter.addPosition(ProductEntity())
+            adapter.notifyItemInserted(adapter.getDataList().size-1)
+
+            /*println("click")
             Loger.log("adapter.getList 1 "+adapter.getDataList())
             viewModel.addProduct(adapter)
-            Loger.log("adapter.getList 4 "+adapter.getDataList())
+            Loger.log("adapter.getList 4 "+adapter.getDataList())*/
         }
 
         viewModel.addProduct(adapter)
@@ -81,9 +83,11 @@ class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChanged
             productDiffResult.dispatchUpdatesTo(adapter)
             Loger.log("adapter.getList 2 "+adapter.getDataList())*/
 
-            val adapter=RecyclerProductAdapter(it)
+            //val adapter=RecyclerProductAdapter(it)
+            adapter.addPosition(it[it.size-1])
             adapter.setListeners(this,this)
-            recyclerView.adapter=adapter
+            adapter.notifyItemInserted(adapter.getDataList().size-1)
+            //recyclerView.adapter=adapter
         })
     }
 
@@ -101,7 +105,9 @@ class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChanged
         }
     }
 
-    override fun delete(entity: ProductEntity) {
-        viewModel.deletePosition(entity)
+    override fun delete(entity: ProductEntity, position: Int) {
+        //viewModel.deletePosition(entity)
+        adapter.removePosition(entity)
+        adapter.notifyItemRemoved(position)
     }
 }

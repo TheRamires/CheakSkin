@@ -10,14 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.databinding.ItemProductBinding
 
-class RecyclerProductAdapter (private var productList: List<ProductEntity>): RecyclerView.Adapter<RecyclerProductAdapter.Item>(){
+class RecyclerProductAdapter (private var productList: MutableList<ProductEntity>): RecyclerView.Adapter<RecyclerProductAdapter.Item>(){
     lateinit var textChangedListener: OnTextChangedListener
     lateinit var onDeleteListener: OnDeleteListener
 
-    fun addDataList(productList_: List<ProductEntity>){
-        productList=productList_
-
+    fun addPosition(product: ProductEntity){
+        productList.add(product)
     }
+    fun removePosition(product_: ProductEntity){
+        for (product in productList){
+            if (product.id==product_.id)
+                productList.removeAt()
+        }
+    }
+
     fun getDataList():List<ProductEntity>{
         return productList
     }
@@ -46,7 +52,7 @@ class RecyclerProductAdapter (private var productList: List<ProductEntity>): Rec
             textChangedListener.textChange(it.toString(),holder.weight.id )
         }
         holder.binding.deleteButton.setOnClickListener {
-            onDeleteListener.delete(item)
+            onDeleteListener.delete(item,position)
         }
     }
 
@@ -62,6 +68,6 @@ class RecyclerProductAdapter (private var productList: List<ProductEntity>): Rec
         fun textChange(str: String, id:Int)
     }
     interface OnDeleteListener{
-        fun delete(entity: ProductEntity)
+        fun delete(entity: ProductEntity, position: Int)
     }
 }
