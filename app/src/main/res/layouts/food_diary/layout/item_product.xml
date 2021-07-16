@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    android:layout_below="@+id/frame"
-    android:id="@+id/linear"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<layout>
     <LinearLayout
-        android:layout_marginHorizontal="10dp"
+        android:id="@+id/linear"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        xmlns:android="http://schemas.android.com/apk/res/android" >
 
-        <EditText
-            android:textSize="16sp"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:hint="Наименование продукта"
-            android:id="@+id/name"/>
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-        <EditText
-            android:textSize="16sp"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:id="@+id/weight"
-            android:layout_marginStart="10dp"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:hint="Вес"/>
-
-        <ImageView
-            android:id="@+id/delete_button"
+        <LinearLayout
             android:layout_marginHorizontal="10dp"
-            android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cros"/>
+            android:orientation="horizontal">
+
+            <EditText
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="Наименование продукта"
+                android:id="@+id/name"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:id="@+id/weight"
+                android:layout_marginStart="10dp"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:hint="Вес"/>
+
+            <ImageView
+                android:id="@+id/delete_button"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cros"/>
+        </LinearLayout>
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
     </LinearLayout>
-    <View
-        android:layout_marginTop="10dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray" />
-</LinearLayout>
+</layout>

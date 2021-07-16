@@ -5,24 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
-import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
-import ru.skinallergic.checkskin.components.fooddiary.data.ProductPosition
+import ru.skinallergic.checkskin.components.fooddiary.adapters.ProductFoodDiffUtilCallback
+import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter
+import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.components.fooddiary.view_models.AddingFoodViewModel
 import ru.skinallergic.checkskin.databinding.FragmentAddFood2Binding
 import java.util.*
 
-class AddFoodFragment : BaseFoodFragment() {
+class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChangedListener , RecyclerProductAdapter.OnDeleteListener{
     lateinit var backStack: ImageButton
     lateinit var saveButton: ImageView
     lateinit var spinner: Spinner
     lateinit var addButton: Button
     lateinit var binding: FragmentAddFood2Binding
-    lateinit var containerLayout: ViewGroup
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: RecyclerProductAdapter
     val viewModel by lazy {ViewModelProvider(this, viewModelFactory).get(AddingFoodViewModel::class.java)}
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        adapter = RecyclerProductAdapter(listOf())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,15 +42,12 @@ class AddFoodFragment : BaseFoodFragment() {
             spinner=eatTime
             addButton=buttonAdd
             fragment=this@AddFoodFragment
+            recyclerView=recycler
         }
 
-        spinner.setAdapter(listOf("Выберите прием пищи","Завтрак","Обед","Ланч","Ужин"))
+        recyclerView.adapter=adapter
 
-        containerLayout=binding.container
-        if (viewModel.viewList.value ==null || viewModel.viewList.value!!.isEmpty()){
-            addView(containerLayout)
-        }
-
+        spinner.setAdapter(listOf("Выберите прием пищи", "Завтрак", "Обед", "Ланч", "Ужин"))
         subscribeDate()
         return view
     }
@@ -51,45 +56,52 @@ class AddFoodFragment : BaseFoodFragment() {
         super.onStart()
         backStack.setOnClickListener {
             quitSaveLogic({
-                quitSaveCondition()},{
-                popBack(it)},{
-                save()})
+                quitSaveCondition()
+            }, {
+                popBack(it)
+            }, {
+                save()
+            })
         }
         addButton.setOnClickListener {
-            addView(containerLayout)
+            println("click")
+            Loger.log("adapter.getList 1 "+adapter.getDataList())
+            viewModel.addProduct(adapter)
+            Loger.log("adapter.getList 4 "+adapter.getDataList())
         }
+
+        viewModel.addProduct(adapter)
+        viewModel.productList.observe(viewLifecycleOwner, {
+           /* Loger.log("adapter.getList 2 "+adapter.getDataList())
+            val productDiffUtilCallback : DiffUtil.Callback= ProductFoodDiffUtilCallback(adapter.getDataList(), it)
+            val productDiffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiffUtilCallback)
+
+            adapter.addDataList(it)
+            Loger.log("adapter.getList 3 "+adapter.getDataList())
+            productDiffResult.dispatchUpdatesTo(adapter)
+            Loger.log("adapter.getList 2 "+adapter.getDataList())*/
+
+            val adapter=RecyclerProductAdapter(it)
+            adapter.setListeners(this,this)
+            recyclerView.adapter=adapter
+        })
     }
 
-    fun save(){
+        fun save(){
 
     }
-    fun quitSaveCondition(): Boolean {
+        fun quitSaveCondition(): Boolean {
         return false
     }
 
-    fun addView(container : ViewGroup){
-        val productPosition : View = LayoutInflater.from(container.context).inflate(R.layout.item_product,container)
-        productPosition.id = viewModel.newId()
-
-
-        //Loger.log("size "+container.size)
-        buttonAddCorrectParams(binding.linear,RelativeLayout.BELOW)
-        subscribeEditTextName(productPosition.id, productPosition.findViewById(R.id.name))
-    }
-
-    fun buttonAddCorrectParams(hook: ViewGroup, doing: Int){ //doing = Relative.Bellow
-        val margin =80
-        val param :RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-        param.addRule(doing, hook.id)
-        param.topMargin=margin
-        param.marginEnd=margin
-        param.marginStart=margin
-        binding.buttonAdd.layoutParams=param
-    }
-    fun subscribeEditTextName(id: Int, editText: EditText){
-        editText.doAfterTextChanged { name->
-            viewModel.addNameToMap(id,name.toString())
-            Loger.log(viewModel.positionList)
+    override fun textChange(str: String, id: Int) {
+        when(id){
+            R.id.name-> println(str)
+            R.id.weight-> println(str)
         }
+    }
+
+    override fun delete(entity: ProductEntity) {
+        viewModel.deletePosition(entity)
     }
 }
