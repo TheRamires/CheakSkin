@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="buttonVisible"
+            type="ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter.Item" />
+
+    </data>
+
     <LinearLayout
         android:id="@+id/linear"
         android:orientation="vertical"
@@ -37,12 +45,13 @@
                 android:layout_height="wrap_content"
                 android:hint="Вес"/>
 
-            <ImageView
+            <ImageButton
+                android:visibility="@{buttonVisible.deleteBtnVisible ? View.VISIBLE : View.INVISIBLE , default=invisible}"
+                android:background="@android:color/transparent"
                 android:id="@+id/delete_button"
-                android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/ic_cros"/>
         </LinearLayout>
         <View

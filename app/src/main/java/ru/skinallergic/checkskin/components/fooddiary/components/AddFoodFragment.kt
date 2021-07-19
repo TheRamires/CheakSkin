@@ -5,35 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.fooddiary.adapters.DiffUtilFromMySelf
 import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter
+import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter_UNUSED
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.components.fooddiary.view_models.AddingFoodViewModel
+import ru.skinallergic.checkskin.components.fooddiary.view_models.add
+import ru.skinallergic.checkskin.components.fooddiary.view_models.delete
 import ru.skinallergic.checkskin.databinding.FragmentAddFood2Binding
 import java.util.*
 
-class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChangedListener , RecyclerProductAdapter.OnDeleteListener{
+class AddFoodFragment : BaseFoodFragment(){
     lateinit var backStack: ImageButton
     lateinit var saveButton: ImageView
     lateinit var spinner: Spinner
     lateinit var addButton: Button
     lateinit var binding: FragmentAddFood2Binding
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: RecyclerProductAdapter
+    lateinit var adapter :RecyclerProductAdapter
+    lateinit var thisView: View
     val viewModel by lazy {ViewModelProvider(this, viewModelFactory).get(AddingFoodViewModel::class.java)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = RecyclerProductAdapter(mutableListOf())
-        adapter.setListeners(this,this)
+        adapter= RecyclerProductAdapter()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentAddFood2Binding.inflate(inflater)
-        val view= binding.root
+        thisView= binding.root
         binding.apply {
             backStack=backBtn
             saveButton=okBtn
@@ -42,72 +48,74 @@ class AddFoodFragment : BaseFoodFragment(), RecyclerProductAdapter.OnTextChanged
             fragment=this@AddFoodFragment
             recyclerView=recycler
         }
-
         recyclerView.adapter=adapter
 
         spinner.setAdapter(listOf("Выберите прием пищи", "Завтрак", "Обед", "Ланч", "Ужин"))
         subscribeDate()
-        return view
+        return thisView
     }
 
     override fun onStart() {
         super.onStart()
+
+        addButton.setOnClickListener {
+            if (viewModel.conditionOfAdding(getData())){
+                add(ProductEntity())
+            } else {toastyManager.toastyyyy("Пожалуйста заполните предыдущую позицию")}
+        }
+
+        adapter.apply{
+            setDeletingFunction { position-> delete(position) }
+            bind {holder,entity->
+                holder.name.text= entity.name
+                holder.weight.text= entity.weight
+                holder.delete.setOnClickListener { deletingFun(entity) }
+                holder.name.doAfterTextChanged { entity.name=it.toString(); deleteButtonVisibility(holder, entity) }
+                holder.weight.doAfterTextChanged { entity.weight=it.toString() }
+            }
+        }
+
+        add(ProductEntity())
+        viewModel.productList.observe(viewLifecycleOwner, {newData->
+            val diffUtil = DiffUtilFromMySelf<ProductEntity>(adapter.getData(), newData)
+            diffUtil.calculate(adapter)
+        })
+
+        saveButton.setOnClickListener {
+            viewModel.save(adapter.getData())
+        }
+
         backStack.setOnClickListener {
             quitSaveLogic({
-                quitSaveCondition()
-            }, {
-                popBack(it)
-            }, {
-                save()
-            })
-        }
-        addButton.setOnClickListener {
-
-            adapter.addPosition(ProductEntity())
-            adapter.notifyItemInserted(adapter.getDataList().size-1)
-
-            /*println("click")
-            Loger.log("adapter.getList 1 "+adapter.getDataList())
-            viewModel.addProduct(adapter)
-            Loger.log("adapter.getList 4 "+adapter.getDataList())*/
+                viewModel.quitSaveCondition() }, {
+                popBack(it) }, {
+                viewModel.backSave(adapter.getData())})
         }
 
-        viewModel.addProduct(adapter)
-        viewModel.productList.observe(viewLifecycleOwner, {
-           /* Loger.log("adapter.getList 2 "+adapter.getDataList())
-            val productDiffUtilCallback : DiffUtil.Callback= ProductFoodDiffUtilCallback(adapter.getDataList(), it)
-            val productDiffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(productDiffUtilCallback)
-
-            adapter.addDataList(it)
-            Loger.log("adapter.getList 3 "+adapter.getDataList())
-            productDiffResult.dispatchUpdatesTo(adapter)
-            Loger.log("adapter.getList 2 "+adapter.getDataList())*/
-
-            //val adapter=RecyclerProductAdapter(it)
-            adapter.addPosition(it[it.size-1])
-            adapter.setListeners(this,this)
-            adapter.notifyItemInserted(adapter.getDataList().size-1)
-            //recyclerView.adapter=adapter
+        viewModel.isBackSaved.observe(viewLifecycleOwner,{ isSaved->
+            if (isSaved){popBack(thisView)}
         })
     }
 
-        fun save(){
-
+    fun deleteButtonVisibility(holder: RecyclerProductAdapter.Item, entity: ProductEntity){
+        if (viewModel.conditionOfDelete(entity)){
+            holder.deleteBtnVisible.set(true)
+        } else holder.deleteBtnVisible.set(false)
     }
-        fun quitSaveCondition(): Boolean {
+
+    fun quitSaveCondition(): Boolean {
         return false
     }
 
-    override fun textChange(str: String, id: Int) {
-        when(id){
-            R.id.name-> println(str)
-            R.id.weight-> println(str)
-        }
+    fun add(position: ProductEntity){
+        viewModel.productList.add(position)
     }
 
-    override fun delete(entity: ProductEntity, position: Int) {
-        //viewModel.deletePosition(entity)
-        adapter.removePosition(entity)
-        adapter.notifyItemRemoved(position)
+    fun delete(position: ProductEntity){
+        viewModel.productList.delete(position)
+    }
+
+    fun getData():List<ProductEntity>{
+        return adapter.getData()
     }
 }

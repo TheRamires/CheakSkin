@@ -3,7 +3,7 @@ package ru.skinallergic.checkskin.components.fooddiary.adapters
 import androidx.recyclerview.widget.DiffUtil
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 
-class ProductFoodDiffUtilCallback(private val oldList: List<ProductEntity>, private val newList: List<ProductEntity>) : DiffUtil.Callback() {
+class ProductFoodDiffUtilCallback_UNUSED(private val oldList: List<ProductEntity>, private val newList: List<ProductEntity>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size

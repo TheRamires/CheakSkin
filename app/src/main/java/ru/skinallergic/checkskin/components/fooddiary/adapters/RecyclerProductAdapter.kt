@@ -3,71 +3,66 @@ package ru.skinallergic.checkskin.components.fooddiary.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.RecyclerView
+import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.databinding.ItemProductBinding
 
-class RecyclerProductAdapter (private var productList: MutableList<ProductEntity>): RecyclerView.Adapter<RecyclerProductAdapter.Item>(){
-    lateinit var textChangedListener: OnTextChangedListener
-    lateinit var onDeleteListener: OnDeleteListener
-
-    fun addPosition(product: ProductEntity){
-        productList.add(product)
-    }
-    fun removePosition(product_: ProductEntity){
-        for (product in productList){
-            if (product.id==product_.id)
-                productList.removeAt()
-        }
-    }
-
-    fun getDataList():List<ProductEntity>{
-        return productList
-    }
-
-    fun setListeners(listener: OnTextChangedListener, onDeleteListener: OnDeleteListener ){
-        this.textChangedListener=listener
-        this.onDeleteListener=onDeleteListener
-    }
+class RecyclerProductAdapter : RecyclerView.Adapter<RecyclerProductAdapter.Item>(), BaseAdapterForDiff<ProductEntity> {
+    override var list: ArrayList<ProductEntity> = arrayListOf()
+    lateinit var deletingFun : (product: ProductEntity)->Unit
+    lateinit var binder : (item: Item, entity: ProductEntity)->Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Item {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding: ItemProductBinding = ItemProductBinding.inflate(inflater, parent, false)
-        val view=binding.root
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product,parent,false)
         return Item(view)
     }
 
     override fun onBindViewHolder(holder: Item, position: Int) {
-        val item = productList[position]
-        holder.name.setText(item.name)
-        holder.weight.setText(item.weight)
+        val item= list[position]
+        binder(holder, item)
+    }
 
-        holder.name.doAfterTextChanged {
-            textChangedListener.textChange(it.toString(),holder.name.id )
-        }
-        holder.weight.doAfterTextChanged {
-            textChangedListener.textChange(it.toString(),holder.weight.id )
-        }
-        holder.binding.deleteButton.setOnClickListener {
-            onDeleteListener.delete(item,position)
-        }
+    override fun addData( myData: ProductEntity){
+        this.list.add(myData)
+        notifyItemInserted(list.indexOf(myData))
+    }
+
+    override fun removeData( myData: ProductEntity){
+        val index=list.indexOf(myData)
+        list.removeAt(index)
+        notifyItemRemoved(index)
+    }
+
+    fun getData(): List<ProductEntity>{
+        return list
+    }
+
+    fun bind(binder : (item: Item, entity: ProductEntity)->Unit){
+        this.binder=binder
+    }
+
+    fun setDeletingFunction(function: (entity: ProductEntity)->Unit){
+        deletingFun=function
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return list.size
     }
-    class Item(itemView: View):RecyclerView.ViewHolder(itemView){
+
+    class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding: ItemProductBinding = DataBindingUtil.bind(itemView)!!
-        val name: EditText = binding.name
-        val weight: EditText =binding.weight
-    }
-    interface OnTextChangedListener{
-        fun textChange(str: String, id:Int)
-    }
-    interface OnDeleteListener{
-        fun delete(entity: ProductEntity, position: Int)
+        val deleteBtnVisible = ObservableField(false)
+        var name: TextView =binding.name
+        var weight: TextView =binding.weight
+        val delete: ImageButton =binding.deleteButton
+        init {
+            binding.buttonVisible=this
+        }
     }
 }

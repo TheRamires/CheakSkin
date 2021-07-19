@@ -17,9 +17,7 @@ import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-
 const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание."
-
 const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
 
 class AffectedAreaCommonViewModel@Inject constructor(
