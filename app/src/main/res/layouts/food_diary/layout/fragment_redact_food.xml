@@ -13,7 +13,6 @@
         tools:context=".components.fooddiary.components.DetailFoodFragment"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
         <RelativeLayout
             android:layout_alignParentTop="true"
             android:background="@color/white"
@@ -56,26 +55,49 @@
                 android:layout_height="1dp"/>
         </RelativeLayout>
 
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:background="@drawable/ic_food_background"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
-            <androidx.recyclerview.widget.RecyclerView
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_marginHorizontal="@dimen/margin_normal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_food_button_add"
-                />
+                <ImageView
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_food_background"/>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:background="@color/white_alpha"
+                    android:id="@+id/linear"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_below="@+id/linear"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_food_button_add"/>
+
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

@@ -86,15 +86,34 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </RelativeLayout>
 
-        <FrameLayout
-            android:background="@drawable/ic_food_background"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
 
-        </FrameLayout>
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_food_background"/>
+                <LinearLayout
+                    android:background="@color/white_alpha"
+                    android:id="@+id/linear"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>
