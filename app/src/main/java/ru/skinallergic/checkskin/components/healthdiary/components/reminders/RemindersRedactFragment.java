@@ -10,6 +10,9 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +29,7 @@ import static ru.skinallergic.checkskin.components.healthdiary.components.remind
 public class RemindersRedactFragment extends BaseRemindersFragment {
     private int position;
     private DialogFragment dialogFragment;
+    private Spinner typeSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,20 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
         binding.setFragment(this);
         binding.setViewModel(getViewModel());
         initBackGround(binding.background);
+        typeSpinner=binding.type;
+        ArrayAdapter<?> adapter =
+                new ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,getTypeList());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter);
+
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(getTypeList().get(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         binding.redactTime.setOnClickListener((View v)-> {
             System.out.println("redact");

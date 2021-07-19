@@ -21,6 +21,7 @@ import ru.skinallergic.checkskin.databinding.FragmentAddFood2Binding
 import java.util.*
 
 class AddFoodFragment : BaseFoodFragment(){
+    val eatingList=listOf("Выберите прием пищи", "Завтрак", "Обед", "Ланч", "Ужин")
     lateinit var backStack: ImageButton
     lateinit var saveButton: ImageView
     lateinit var spinner: Spinner
@@ -50,13 +51,23 @@ class AddFoodFragment : BaseFoodFragment(){
         }
         recyclerView.adapter=adapter
 
-        spinner.setAdapter(listOf("Выберите прием пищи", "Завтрак", "Обед", "Ланч", "Ужин"))
+        spinner.setAdapter(eatingList)
         subscribeDate()
         return thisView
     }
 
     override fun onStart() {
         super.onStart()
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position!=0){
+                    println(eatingList[position])
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+        }
 
         addButton.setOnClickListener {
             if (viewModel.conditionOfAdding(getData())){

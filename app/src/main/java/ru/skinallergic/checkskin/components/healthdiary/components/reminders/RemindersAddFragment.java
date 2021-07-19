@@ -11,23 +11,19 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import java.util.Date;
-
-import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindAddViewModel;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersAddBinding;
-
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
-import ru.skinallergic.checkskin.di.MyViewModelFactory;
-import ru.skinallergic.checkskin.view_models.DateViewModel;
 
 public class RemindersAddFragment extends BaseRemindersFragment {
     private  DialogFragment dialogfragment;
     private FragmentRemindersAddBinding binding;
+    private Spinner typeSpinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +38,20 @@ public class RemindersAddFragment extends BaseRemindersFragment {
         binding.setFragment(this);
         binding.setViewModel(getViewModel());
         initBackGround(binding.background);
+        typeSpinner=binding.type;
+        ArrayAdapter<?> adapter =
+                new ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,getTypeList());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter);
+
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(getTypeList().get(position));
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
 
         binding.redactTime.setOnClickListener((View v)-> {
             dialogfragment.show(getParentFragmentManager(),"time");
@@ -69,7 +79,6 @@ public class RemindersAddFragment extends BaseRemindersFragment {
             getViewModel().getCreatingReminder().setValue(reminder);
             getViewModel().getEntity().set(reminder);
         });
-
 
         /*
         viewModel.getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{

@@ -14,7 +14,6 @@
         tools:context=".components.fooddiary.components.DetailFoodFragment"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
         <RelativeLayout
             android:layout_alignParentTop="true"
             android:background="@color/white"
@@ -112,6 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <Spinner
+                            android:background="@null"
                             android:layout_marginHorizontal="5dp"
                             android:id="@+id/eat_time"
                             android:layout_width="match_parent"

@@ -19,4 +19,7 @@ object ServiceFactory {
     fun makeTokenService (isDebug: Boolean): TokenService{
         return ServiceConfig.makeService().create(TokenService::class.java)
     }
+    fun makeNotificationService(isDebug: Boolean): NotificationService{
+        return ServiceConfig.makeService().create(NotificationService::class.java)
+    }
 }

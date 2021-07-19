@@ -13,6 +13,7 @@ import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.text.SimpleDateFormat
 const val TIME_PATTERN="HH:mm"
 abstract class BaseRemindersFragment : Fragment(){
+    val typeList = listOf("Лечение","Визит к врачу")
     val simpleTimeParser = SimpleDateFormat(TIME_PATTERN)
 
     val viewModelFactory = App.getInstance().appComponent.viewModelFactory

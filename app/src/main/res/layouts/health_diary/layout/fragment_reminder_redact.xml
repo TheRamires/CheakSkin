@@ -100,20 +100,25 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
                     app:layout_constraintTop_toTopOf="parent" />
             </RelativeLayout>
-            <RelativeLayout
+            <FrameLayout
                 android:paddingVertical="5dp"
+                android:id="@+id/frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:textColor="@color/black"
-                    android:layout_marginHorizontal="10dp"
+                <Spinner
+                    android:background="@null"
+                    android:layout_marginHorizontal="5dp"
                     android:id="@+id/type"
-                    android:layout_toRightOf="@+id/text"
-                    android:text="Лечение"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
-            </RelativeLayout>
+                <ImageView
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/my_icon_spinner_down"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="20dp"
+                    android:layout_height="11dp"
+                    android:layout_gravity="right|center_vertical"/>
+            </FrameLayout>
             <RelativeLayout
                 android:paddingBottom="15dp"
                 android:layout_width="match_parent"

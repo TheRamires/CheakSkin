@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.skinallergic.checkskin.Api.HealthyService;
 import ru.skinallergic.checkskin.Api.HomeService;
+import ru.skinallergic.checkskin.Api.NotificationService;
 import ru.skinallergic.checkskin.Api.ServiceFactory;
 import ru.skinallergic.checkskin.Api.TestResultService;
 import ru.skinallergic.checkskin.Api.TokenService;
@@ -45,4 +46,9 @@ public class RemoteModule {
     @Singleton
     @Provides
     TokenService tokenService (){return ServiceFactory.INSTANCE.makeTokenService(true);}
+
+    @Inject
+    @Singleton
+    @Provides
+    NotificationService notificationService (){return ServiceFactory.INSTANCE.makeNotificationService(true);}
 }
