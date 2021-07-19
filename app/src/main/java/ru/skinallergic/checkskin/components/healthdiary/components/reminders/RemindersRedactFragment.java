@@ -16,6 +16,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
@@ -84,7 +85,6 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
             binding.date.setText(date);
         });
 
-
         dialogFragment = new TimePickerDialogTheme(getViewModel().getTimeLive());
         getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (Date time) ->{
             binding.time.setText(getSimpleTimeParser().format(time));
@@ -94,7 +94,13 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
         });
 
         getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
-            EntityReminders entity=list.get(position);
+            EntityReminders entity = null;
+            for (EntityReminders entityReminders : list){
+                if (entityReminders.getId()==position){
+                    entity=entityReminders;
+                    break;
+                }
+            }
             getViewModel().getCreatingReminder().setValue(entity);
 
         });
