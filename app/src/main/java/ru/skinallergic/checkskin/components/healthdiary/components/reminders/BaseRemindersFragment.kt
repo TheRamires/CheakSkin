@@ -8,12 +8,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import ru.skinallergic.checkskin.App
 import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindCommonViewModel
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.text.SimpleDateFormat
 const val TIME_PATTERN="HH:mm"
+const val REMIND_IN_AN_NEVER=0
+const val REMIND_IN_AN_5_MIN=300
+const val REMIND_IN_AN_30_MIN=1800
+const val REMIND_IN_AN_HOUR=3600
+const val REPEAT_NEVER=0
+const val REPEAT_EVERY_DAY=1
+const val REPEAT_EVERY_WEEK=2
+const val REPEAT_EVERY_TWO_WEEK=3
+const val REPEAT_EVERY_MONTH=4
+const val REPEAT_EVERY_YEAR=5
 abstract class BaseRemindersFragment : Fragment(){
-    val typeList = listOf("Лечение","Визит к врачу")
+    val typeList = listOf("Визит к врачу","Лечение")
     val simpleTimeParser = SimpleDateFormat(TIME_PATTERN)
 
     val viewModelFactory = App.getInstance().appComponent.viewModelFactory
@@ -22,6 +33,10 @@ abstract class BaseRemindersFragment : Fragment(){
     }
     val viewModel: RemindersViewModel by lazy {
         ViewModelProvider(requireActivity(), viewModelFactory).get(RemindersViewModel::class.java)
+    }
+
+    val viewModelCommon: RemindCommonViewModel by lazy {
+        ViewModelProvider(requireActivity(), viewModelFactory).get(RemindCommonViewModel::class.java)
     }
 
     fun initBackGround(imageView: ImageView){

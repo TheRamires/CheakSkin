@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.format.Time;
 import android.widget.TimePicker;
 
+import androidx.databinding.ObservableField;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 
@@ -15,10 +16,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import ru.skinallergic.checkskin.Loger;
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
+
 public class TimePickerDialogTheme extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
     MutableLiveData<Date> timeLive;
+    public ReminderWriterViewModel reminderWriterViewModel;
     public TimePickerDialogTheme(MutableLiveData timeLive){
         this.timeLive=timeLive;
+    }
+    public TimePickerDialogTheme(ReminderWriterViewModel reminderWriterViewModel){
+        this.reminderWriterViewModel=reminderWriterViewModel;
     }
 
     @Override
@@ -42,9 +51,13 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
         SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
         try {
             Date time = formater.parse(timeStr);
-            timeLive.setValue(time);
+            //timeLive.setValue(time);
+            reminderWriterViewModel.setStartAt(time.getTime());
+            System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+
         } catch (ParseException e) {
             e.printStackTrace();
+            System.out.println("2 "+e);
         }
 
         //timeLive.setValue(myHour+":"+ myMinutes);

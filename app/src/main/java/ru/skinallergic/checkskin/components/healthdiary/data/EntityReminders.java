@@ -5,25 +5,38 @@ import java.util.Date;
 
 import ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragment;
 
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.REMIND_IN_AN_30_MIN;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.REMIND_IN_AN_5_MIN;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.REMIND_IN_AN_HOUR;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.REMIND_IN_AN_NEVER;
+
+
 public class EntityReminders {
     private int id;
     private String name;
     private String description;
     private Date time;
     private Integer remind;
-    private Integer repeat;
+    private Integer repeatMode;
+    private int kind;
 
     public EntityReminders(){
 
     }
 
-    public EntityReminders(int id,String name, String description, Date time, int remind, int repeat ){
+    public EntityReminders(int id,String name, String description, Date time, int remind, int repeat,int kind ){
         this.id=id;
         this.name=name; this.description=description; this.time=time;
         this.remind=remind;
-        this.repeat=repeat;
+        this.repeatMode=repeat;
+        this.kind=kind;
     }
-
+    public void setKind(Integer kind){
+        this.kind=kind;
+    }
+    public int getKind(){
+        return kind;
+    }
     public void setId (int id){
         this.id=id;
     }
@@ -60,26 +73,26 @@ public class EntityReminders {
     }
 
     public int getRepeat() {
-        return repeat;
+        return repeatMode;
     }
     public void setRepeat(int repeat){
-        this.repeat=repeat;
+        this.repeatMode=repeat;
     }
 
     public String getRemindText(){
         String value = "";
         if (remind==null)return value;
         switch (remind){
-            case 0:
+            case REMIND_IN_AN_NEVER:
                 value= "Не напоминать";
                 break;
-            case 1:
+            case REMIND_IN_AN_5_MIN:
                 value= "За 5 мин";
                 break;
-            case 2:
+            case REMIND_IN_AN_30_MIN:
                 value= "За 30 мин";
                 break;
-            case 3:
+            case REMIND_IN_AN_HOUR:
                 value= "За час";
                 break;
         }
@@ -88,8 +101,8 @@ public class EntityReminders {
 
     public String getRepeatText(){
         String value = "";
-        if (repeat==null)return value;
-        switch (repeat){
+        if (repeatMode==null)return value;
+        switch (repeatMode){
             case 0:
                 value="Никогда";
                 break;

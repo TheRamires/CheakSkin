@@ -56,10 +56,7 @@ class SplashActivity : AppCompatActivity() {
                                         startActivity(intent)
                                         finish()*/
                                         //***********************************************************************
-
-
         printKeyHash()
-
 
         if (!hasConnection(this)) {
             Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_LONG).show()

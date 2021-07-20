@@ -7,6 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
@@ -82,5 +83,29 @@ interface HealthyService {
     @DELETE("/journals/health/rashes/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun deletePosition(@Header("Authorization") key:String,@Path ("id") id:Int): Observable<ResponseBody>
+}
+interface NotificationService {
+    @GET("/notifications/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getReminder(@Path("timestamp")date: String ,
+                    @Header("Authorization") key: String,) :Observable<ResponseBody>
+
+    @POST("/notifications/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun newReminder(@Header("Authorization") key: String, @Body reminderWriter: ReminderWriter): Observable<ResponseBody>
+
+    @PATCH("/notifications/1/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun redactReminder(@Header("Authorization") key: String, @Body reminderWriter: ReminderWriter): Observable<ResponseBody>
+
+    @POST("/notifications/2/silent-list/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun offReminder(@Header("Authorization") key: String, @Body timestamp: Map<String,Long>): Observable<ResponseBody>
+
+    @DELETE("/notifications/3/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun deleteReminder(@Path("timestamp")date: String ,@Header("Authorization") key: String): Observable<ResponseBody>
+
+
 }
 

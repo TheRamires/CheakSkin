@@ -2,7 +2,9 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -12,10 +14,19 @@ import android.widget.RadioGroup;
 
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersRepeatBinding;
 
 public class RemindersRepeatFragment extends BaseRemindersFragment {
     private FragmentRemindersRepeatBinding binding;
+    private ReminderWriterViewModel reminderWriterViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        reminderWriterViewModel=
+                new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderWriterViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,10 +40,11 @@ public class RemindersRepeatFragment extends BaseRemindersFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 int position =getPosition(checkedId);
-
+/*
                 EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
                 reminder.setRepeat(position);
-                getViewModel().getCreatingReminder().setValue(reminder);
+                getViewModel().getCreatingReminder().setValue(reminder);*/
+                reminderWriterViewModel.setRepeatMode(position);
             }
         });
 

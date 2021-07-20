@@ -13,7 +13,7 @@ class RemindersViewModel @Inject constructor(): ViewModel() {
     val timeLive = MutableLiveData<Date>()
 
     var remindsLive = MutableLiveData<ArrayList<EntityReminders>>()
-    var entity = ObservableField<EntityReminders>()
+    var entity = ObservableField<EntityReminders>(EntityReminders())
     fun clearEntityObservable(){entity.set(null)}
     var dateObservable = ObservableField<String>()
 
@@ -36,13 +36,13 @@ class RemindersViewModel @Inject constructor(): ViewModel() {
         val list = ArrayList<EntityReminders>()
         for (i in 0..3) {
             list.add(EntityReminders(i, "Парацетамол$i", "выпить$i", Date(10800),
-                    1, 1))
+                    1, 1,0))
         }
         remindsLive.value = list
     }
 
     fun deletePosition(position: Int) {
-        //for example-------------------------------------------------------------------------
+        //for example------------------------------------------------------------------------------
         val list_temp = remindsLive.value!!
         val list_new = ArrayList<EntityReminders>()
         for (entity in list_temp) {
