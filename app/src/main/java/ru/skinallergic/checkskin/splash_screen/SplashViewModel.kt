@@ -18,6 +18,7 @@ import ru.skinallergic.checkskin.shared_pref_model.UserConfigModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import ru.skinallergic.checkskin.shared_pref_model.FirebaseDeviceTokenModel
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(val repo: SplashRepositoriy,
@@ -25,7 +26,8 @@ class SplashViewModel @Inject constructor(val repo: SplashRepositoriy,
                                           val userModel: UserConfigModel,
                                           val toastyManager: ToastyManager,
                                           val newsRepositoriy: NewsRepositoriy,
-                                          val accountRepositoriy: AccountRepositoriy
+                                          val accountRepositoriy: AccountRepositoriy,
+                                          val firebaseDeviceTokenModel: FirebaseDeviceTokenModel
 ) : ViewModel() {
     val compositeDisposable=CompositeDisposable()
     var newsLive= MutableLiveData<List<Datum?>>()

@@ -15,6 +15,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import ru.skinallergic.checkskin.*
 import ru.skinallergic.checkskin.databinding.ActivityEntranceBinding
 import ru.skinallergic.checkskin.di.MyViewModelFactory
@@ -44,6 +46,7 @@ class EntranceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityEntranceBinding>(this, R.layout.activity_entrance)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        getFireBaseDeviceToken()
 
         if (!hasConnection(this)) {
             Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_LONG).show()
@@ -110,5 +113,19 @@ class EntranceActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    fun getFireBaseDeviceToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Loger.log("getFireBaseDeviceToken $token")
+            accountViewModel.firebaseDeviceTokenModel.save(token?:"")
+
+        })
     }
 }

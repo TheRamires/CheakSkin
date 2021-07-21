@@ -54,6 +54,7 @@ class LogInFragment : Fragment() {
         subscribeCheakNumber(accountViewModel)
 
         LoginManager.getInstance().logOut()//костыль
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

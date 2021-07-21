@@ -49,6 +49,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         binding.setViewModel(reminderWriterViewModel);
         initBackGround(binding.background);
         typeSpinner=binding.type;
+
         ArrayAdapter<?> adapter =
                 new ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,getTypeList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -58,6 +59,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         ReminderWriter reminderWriter=reminderWriterViewModel.getReminderWriter().get();
         if (reminderWriter!=null){
             binding.time.setText(reminderWriter.getTime()); //Почему-то observableField не срабатывает для этого поля
+            binding.description.setText(reminderWriter.getText());
         }
 
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -144,9 +146,10 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
     }
     public void nameChanged(CharSequence s,int start, int count, int after){
         System.out.println("after "+after);
-        if (s.length()>3){
+        reminderWriterViewModel.setText(s.toString());
+        /*if (s.length()>3){
             reminderWriterViewModel.setText(s.toString());
-        }
+        }*/
     }
 
     @Override

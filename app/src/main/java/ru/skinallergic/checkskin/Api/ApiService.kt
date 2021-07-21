@@ -28,7 +28,7 @@ interface ApiService {
 
     @POST ("/siw/tel/")
     @Headers("Content-Type: application/json")
-    fun loginRequest (@Body request: Map<String,String>): Observable<LogIn>
+    fun loginRequest (@Header("Device") firebaseDeviceToken:String, @Body request: Map<String,String>): Observable<LogIn>
 
     @GET("/regions/")
     fun getRegions(): Observable<Regions>
@@ -65,7 +65,7 @@ interface ApiService {
 
     @POST("/siw/{Param}/")
     @Headers("Content-Type: application/json")
-    fun netWorkLogIn(@Path ("Param") network:String, @Body token:  Map<String,String>): Observable<LogIn>
+    fun netWorkLogIn(@Header("Device") firebaseDeviceToken:String, @Path ("Param") network:String, @Body token:  Map<String,String>): Observable<LogIn>
 
 
     @GET("/news/")

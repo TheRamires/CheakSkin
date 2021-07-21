@@ -18,6 +18,7 @@ import ru.skinallergic.checkskin.entrance.helper_classes.ValidatorField
 import ru.skinallergic.checkskin.entrance.helper_classes.parserError
 import ru.skinallergic.checkskin.entrance.pojo.*
 import ru.skinallergic.checkskin.handlers.ToastyManager
+import ru.skinallergic.checkskin.shared_pref_model.FirebaseDeviceTokenModel
 import ru.skinallergic.checkskin.shared_pref_model.TokenModelImpls
 import ru.skinallergic.checkskin.shared_pref_model.UserConfigModel
 import ru.skinallergic.checkskin.utils.CHOOSE_REGIONS
@@ -32,7 +33,8 @@ class AccountViewModelImpl @Inject constructor(val accountRepo: AccountRepositor
                                                val tokenModel: TokenModelImpls,
                                                val userModel: UserConfigModel,
                                                val toastyManager: ToastyManager,
-                                               val validatorField: ValidatorField
+                                               val validatorField: ValidatorField,
+                                               val firebaseDeviceTokenModel: FirebaseDeviceTokenModel
 ): AccountViewModel() {
     var splashScreen = ObservableField<Boolean?>()
     var expiredRefreshToken=MutableLiveData<Boolean>()
