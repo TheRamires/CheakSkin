@@ -3,8 +3,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
@@ -15,16 +14,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import java.util.Date;
+
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
-import ru.skinallergic.checkskin.databinding.FragmentRemindersAddBinding;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
+import ru.skinallergic.checkskin.databinding.FragmentRemindersAddBinding;
 
 import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.TIME_PATTERN;
 
-public class RemindersAddFragment extends BaseRemindersFragment {
-    private  DialogFragment dialogfragment;
+public class RemindersAddFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener {
+    private  TimePickerDialogTheme dialogfragment;
     private FragmentRemindersAddBinding binding;
     private Spinner typeSpinner;
     private ReminderWriterViewModel reminderWriterViewModel;
@@ -35,7 +36,9 @@ public class RemindersAddFragment extends BaseRemindersFragment {
         getViewModel().clearCurrent();
         reminderWriterViewModel=
                 new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderWriterViewModel.class);
-        dialogfragment = new TimePickerDialogTheme(reminderWriterViewModel);
+        reminderWriterViewModel.getReminderWriter().set(null);
+        dialogfragment = new TimePickerDialogTheme();
+        dialogfragment.setTimeClickListener(this::timeClick);
     }
 
     @Override
@@ -51,6 +54,11 @@ public class RemindersAddFragment extends BaseRemindersFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
         binding.date.setText(getDateViewModel().getDate(TIME_PATTERN));
+
+        ReminderWriter reminderWriter=reminderWriterViewModel.getReminderWriter().get();
+        if (reminderWriter!=null){
+            binding.time.setText(reminderWriter.getTime()); //Почему-то observableField не срабатывает для этого поля
+        }
 
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -80,35 +88,51 @@ public class RemindersAddFragment extends BaseRemindersFragment {
             binding.date.setText(date);
         });
 
-       /* getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (Date time) ->{
-            //binding.time.setText(getSimpleTimeParser().format(time));
-
-            EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
-            reminder.setTime(time);
-            getViewModel().getCreatingReminder().setValue(reminder);
-            getViewModel().getEntity().set(reminder);
-
-            System.out.println(time.getTime());
-            reminderWriterViewModel.setStartAt(time.getTime());
-        });*/
         getViewModel().getEntity().get();
 
-        /*
-        viewModel.getTimeLive().observe(getViewLifecycleOwner(), (String date) ->{
-            binding.timeAdd.setText(date);
-        });*/
-
-        binding.add.setOnClickListener((View v)-> {
+        binding.addButton.setOnClickListener((View v)-> {
             add();
         });
 
         View view=binding.getRoot();
+
+        getViewModelCommon().getSaveComplite().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                Loger.log("getSaveComplite "+aBoolean);
+                if (aBoolean){
+                    getViewModelCommon().getSaveComplite().setValue(false);
+                    Navigation.findNavController(view).popBackStack();
+
+                }
+            }
+        });
+
         return view;
     }
     @Override
     public void backStack(View view){
         System.out.println("save CreatingReminder"+getViewModel().getCreatingReminder());
         Navigation.findNavController(view).popBackStack();
+/*
+        quitSaveLogic(new Function0<Boolean>() {
+            @Override
+            public Boolean invoke() {
+                return !reminderWriterViewModel.conditionsNotMet();
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                Navigation.findNavController(view).popBackStack();
+                return null;
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                add();
+                return null;
+            }
+        });*/
     }
 
     public void add(){
@@ -123,5 +147,13 @@ public class RemindersAddFragment extends BaseRemindersFragment {
         if (s.length()>3){
             reminderWriterViewModel.setText(s.toString());
         }
+    }
+
+    @Override
+    public void timeClick(Long time) {
+        Loger.log("timeClick "+time);
+        reminderWriterViewModel.setStartAt(time);
+        System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+        binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
     }
 }

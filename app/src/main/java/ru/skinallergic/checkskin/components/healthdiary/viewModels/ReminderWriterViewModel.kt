@@ -8,14 +8,18 @@ import java.util.*
 import javax.inject.Inject
 
 class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManager) : ViewModel() {
-    var reminderWriter = ObservableField<ReminderWriter>(ReminderWriter(null,null,null,null,null))
+    var reminderWriter = ObservableField<ReminderWriter>(ReminderWriter(start_at = null,text = null,repeat_mode = null,kind=null,remind = null))
 
-    fun getEntity(): ReminderWriter? {
-        if (reminderWriter.get()?.start_at == null ||
+    fun conditionsNotMet(): Boolean{
+        return (reminderWriter.get()?.start_at == null ||
                 reminderWriter.get()?.text == null ||
                 reminderWriter.get()?.repeat_mode == null ||
                 reminderWriter.get()?.kind == null ||
-                reminderWriter.get()?.remind == null) {
+                reminderWriter.get()?.remind == null)
+    }
+
+    fun getEntity(): ReminderWriter? {
+        if (conditionsNotMet()) {
             toastyManager.toastyyyy("Заполните все поля")
             return null
         } else {
@@ -23,7 +27,7 @@ class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManag
         }
     }
     private fun get():ReminderWriter{
-        return reminderWriter.get()?: ReminderWriter(null,null,null,null,null)
+        return reminderWriter.get()?: ReminderWriter(start_at = null,text = null,repeat_mode = null,kind=null,remind = null)
     }
     private fun set(entity: ReminderWriter){
         reminderWriter.set(entity)
@@ -31,7 +35,7 @@ class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManag
 
     fun setStartAt(start: Long) {
         val entity =get()
-        entity.start_at=start
+        entity.start_at=start/1000
         set(entity)
     }
 

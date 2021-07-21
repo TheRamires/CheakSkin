@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -17,9 +18,16 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity;
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentReminderRedactBinding;
 
 import ru.skinallergic.checkskin.Loger;
@@ -27,26 +35,33 @@ import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialo
 
 import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersFragment.BUNDLE_ID_OF_REMIND;
 
-public class RemindersRedactFragment extends BaseRemindersFragment {
-    private int position;
-    private DialogFragment dialogFragment;
+public class RemindersRedactFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener {
+    private int positionId;
+    private TimePickerDialogTheme dialogFragment;
     private Spinner typeSpinner;
+    private ReminderDetailViewModel reminderDetailViewModel;
+    private ReminderWriterViewModel reminderWriterViewModel;
+    private FragmentReminderRedactBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reminderDetailViewModel=new ViewModelProvider(requireActivity(),getViewModelFactory()).get(ReminderDetailViewModel.class);
+        reminderWriterViewModel=new ViewModelProvider(requireActivity(),getViewModelFactory()).get(ReminderWriterViewModel.class);
         try {
-            position= getArguments().getInt(BUNDLE_ID_OF_REMIND);
+            positionId= getArguments().getInt(BUNDLE_ID_OF_REMIND);
         }catch (Throwable ignore){ }
-        getViewModel().clearCurrent();
+        //getViewModel().clearCurrent();
+        dialogFragment = new TimePickerDialogTheme();
+        dialogFragment.setTimeClickListener(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentReminderRedactBinding binding=FragmentReminderRedactBinding.inflate(inflater);
+        binding=FragmentReminderRedactBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(getViewModel());
+        binding.setViewModel(reminderDetailViewModel);
         initBackGround(binding.background);
         typeSpinner=binding.type;
         ArrayAdapter<?> adapter =
@@ -54,10 +69,12 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
 
+        typeSpinner.setSelection(reminderDetailViewModel.getReminderDetail().get().getKind());
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(getTypeList().get(position));
+                reminderWriterViewModel.setKind(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -85,46 +102,111 @@ public class RemindersRedactFragment extends BaseRemindersFragment {
             binding.date.setText(date);
         });
 
-        dialogFragment = new TimePickerDialogTheme(getViewModel().getTimeLive());
+       /*
         getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (Date time) ->{
             binding.time.setText(getSimpleTimeParser().format(time));
             EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
             reminder.setTime(time);
             getViewModel().getCreatingReminder().setValue(reminder);
         });
-
-        getViewModel().getRemindsLive().observe(getViewLifecycleOwner(), (ArrayList<EntityReminders> list) ->{
-            EntityReminders entity = null;
-            for (EntityReminders entityReminders : list){
-                if (entityReminders.getId()==position){
-                    entity=entityReminders;
-                    break;
+*/
+   /*     getViewModelCommon().getRemindLive().observe(getViewLifecycleOwner(), new Observer<List<ReminderEntity>>() {
+            @Override
+            public void onChanged(List<ReminderEntity> list) {
+                if (list != null) {
+                    for (ReminderEntity entity : list){
+                        if(entity.getId()==positionId){
+                            reminderDetailViewModel.getReminderDetail().set(entity);
+                            typeSpinner.setSelection(entity.getKind());
+                        }
+                    }
                 }
             }
-            getViewModel().getCreatingReminder().setValue(entity);
-
         });
-
+*/
         getViewModel().getCreatingReminder().observe(getViewLifecycleOwner(),(EntityReminders entityReminders)-> {
             getViewModel().getEntity().set(entityReminders);
 
         });
 
-        //position=getViewModel().getEntity().get().getId();
-
         View view=binding.getRoot();
+
+        getViewModelCommon().getRedactComplete().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean){
+                    getViewModelCommon().getRedactComplete().setValue(false);
+                    pop(view);
+                }
+            }
+        });
+
+        binding.addButton.setOnClickListener((View v)-> {
+            redact();
+        });
 
         return view;
     }
     public void delete(View view){
-        Loger.log(position);
-        getViewModel().deletePosition(position);
-        Navigation.findNavController(view).popBackStack(R.id.remindersFragment3,false);
+        getViewModelCommon().deleteRemind(positionId,getDateViewModel().getDateUnix()).observe(getViewLifecycleOwner(),(Boolean aBoolean)-> {
+            if (aBoolean){
+                getViewModelCommon().getDeletingComplete().setValue(false);
+                Navigation.findNavController(view).popBackStack(R.id.remindersFragment3,false);
+            }
+        });
     }
 
+    public void nameChanged(CharSequence s,int start, int count, int after){
+        System.out.println("after "+after);
+        if (s.length()>3){
+            reminderWriterViewModel.setText(s.toString());
+            reminderDetailViewModel.setText(s.toString());
+        }
+    }
     @Override
     public void backStack(View view){
         System.out.println("save CreatingReminder"+getViewModel().getCreatingReminder());
-        Navigation.findNavController(view).popBackStack();
+        pop(view);
+/*
+        quitSaveLogic(new Function0<Boolean>() {
+            @Override
+            public Boolean invoke() {
+                return !reminderWriterViewModel.conditionsNotMet();
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                pop(view);
+                return null;
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                getViewModelCommon().redactRemind(
+                        Objects.requireNonNull(reminderWriterViewModel.getReminderWriter().get())
+                );
+                return null;
+            }
+        });*/
+
+    }
+    private void pop(View view){
+        Navigation.findNavController(view).popBackStack(R.id.remindersFragment3, false);
+
+    }
+
+    @Override
+    public void timeClick(Long time) {
+        reminderWriterViewModel.setStartAt(time);
+        System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+        binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
+    }
+    public void redact(){
+        System.out.println(reminderWriterViewModel.getReminderWriter().get());
+        ReminderWriter reminderWriter=reminderWriterViewModel.getEntity();
+        ReminderEntity entity=reminderDetailViewModel.getReminderDetail().get();
+        if (reminderWriter!=null && entity!=null){
+            getViewModelCommon().redactRemind(entity.getId(),reminderWriter);
+        }
     }
 }

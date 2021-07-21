@@ -14,18 +14,22 @@ import android.widget.RadioGroup;
 
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersRepeatBinding;
 
 public class RemindersRepeatFragment extends BaseRemindersFragment {
     private FragmentRemindersRepeatBinding binding;
     private ReminderWriterViewModel reminderWriterViewModel;
+    private ReminderDetailViewModel reminderDetailViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         reminderWriterViewModel=
                 new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderWriterViewModel.class);
+        reminderDetailViewModel=
+                new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderDetailViewModel.class);
     }
 
     @Override
@@ -45,6 +49,13 @@ public class RemindersRepeatFragment extends BaseRemindersFragment {
                 reminder.setRepeat(position);
                 getViewModel().getCreatingReminder().setValue(reminder);*/
                 reminderWriterViewModel.setRepeatMode(position);
+                reminderDetailViewModel.setRepeatMode(position);
+            }
+        });
+        binding.okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backStack(v);
             }
         });
 

@@ -9,7 +9,7 @@
             type="ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersRedactFragment" />
         <variable
             name="viewModel"
-            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel" />
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel" />
     </data>
 
     <RelativeLayout
@@ -54,7 +54,10 @@
                 android:layout_height="wrap_content"
                 android:hint="name of LPU item"
                 />
-            <ImageView
+            <ImageButton
+                android:id="@+id/add_button"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/cheak_mark"
@@ -125,14 +128,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
-                    android:enabled="false"
+                    android:onTextChanged="@{fragment::nameChanged}"
                     android:fontFeatureSettings=""
                     android:backgroundTint="@color/gray_2"
                     android:textColor="@color/purple_300"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="20dp"
                     android:textSize="13sp"
-                    android:text="@{viewModel.entity.name}"
+                    android:text="@{viewModel.reminderDetail.text}"
                     android:id="@+id/description"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -160,7 +163,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{viewModel.entity.timeString}"
+                    android:text="@{viewModel.reminderDetail.time}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn"
@@ -201,7 +204,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{viewModel.entity.remindText}"
+                    android:text="@{viewModel.reminderDetail.remindString}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn2"
@@ -242,7 +245,7 @@
                 <TextView
                     android:textColor="@color/purple_300"
                     android:layout_marginHorizontal="10dp"
-                    android:text="@{viewModel.entity.repeatText}"
+                    android:text="@{viewModel.reminderDetail.repeatMode}"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:layout_toLeftOf="@+id/btn3"

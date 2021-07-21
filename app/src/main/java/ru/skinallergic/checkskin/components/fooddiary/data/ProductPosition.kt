@@ -1,6 +1,5 @@
 package ru.skinallergic.checkskin.components.fooddiary.data
 
-import java.math.BigInteger
 import java.util.*
 
 data class ProductEntity (

@@ -11,6 +11,7 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.HealthyDiaryV
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ImageViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RatingViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindCommonViewModel;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.StateViewModel;
@@ -93,7 +94,9 @@ abstract public class HealthyViewModelModules {
     @ViewModelKey(ReminderWriterViewModel.class)
     abstract ViewModel reminderWriterViewModel(ReminderWriterViewModel reminderWriterViewModel);
 
-
-
+    @Binds
+    @IntoMap
+    @ViewModelKey(ReminderDetailViewModel.class)
+    abstract ViewModel reminderDetailViewModel(ReminderDetailViewModel reminderDetailViewModel);
 
 }

@@ -10,6 +10,9 @@ import ru.skinallergic.checkskin.App
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindCommonViewModel
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel
+import ru.skinallergic.checkskin.components.profile.ActionFunction
+import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment
+import ru.skinallergic.checkskin.components.profile.NavigationFunction
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.text.SimpleDateFormat
 const val TIME_PATTERN="HH:mm"
@@ -39,6 +42,9 @@ abstract class BaseRemindersFragment : Fragment(){
         ViewModelProvider(requireActivity(), viewModelFactory).get(RemindCommonViewModel::class.java)
     }
 
+    val toastyManager by lazy {App.getInstance().appComponent.toastyManager }
+    val fManager by lazy { parentFragmentManager }
+
     fun initBackGround(imageView: ImageView){
         val offset=+170f
         /*val height=900
@@ -60,5 +66,36 @@ abstract class BaseRemindersFragment : Fragment(){
     }
     companion object {
         val simpleTimeParser = SimpleDateFormat(TIME_PATTERN)
+    }
+
+    fun popBack(view: View){
+        Navigation.findNavController(view).popBackStack()
+    }
+
+    fun quitSaveLogic(quitSaveCondition:()->Boolean ,popBack: () -> Unit, save: () -> Unit){
+        if (quitSaveCondition()){
+            quitSaveDialog(popBack, save)
+        } else popBack()
+    }
+
+    fun quitSaveDialog(popBack: () -> Unit, save: () -> Unit) {
+        val negative = object : ActionFunction {
+            override fun action() {
+                popBack()
+            }
+        }
+        val positive = object : ActionFunction {
+            override fun action() {
+                save()
+            }
+        }
+        val navigation = object : NavigationFunction {
+            override fun navigate() {
+                //empty
+            }
+        }
+        val dialog = DialogTwoFunctionFragment(
+                "Сохранить изменения", negative, positive, navigation)
+        dialog.show(fManager, "dialog")
     }
 }

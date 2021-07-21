@@ -7,6 +7,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
@@ -87,24 +88,24 @@ interface HealthyService {
 interface NotificationService {
     @GET("/notifications/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getReminder(@Path("timestamp")date: String ,
-                    @Header("Authorization") key: String,) :Observable<ResponseBody>
+    fun getReminder(@Query("timestamp")date: String ,
+                    @Header("Authorization") key: String,) :Observable<BaseResponse<List<ReminderEntity>>>
 
     @POST("/notifications/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun newReminder(@Header("Authorization") key: String, @Body reminderWriter: ReminderWriter): Observable<ResponseBody>
 
-    @PATCH("/notifications/1/")
+    @PATCH("/notifications/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun redactReminder(@Header("Authorization") key: String, @Body reminderWriter: ReminderWriter): Observable<ResponseBody>
+    fun redactReminder(@Path("id") id: Int,@Header("Authorization") key: String, @Body reminderWriter: ReminderWriter): Observable<ResponseBody>
 
-    @POST("/notifications/2/silent-list/")
+    @POST("/notifications/{id}/silent-list/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun offReminder(@Header("Authorization") key: String, @Body timestamp: Map<String,Long>): Observable<ResponseBody>
+    fun offReminder(@Path("id") id: Int,@Header("Authorization") key: String, @Body timestamp: Map<String,Long>): Observable<ResponseBody>
 
-    @DELETE("/notifications/3/")
+    @DELETE("/notifications/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun deleteReminder(@Path("timestamp")date: String ,@Header("Authorization") key: String): Observable<ResponseBody>
+    fun deleteReminder(@Path("id") id: Int,@Query("timestamp")date: String ,@Header("Authorization") key: String): Observable<BaseResponse<Any>>
 
 
 }

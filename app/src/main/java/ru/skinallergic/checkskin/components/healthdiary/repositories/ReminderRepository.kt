@@ -9,6 +9,7 @@ import okhttp3.ResponseBody
 import ru.skinallergic.checkskin.Api.NotificationService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
@@ -30,10 +31,10 @@ class ReminderRepository @Inject constructor(
 
     override fun getData(date: String, liveData: MutableLiveData<GettingData?>, splashScreenOn: ObservableField<Boolean>?) {}
 
-    fun getRemind(date: String){
+    fun getRemind(date: String) : Observable<List<ReminderEntity?>>?{
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
-        accesToken?.let {token->
+        return accesToken?.let { token->
             service.getReminder(date, token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -44,9 +45,9 @@ class ReminderRepository @Inject constructor(
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
                             refreshToken { getRemind(date) }
                         }}
-                    .subscribe {
-                        Loger.log("getRemind $it")
-                    }
+                    .map {
+                        it.data!! }
+
         }
     }
     fun newRemind(reminderWriter: ReminderWriter): Observable<ResponseBody> {
@@ -66,11 +67,11 @@ class ReminderRepository @Inject constructor(
         }!!
 
     }
-    fun redactRemind(reminderWriter: ReminderWriter){
+    fun redactRemind(id: Int,reminderWriter: ReminderWriter){
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
         accesToken?.let {token->
-            service.redactReminder(token,reminderWriter)
+            service.redactReminder(id,token,reminderWriter)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
@@ -78,7 +79,7 @@ class ReminderRepository @Inject constructor(
                         if (it.message == TOKENEXPIRED) {
                             toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
-                            refreshToken { redactRemind(reminderWriter) }
+                            refreshToken { redactRemind(id,reminderWriter) }
                         }}
                     .subscribe {
                         Loger.log("redactRemind $it")
@@ -86,12 +87,12 @@ class ReminderRepository @Inject constructor(
         }
 
     }
-    fun offRemind(date: Long){
+    fun offRemind(id: Int,date: Long){
         val map = mapOf<String, Long>("timestamp" to date)
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
         accesToken?.let {token->
-            service.offReminder(token,map)
+            service.offReminder(id,token,map)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
@@ -99,7 +100,7 @@ class ReminderRepository @Inject constructor(
                         if (it.message == TOKENEXPIRED) {
                             toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
-                            refreshToken { offRemind(date) }
+                            refreshToken { offRemind(id,date) }
                         }}
                     .subscribe {
                         Loger.log("offRemind $it")
@@ -107,11 +108,11 @@ class ReminderRepository @Inject constructor(
         }
 
     }
-    fun deleteRemind(date: String){
+    fun deleteRemind(id: Int,date: String): Observable<Boolean>?{
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
-        accesToken?.let {token->
-            service.deleteReminder(date,token)
+        return accesToken?.let {token->
+            service.deleteReminder(id,date,token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
@@ -119,10 +120,10 @@ class ReminderRepository @Inject constructor(
                         if (it.message == TOKENEXPIRED) {
                             toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
-                            refreshToken { deleteRemind(date) }
+                            refreshToken { deleteRemind(id,date) }
                         }}
-                    .subscribe {
-                        Loger.log("deleteRemind $it")
+                    .map {
+                        return@map it.message=="Ok"
                     }
         }
     }

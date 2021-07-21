@@ -61,6 +61,32 @@ class DialogTwoFunctionFragment(
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 }
+
+class DialogThreeDeleteFunctionFragment(
+        val message: String,
+        val negativeAction: ActionFunction,
+        val positiveAction1: ActionFunction,
+        val positiveAction2: ActionFunction,
+        val navigationFunction: NavigationFunction,
+): DialogFragment()  {
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle(message)
+                    //.setMessage("вопрос")
+                    .setNegativeButton("Отмена"){ dialog, id -> negativeAction.action(); dialog.cancel()
+                    }
+                    .setNeutralButton("Только это") {  dialog, id -> dialog.cancel(); positiveAction1.action(); navigationFunction.navigate()
+
+                    }
+                    .setPositiveButton("Удалить все") { dialog, id -> dialog.cancel(); positiveAction2.action(); navigationFunction.navigate()
+                    }
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
+    }
+}
+
 class DialogActionFragment(
         val message: String,
         val actionFunction: ActionFunction,

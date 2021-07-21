@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersPeriodBinding;
 
@@ -25,12 +26,15 @@ import static ru.skinallergic.checkskin.components.healthdiary.components.remind
 public class RemindersPeriodFragment extends BaseRemindersFragment {
     private FragmentRemindersPeriodBinding binding;
     private ReminderWriterViewModel reminderWriterViewModel;
+    private ReminderDetailViewModel reminderDetailViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         reminderWriterViewModel=
                 new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderWriterViewModel.class);
+        reminderDetailViewModel=
+                new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderDetailViewModel.class);
     }
 
     @Override
@@ -47,10 +51,17 @@ public class RemindersPeriodFragment extends BaseRemindersFragment {
                 int position=getPosition(checkedId);
 
                 reminderWriterViewModel.setRemind(position);
+                reminderDetailViewModel.setRemind(position);
 
                 /*EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
                 reminder.setRemind(position);
                 getViewModel().getCreatingReminder().setValue(reminder);*/
+            }
+        });
+        binding.okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backStack(v);
             }
         });
 

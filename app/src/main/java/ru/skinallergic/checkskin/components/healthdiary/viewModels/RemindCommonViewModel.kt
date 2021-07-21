@@ -3,6 +3,7 @@ package ru.skinallergic.checkskin.components.healthdiary.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.ReminderRepository
@@ -15,46 +16,65 @@ class RemindCommonViewModel @Inject constructor(val repo: ReminderRepository):Ba
         baseRepository.compositeDisposable=this.compositeDisposable
         baseRepository.expiredRefreshToken=this.expiredRefreshToken
     }
-    val remindLive = MutableLiveData<String>()
-    val gettingComplite = MutableLiveData<Boolean>()
+    val remindLive = MutableLiveData<List<ReminderEntity?>>()
+    val saveComplite = MutableLiveData<Boolean>()
     val redactComplete = MutableLiveData<Boolean>()
     val offRemind = MutableLiveData<Boolean>()
     val deletingComplete = MutableLiveData<Boolean>()
 
-    fun getRemind(date: Long) : MutableLiveData<String> {
-        repo.getRemind((date/1000).toString())
+    fun getRemind(date: Long) : MutableLiveData<List<ReminderEntity?>> {
+        compositeDisposable.add(repo.getRemind((date/1000).toString())
+                ?.doOnSubscribe { splashScreenOn.set(true) }
+                ?.doOnComplete { splashScreenOn.set(false) }
+                ?.subscribe ({
+                    remindLive.value=it
+                },{
+                }))
         return remindLive
     }
 
     fun newRemind( reminderWriter:ReminderWriter) :MutableLiveData<Boolean>{
+        /*val rem=reminderWriter
+        rem.start_at= rem.start_at?.div(1000)
+        Loger.log("newRemind "+rem)*/
         compositeDisposable.add(
                 repo.newRemind(reminderWriter)
                         .doOnSubscribe {progressBar.set(true)  }
                         .doOnComplete { progressBar.set(false) }
-                        .subscribe { Loger.log(it.string()) }
+                        .subscribe ({
+                            saveComplite.value=true
+                            Loger.log(it.string()) },{})
         )
 
-        return gettingComplite
+        return saveComplite
     }
 
-    fun redactRemind(date: Long, text: String, repeatMode: Int, kind: Int, remind: Int) :MutableLiveData<Boolean>{
-        val reminderWriter=ReminderWriter(
+    fun redactRemind(id: Int, reminderWriter : ReminderWriter) :MutableLiveData<Boolean>{
+       /* val reminderWriter=ReminderWriter(
                 start_at=date/1000 ,
                 text =text,
                 repeat_mode=repeatMode,
                 kind=kind,
-                remind=remind)
-        repo.redactRemind(reminderWriter)
+                remind=remind)*/
+        repo.redactRemind(id,reminderWriter)
         return redactComplete
     }
 
-    fun offRemind(date: Long) :MutableLiveData<Boolean>{
-        repo.offRemind(date/1000)
+    fun offRemind(id: Int,date: Long) :MutableLiveData<Boolean>{
+        repo.offRemind(id,date/1000)
         return offRemind
     }
 
-    fun deleteRemind(date: Long) :MutableLiveData<Boolean>{
-        repo.deleteRemind((date/1000).toString())
+    fun deleteRemind(id: Int,date: Long) :MutableLiveData<Boolean>{
+        compositeDisposable.add(
+                repo.deleteRemind(id,(date/1000).toString())
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe ({
+                            deletingComplete.value=it
+                            Loger.log("deleteRemind $it")
+                        },{})
+        )
         return deletingComplete
     }
 }

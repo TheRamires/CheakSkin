@@ -4,7 +4,8 @@ import ru.skinallergic.checkskin.components.healthdiary.components.reminders.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class ReminderWriter(
+data class ReminderEntity(
+        val id : Int = Random().nextInt(100000),
         var start_at: Long?,
         var text : String?,
         var repeat_mode: Int?,

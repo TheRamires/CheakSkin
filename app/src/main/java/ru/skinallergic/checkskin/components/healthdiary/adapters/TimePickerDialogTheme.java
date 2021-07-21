@@ -21,13 +21,12 @@ import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 
 public class TimePickerDialogTheme extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
-    MutableLiveData<Date> timeLive;
-    public ReminderWriterViewModel reminderWriterViewModel;
-    public TimePickerDialogTheme(MutableLiveData timeLive){
-        this.timeLive=timeLive;
+    public TimeClickListener timeClickListener;
+    public TimePickerDialogTheme(){
+
     }
-    public TimePickerDialogTheme(ReminderWriterViewModel reminderWriterViewModel){
-        this.reminderWriterViewModel=reminderWriterViewModel;
+    public void setTimeClickListener(TimeClickListener timeClickListener){
+        this.timeClickListener=timeClickListener;
     }
 
     @Override
@@ -51,9 +50,13 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
         SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
         try {
             Date time = formater.parse(timeStr);
-            //timeLive.setValue(time);
-            reminderWriterViewModel.setStartAt(time.getTime());
-            System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+
+            long millisInDay = 60 * 60 * 24 * 1000;
+            long currentTime = new Date().getTime();
+            long dateOnly = (currentTime / millisInDay) * millisInDay;
+            Date clearDate = new Date(dateOnly);
+
+            timeClickListener.timeClick(clearDate.getTime()+time.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -61,5 +64,8 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
         }
 
         //timeLive.setValue(myHour+":"+ myMinutes);
+    }
+    public interface TimeClickListener {
+        public void timeClick(Long time);
     }
 }

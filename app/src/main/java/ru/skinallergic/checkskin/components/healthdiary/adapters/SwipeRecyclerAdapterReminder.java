@@ -20,10 +20,13 @@ import java.util.List;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity;
+import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.AffectedAreaCommonViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
+import ru.skinallergic.checkskin.components.profile.DialogThreeDeleteFunctionFragment;
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment;
 import ru.skinallergic.checkskin.components.profile.NavigationFunction;
 import ru.skinallergic.checkskin.databinding.ItemAreaSwipeBinding;
@@ -31,23 +34,34 @@ import ru.skinallergic.checkskin.databinding.SwipeLayoutBinding;
 
 public class SwipeRecyclerAdapterReminder extends RecyclerSwipeAdapter<SwipeRecyclerAdapterReminder.Item> {
     private final SwipeRecyclerAdapterReminder.RecyclerCallback bindingInterface;
-    List<EntityReminders> list;
+    List<ReminderEntity> list;
     FragmentManager fragmentManager;
     RemindersViewModel viewModel;
     SwipeRecyclerAdapterReminder.OnSwipeItemClickListener onItemClickListener;
+    DeleteItemClickListener deleteItemClickListener;
+    OffItemClickListener offItemClickListener;
 
     public SwipeRecyclerAdapterReminder(
                                     RemindersViewModel viewModel,
                                     FragmentManager fragmentManager,
-                                    List<EntityReminders> list,
+                                    List<ReminderEntity> list,
                                     SwipeRecyclerAdapterReminder.RecyclerCallback bindingInterface){
         this.viewModel=viewModel;
         this.bindingInterface = bindingInterface;
         this.list=list;
         this.fragmentManager=fragmentManager;
     }
+
     public void setOnItemClickListener(SwipeRecyclerAdapterReminder.OnSwipeItemClickListener listener){
         onItemClickListener=listener;
+    }
+
+    public void setDeleteItemClickListener(DeleteItemClickListener deleteItemClickListener){
+        this.deleteItemClickListener=deleteItemClickListener;
+    }
+
+    public void setOffItemClickListener(OffItemClickListener offItemClickListener){
+        this.offItemClickListener=offItemClickListener;
     }
 
     @NonNull
@@ -60,7 +74,7 @@ public class SwipeRecyclerAdapterReminder extends RecyclerSwipeAdapter<SwipeRecy
 
     @Override
     public void onBindViewHolder(@NonNull SwipeRecyclerAdapterReminder.Item holder, int position) {
-        EntityReminders item=list.get(position);
+        ReminderEntity item=list.get(position);
         holder.bindData(item);
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -139,39 +153,64 @@ public class SwipeRecyclerAdapterReminder extends RecyclerSwipeAdapter<SwipeRecy
             binding= DataBindingUtil.bind(itemView);
             swipeLayout=binding.swipe;
         }
-        public void bindData(EntityReminders entity){
+        public void bindData(ReminderEntity entity){
             bindingInterface.bind(binding,entity);
             binding.executePendingBindings();
         }
     }
 
     public interface RecyclerCallback{
-        void bind(SwipeLayoutBinding binder, EntityReminders entity);
+        void bind(SwipeLayoutBinding binder, ReminderEntity entity);
     }
 
-    public void deleteDialog(SwipeRecyclerAdapterReminder.Item holder, EntityReminders item, int position, int id){
-        ActionFunction positive= ()-> {
+    public void deleteDialog(SwipeRecyclerAdapterReminder.Item holder, ReminderEntity item, int position, int id){
+        ActionFunction positive1= ()-> {
             deleteFunction(holder, item, position, item.getId());
+        };
+        ActionFunction positive2= ()-> {
+            offFunction(holder, item, position, item.getId());
         };
         ActionFunction negative= ()-> {
 
         };
         NavigationFunction stump=()->{};
-        DialogTwoFunctionFragment dialog=new DialogTwoFunctionFragment("Удалить",negative,positive,stump);
+        DialogThreeDeleteFunctionFragment dialog=new DialogThreeDeleteFunctionFragment("Удалить",negative,positive1,positive2,stump);
         dialog.show(fragmentManager,"dialog");
     }
 
-    public void deleteFunction(SwipeRecyclerAdapterReminder.Item viewHolder, EntityReminders entity, int position, int id){
+    public void deleteFunction(SwipeRecyclerAdapterReminder.Item viewHolder, ReminderEntity entity, int position, int id){
         mItemManger.removeShownLayouts(viewHolder.swipeLayout);
         if (position<list.size()){
             list.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, list.size());
             mItemManger.closeAllItems();
-            viewModel.deletePosition(id);
+            //viewModel.deletePosition(id);
+
+            deleteItemClickListener.onItemDelete(id);
         }
     }
+
+    public void offFunction(SwipeRecyclerAdapterReminder.Item viewHolder, ReminderEntity entity, int position, int id){
+        mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+        if (position<list.size()){
+            list.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, list.size());
+            mItemManger.closeAllItems();
+            //viewModel.deletePosition(id);
+
+            offItemClickListener.onItemOff(id);
+        }
+    }
+
     public interface OnSwipeItemClickListener{
         void onItemClick(View view, int id);
+    }
+    public interface DeleteItemClickListener{
+        void onItemDelete(int id);
+    }
+    public interface OffItemClickListener{
+        void onItemOff(int id);
     }
 }

@@ -55,6 +55,7 @@
                 android:hint="name of LPU item"
                 />
             <ImageView
+                android:id="@+id/ok_btn"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/cheak_mark"

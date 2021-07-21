@@ -3,7 +3,7 @@
     <data>
         <variable
             name="entity"
-            type="ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders" />
+            type="ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity" />
     </data>
 
     <FrameLayout
@@ -73,7 +73,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:text="@{entity.name}"
+                        android:text="@{entity.text}"
                         android:layout_marginStart="35dp"
                         android:layout_marginTop="30dp"
                         android:id="@+id/name"
@@ -84,7 +84,7 @@
                         android:hint="name"/>
 
                     <TextView
-                        android:text="@{entity.description}"
+                        android:text="@{entity.kindString}"
                         android:layout_marginStart="35dp"
                         android:layout_marginTop="2dp"
                         android:textColor="@color/red"
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"/>
 
                     <TextView
-                        android:text="@{entity.timeString}"
+                        android:text="@{entity.time}"
                         android:id="@+id/time"
                         android:layout_toStartOf="@+id/image"
                         android:layout_centerVertical="true"
