@@ -54,6 +54,11 @@ interface HealthyService {
     fun statistic(@Header ("Authorization") key: String, @Query ("start") start: Long, @Query ("end") end: Long
     ): Observable<BaseResponse<List<EntityStatistic>>>
 
+    @GET("/journals/health/stat/export/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun statisticPdf(@Header ("Authorization") key: String, @Query ("start") start: Long, @Query ("end") end: Long
+    ): Observable<BaseResponse<Map<String, String>>>
+
     @Multipart
     @POST("/journals/health/rashes/")
     fun addRashReport(
@@ -85,6 +90,7 @@ interface HealthyService {
     @Headers("Content-Type: application/json", "Connection: close")
     fun deletePosition(@Header("Authorization") key:String,@Path ("id") id:Int): Observable<ResponseBody>
 }
+
 interface NotificationService {
     @GET("/notifications/")
     @Headers("Content-Type: application/json", "Connection: close")
@@ -106,7 +112,6 @@ interface NotificationService {
     @DELETE("/notifications/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun deleteReminder(@Path("id") id: Int,@Query("timestamp")date: String ,@Header("Authorization") key: String): Observable<BaseResponse<Any>>
-
 
 }
 

@@ -30,6 +30,8 @@ class StatisticsViewModel @Inject constructor(
     val dateEnd =MutableLiveData<Date>()
     var mediatorLiveData = MediatorLiveData<Boolean>()
 
+    val pdfUrl= MutableLiveData<String>()
+
     init {
         mediatorLiveData.addSource(dateStart, object : androidx.lifecycle.Observer<Date> {
             override fun onChanged(t: Date?) {
@@ -86,6 +88,21 @@ class StatisticsViewModel @Inject constructor(
                     }
 
                     statistic.value = entityStatistics
+                }, { Loger.log("onError $it") }))
+    }
+
+    fun statisticPdfRequest(){
+        Loger.log("getStartUnix " + getStartUnix())
+        Loger.log("getEndUnix " + getEndUnix())
+        compositeDisposable.add(repository.statisticsPdf(getStartUnix(), getEndUnix())
+                .doOnSubscribe { progressBar.set(true) }
+                .doOnComplete { progressBar.set(false) }
+                .subscribe({
+                    if (it!=""){
+                        val url=it
+                        Loger.log("statisticPdfRequest "+url)
+                        pdfUrl.value=url
+                    }
                 }, { Loger.log("onError $it") }))
     }
 

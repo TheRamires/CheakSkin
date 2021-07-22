@@ -10,6 +10,9 @@
         <variable
             name="choose"
             type="java.lang.Long" />
+        <variable
+            name="baseViewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
     </data>
 
     <RelativeLayout
@@ -161,5 +164,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </RadioGroup>
+        <ProgressBar
+            android:visibility="@{baseViewModel.progressBar ? View.VISIBLE : View.GONE, default=gone}"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="148dp"
+            android:layout_gravity="bottom|center_horizontal"/>
     </RelativeLayout>
 </layout>

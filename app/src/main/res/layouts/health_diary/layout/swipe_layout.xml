@@ -73,6 +73,8 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/time"
                         android:text="@{entity.text}"
                         android:layout_marginStart="35dp"
                         android:layout_marginTop="30dp"

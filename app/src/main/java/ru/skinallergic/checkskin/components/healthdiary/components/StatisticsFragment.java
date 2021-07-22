@@ -2,6 +2,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -81,6 +82,13 @@ public class StatisticsFragment extends Fragment {
 
         subscribeMediator(viewModel.getMediatorLiveData());
         subscribeExpiredRefreshToken(viewModel.getExpiredRefreshToken());
+
+        viewModel.getPdfUrl().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String url) {
+                downloadPdfFromUrl(url);
+            }
+        });
 
         return view;
     }
@@ -231,6 +239,13 @@ public class StatisticsFragment extends Fragment {
             }
         });
     }
+    public void exportPdf(View view){
+        viewModel.statisticPdfRequest();
+    }
+    public void downloadPdfFromUrl(String url){
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
     private boolean checkInside(List<EntityStatistic> entityStatistics){
         boolean bool=false;
         for (EntityStatistic statistic : entityStatistics){

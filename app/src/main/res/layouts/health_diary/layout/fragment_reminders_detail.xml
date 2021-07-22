@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="fragment"
             type="ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersDetailFragment" />
         <variable
             name="viewModel"
             type="ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel" />
+        <variable
+            name="baseViewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
     </data>
 
     <RelativeLayout
@@ -259,5 +263,13 @@
                 android:layout_height="1dp"
                 android:background="@color/gray"/>
         </LinearLayout>
+        <ProgressBar
+            android:visibility="@{baseViewModel.progressBar ? View.VISIBLE : View.GONE, default=gone}"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="148dp"
+            android:layout_gravity="bottom|center_horizontal"/>
     </RelativeLayout>
 </layout>

@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import java.util.Date;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
@@ -47,6 +49,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         binding= FragmentRemindersAddBinding.inflate(inflater);
         binding.setFragment(this);
         binding.setViewModel(reminderWriterViewModel);
+        binding.setBaseViewModel(getViewModelCommon());
         initBackGround(binding.background);
         typeSpinner=binding.type;
 
@@ -115,12 +118,13 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
     @Override
     public void backStack(View view){
         System.out.println("save CreatingReminder"+getViewModel().getCreatingReminder());
-        Navigation.findNavController(view).popBackStack();
-/*
+        //Navigation.findNavController(view).popBackStack();
+
         quitSaveLogic(new Function0<Boolean>() {
             @Override
             public Boolean invoke() {
-                return !reminderWriterViewModel.conditionsNotMet();
+                //return reminderWriterViewModel.conditionQuitSave();
+                return false;
             }
         }, new Function0<Unit>() {
             @Override
@@ -134,7 +138,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
                 add();
                 return null;
             }
-        });*/
+        });
     }
 
     public void add(){

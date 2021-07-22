@@ -46,7 +46,7 @@ public class RemindersFragment extends BaseRemindersFragment implements SwipeRec
                              Bundle savedInstanceState) {
         FragmentRemindersBinding binding=FragmentRemindersBinding.inflate(inflater);
         binding.setFragment(this);
-        binding.setViewModel(getViewModel());
+        binding.setViewModel(getViewModelCommon());
         View view=binding.getRoot();
 
         initBackGround(binding.background);

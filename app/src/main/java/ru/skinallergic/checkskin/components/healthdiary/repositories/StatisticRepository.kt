@@ -4,6 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.ResponseBody
 import ru.skinallergic.checkskin.Api.HealthyService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
@@ -46,6 +47,25 @@ class StatisticRepository  @Inject constructor(
                     .map { it->
                         it.data!!
                     }
+        }!!
+    }
+
+    fun statisticsPdf(start: Long, end:Long): io.reactivex.Observable<String?> {
+        val URL="url"
+        networkHandler.check()
+        val accesToken=tokenModel_.loadAccesToken()
+        return accesToken?.let {
+            service.statisticPdf(it,start, end)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError "+it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { statistics(start, end) }
+                        } }
+                    .map { it.data?.get(URL)?:""}
         }!!
     }
 }

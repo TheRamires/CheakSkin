@@ -50,7 +50,7 @@ class ReminderRepository @Inject constructor(
 
         }
     }
-    fun newRemind(reminderWriter: ReminderWriter): Observable<ResponseBody> {
+    fun newRemind(reminderWriter: ReminderWriter): Observable<ResponseBody>? {
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
         return accesToken?.let {token->
@@ -64,13 +64,13 @@ class ReminderRepository @Inject constructor(
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
                             refreshToken { newRemind(reminderWriter) }
                         }}
-        }!!
+        }
 
     }
-    fun redactRemind(id: Int,reminderWriter: ReminderWriter){
+    fun redactRemind(id: Int,reminderWriter: ReminderWriter):Observable<ResponseBody>?{
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
-        accesToken?.let {token->
+        return accesToken?.let {token->
             service.redactReminder(id,token,reminderWriter)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -81,17 +81,14 @@ class ReminderRepository @Inject constructor(
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
                             refreshToken { redactRemind(id,reminderWriter) }
                         }}
-                    .subscribe {
-                        Loger.log("redactRemind $it")
-                    }
         }
 
     }
-    fun offRemind(id: Int,date: Long){
+    fun offRemind(id: Int,date: Long):Observable<ResponseBody>?{
         val map = mapOf<String, Long>("timestamp" to date)
         networkHandler.check()
         val accesToken=tokenModel_.loadAccesToken()
-        accesToken?.let {token->
+        return accesToken?.let {token->
             service.offReminder(id,token,map)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -102,11 +99,7 @@ class ReminderRepository @Inject constructor(
                             Loger.log("Токен устарел, ошибка 401, идет обновление")
                             refreshToken { offRemind(id,date) }
                         }}
-                    .subscribe {
-                        Loger.log("offRemind $it")
-                    }
         }
-
     }
     fun deleteRemind(id: Int,date: String): Observable<Boolean>?{
         networkHandler.check()

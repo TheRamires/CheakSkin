@@ -115,6 +115,8 @@
             android:text="Выберите период"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/export_btn"
+            android:onClick="@{fragment::exportPdf}"
             android:layout_alignParentBottom="true"
             android:background="@drawable/button_pressed_blue"
             android:layout_marginHorizontal="@dimen/norm_button_margin"

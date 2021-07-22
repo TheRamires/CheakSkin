@@ -59,6 +59,8 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         FragmentRemindersDetailBinding binding= FragmentRemindersDetailBinding.inflate(inflater);
         binding.setFragment(this);
         binding.setViewModel(reminderDetailViewModel);
+        binding.setBaseViewModel(getViewModelCommon());
+
         initBackGround(binding.background);
         typeSpinner=binding.type;
         ArrayAdapter<?> adapter =

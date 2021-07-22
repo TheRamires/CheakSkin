@@ -62,6 +62,7 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         binding=FragmentReminderRedactBinding.inflate(inflater);
         binding.setFragment(this);
         binding.setViewModel(reminderDetailViewModel);
+        binding.setBaseViewModel(getViewModelCommon());
         initBackGround(binding.background);
         typeSpinner=binding.type;
         ArrayAdapter<?> adapter =
@@ -166,12 +167,13 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
     @Override
     public void backStack(View view){
         System.out.println("save CreatingReminder"+getViewModel().getCreatingReminder());
-        pop(view);
-/*
+        //pop(view);
+
         quitSaveLogic(new Function0<Boolean>() {
             @Override
             public Boolean invoke() {
-                return !reminderWriterViewModel.conditionsNotMet();
+                //return reminderWriterViewModel.conditionQuitSave();
+                return false;
             }
         }, new Function0<Unit>() {
             @Override
@@ -183,11 +185,12 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
             @Override
             public Unit invoke() {
                 getViewModelCommon().redactRemind(
+                        positionId,
                         Objects.requireNonNull(reminderWriterViewModel.getReminderWriter().get())
                 );
                 return null;
             }
-        });*/
+        });
 
     }
     private void pop(View view){

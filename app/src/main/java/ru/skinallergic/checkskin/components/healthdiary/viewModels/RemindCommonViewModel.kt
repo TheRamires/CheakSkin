@@ -7,9 +7,13 @@ import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.ReminderRepository
+import ru.skinallergic.checkskin.handlers.ToastyManager
 import javax.inject.Inject
 
-class RemindCommonViewModel @Inject constructor(val repo: ReminderRepository):BaseViewModel() {
+class RemindCommonViewModel @Inject constructor(
+        val repo: ReminderRepository,
+        val toastyManager: ToastyManager,
+        ):BaseViewModel() {
     override var baseRepository: BaseHealthyRepository =repo
 
     init {
@@ -39,9 +43,10 @@ class RemindCommonViewModel @Inject constructor(val repo: ReminderRepository):Ba
         Loger.log("newRemind "+rem)*/
         compositeDisposable.add(
                 repo.newRemind(reminderWriter)
-                        .doOnSubscribe {progressBar.set(true)  }
-                        .doOnComplete { progressBar.set(false) }
-                        .subscribe ({
+                        ?.doOnSubscribe {progressBar.set(true)  }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe ({
+                            toastyManager.toastyyyy("Напоминание сохранено")
                             saveComplite.value=true
                             Loger.log(it.string()) },{})
         )
@@ -56,12 +61,28 @@ class RemindCommonViewModel @Inject constructor(val repo: ReminderRepository):Ba
                 repeat_mode=repeatMode,
                 kind=kind,
                 remind=remind)*/
-        repo.redactRemind(id,reminderWriter)
+        compositeDisposable.add(
+                repo.redactRemind(id,reminderWriter)
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe({
+                            toastyManager.toastyyyy("Изменения сохранены")
+                            redactComplete.value=true
+                                   },{})
+        )
         return redactComplete
     }
 
     fun offRemind(id: Int,date: Long) :MutableLiveData<Boolean>{
-        repo.offRemind(id,date/1000)
+        compositeDisposable.add(
+                repo.offRemind(id,date/1000)
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe({
+                            toastyManager.toastyyyy("Напоминание удалено")
+                                   offRemind.value=true
+                        },{})
+        )
         return offRemind
     }
 
@@ -71,6 +92,7 @@ class RemindCommonViewModel @Inject constructor(val repo: ReminderRepository):Ba
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
                         ?.subscribe ({
+                            toastyManager.toastyyyy("Напоминание удалено")
                             deletingComplete.value=it
                             Loger.log("deleteRemind $it")
                         },{})

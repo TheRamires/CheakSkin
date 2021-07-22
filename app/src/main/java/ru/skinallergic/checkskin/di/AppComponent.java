@@ -2,6 +2,7 @@ package ru.skinallergic.checkskin.di;
 
 import android.content.Context;
 
+import ru.skinallergic.checkskin.NotificationService;
 import ru.skinallergic.checkskin.entrance.helper_classes.ValidatorField;
 
 import javax.inject.Named;
@@ -38,4 +39,5 @@ public interface AppComponent {
     ValidatorField getValidatorField();
 
     public ToastyManager getToastyManager();
+    //public NotificationService notificationService();
 }

@@ -18,9 +18,18 @@ class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManag
                 reminderWriter.get()?.remind == null)
     }
 
+    fun conditionQuitSave(): Boolean{
+        var boolean =false
+        val reminderWriter =reminderWriter.get()
+        if (reminderWriter?.start_at !=null || reminderWriter?.text!=null || reminderWriter?.repeat_mode!=null || reminderWriter?.kind !=null || reminderWriter?.remind!=null){
+            boolean=true
+        }
+        return boolean
+    }
+
     fun getEntity(): ReminderWriter? {
         if (conditionsNotMet()) {
-            toastyManager.toastyyyy("Заполните все поля")
+            toastyManager.toastyyyy("Заполните все поля",true)
             return null
         } else {
             return reminderWriter.get()

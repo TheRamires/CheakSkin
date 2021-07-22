@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.skinallergic.checkskin.*
@@ -61,6 +60,7 @@ class SplashActivity : AppCompatActivity() {
                                         //***********************************************************************
         printKeyHash()
         getFireBaseDeviceToken()
+        //getToken(this)
 
         if (!hasConnection(this)) {
             Toast.makeText(this, "Проверьте подключение к интернету", Toast.LENGTH_LONG).show()
@@ -179,6 +179,7 @@ class SplashActivity : AppCompatActivity() {
         super.onDestroy()
         Loger.log("onDestroy")
     }
+
     fun getFireBaseDeviceToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

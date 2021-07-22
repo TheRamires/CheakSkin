@@ -42,6 +42,7 @@ public class RemindersPeriodFragment extends BaseRemindersFragment {
                              Bundle savedInstanceState) {
         binding=FragmentRemindersPeriodBinding.inflate(inflater);
         binding.setFragment(this);
+        binding.setBaseViewModel(getViewModelCommon());
         View view=binding.getRoot();
         initBackGround(binding.background);
 
