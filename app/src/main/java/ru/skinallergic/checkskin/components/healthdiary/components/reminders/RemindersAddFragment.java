@@ -38,7 +38,10 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         getViewModel().clearCurrent();
         reminderWriterViewModel=
                 new ViewModelProvider(requireActivity(), getViewModelFactory()).get(ReminderWriterViewModel.class);
+        //clearedViewModel--
         reminderWriterViewModel.getReminderWriter().set(null);
+        changeOff();
+
         dialogfragment = new TimePickerDialogTheme();
         dialogfragment.setTimeClickListener(this::timeClick);
     }
@@ -52,6 +55,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         binding.setBaseViewModel(getViewModelCommon());
         initBackGround(binding.background);
         typeSpinner=binding.type;
+        System.out.println("-------------------------------"+reminderWriterViewModel.isChanged());
 
         ArrayAdapter<?> adapter =
                 new ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,getTypeList());
@@ -70,6 +74,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(getTypeList().get(position));
                 reminderWriterViewModel.setKind(position);
+                //changeOn();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -97,6 +102,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
 
         binding.addButton.setOnClickListener((View v)-> {
             add();
+            changeOff();
         });
 
         View view=binding.getRoot();
@@ -113,6 +119,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
             }
         });
 
+        System.out.println("-------------------------------"+reminderWriterViewModel.isChanged());
         return view;
     }
     @Override
@@ -124,7 +131,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
             @Override
             public Boolean invoke() {
                 //return reminderWriterViewModel.conditionQuitSave();
-                return false;
+                return reminderWriterViewModel.isChanged();
             }
         }, new Function0<Unit>() {
             @Override
@@ -154,6 +161,7 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         /*if (s.length()>3){
             reminderWriterViewModel.setText(s.toString());
         }*/
+        changeOn();
     }
 
     @Override
@@ -162,5 +170,18 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         reminderWriterViewModel.setStartAt(time);
         System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
         binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
+        changeOn();
+    }
+    public void changeOn(){
+        reminderWriterViewModel.changedOn();
+    }
+    public void changeOff(){
+        reminderWriterViewModel.changedOff();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        changeOff();
     }
 }

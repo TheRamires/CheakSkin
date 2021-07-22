@@ -6,17 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.widget.doAfterTextChanged
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.adapters.DiffUtilFromMySelf
 import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter
-import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter_UNUSED
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
-import ru.skinallergic.checkskin.components.fooddiary.view_models.AddingFoodViewModel
-import ru.skinallergic.checkskin.components.fooddiary.view_models.add
-import ru.skinallergic.checkskin.components.fooddiary.view_models.delete
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.AddingFoodViewModel
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.add
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.delete
 import ru.skinallergic.checkskin.databinding.FragmentAddFood2Binding
 import java.util.*
 

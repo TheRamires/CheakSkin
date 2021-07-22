@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.skinallergic.checkskin.Api.FoodService;
 import ru.skinallergic.checkskin.Api.HealthyService;
 import ru.skinallergic.checkskin.Api.HomeService;
 import ru.skinallergic.checkskin.Api.NotificationService;
@@ -51,4 +52,9 @@ public class RemoteModule {
     @Singleton
     @Provides
     NotificationService notificationService (){return ServiceFactory.INSTANCE.makeNotificationService(true);}
+
+    @Inject
+    @Singleton
+    @Provides
+    FoodService foodService (){return ServiceFactory.INSTANCE.makeFoodService(true);}
 }

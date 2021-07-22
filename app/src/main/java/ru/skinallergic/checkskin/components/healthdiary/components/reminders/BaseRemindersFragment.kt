@@ -98,4 +98,5 @@ abstract class BaseRemindersFragment : Fragment(){
                 "Сохранить изменения", negative, positive, navigation)
         dialog.show(fManager, "dialog")
     }
+
 }

@@ -84,6 +84,13 @@ public class RemindersRepeatFragment extends BaseRemindersFragment {
                 position=5;
                 break;
         }
+        changeOn();
         return position;
+    }
+    public void changeOn(){
+        reminderWriterViewModel.changedOn();
+    }
+    public void changeOff(){
+        reminderWriterViewModel.changedOn();
     }
 }

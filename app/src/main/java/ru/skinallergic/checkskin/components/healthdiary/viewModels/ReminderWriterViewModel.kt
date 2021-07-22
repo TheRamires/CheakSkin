@@ -9,6 +9,10 @@ import javax.inject.Inject
 
 class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManager) : ViewModel() {
     var reminderWriter = ObservableField<ReminderWriter>(ReminderWriter(start_at = null,text = null,repeat_mode = null,kind=null,remind = null))
+    var isChanged: Boolean=false
+
+    fun changedOn(){isChanged=true}
+    fun changedOff(){isChanged=false}
 
     fun conditionsNotMet(): Boolean{
         return (reminderWriter.get()?.start_at == null ||

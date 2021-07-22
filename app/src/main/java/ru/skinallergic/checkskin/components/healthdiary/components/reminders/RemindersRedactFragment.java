@@ -54,6 +54,7 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         //getViewModel().clearCurrent();
         dialogFragment = new TimePickerDialogTheme();
         dialogFragment.setTimeClickListener(this);
+        changeOff();
     }
 
     @Override
@@ -159,10 +160,18 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
 
     public void nameChanged(CharSequence s,int start, int count, int after){
         System.out.println("after "+after);
-        if (s.length()>3){
+        reminderWriterViewModel.setText(s.toString());
+        reminderDetailViewModel.setText(s.toString());
+        changeOn();
+        /*if (s.length()>3){
             reminderWriterViewModel.setText(s.toString());
             reminderDetailViewModel.setText(s.toString());
-        }
+            changeOn();
+        } else if (after==0){
+            reminderWriterViewModel.setText(s.toString());
+            reminderDetailViewModel.setText(s.toString());
+            changeOn();
+        }*/
     }
     @Override
     public void backStack(View view){
@@ -173,7 +182,7 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
             @Override
             public Boolean invoke() {
                 //return reminderWriterViewModel.conditionQuitSave();
-                return false;
+                return reminderWriterViewModel.isChanged();
             }
         }, new Function0<Unit>() {
             @Override
@@ -203,6 +212,7 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         reminderWriterViewModel.setStartAt(time);
         System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
         binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
+        changeOn();
     }
     public void redact(){
         System.out.println(reminderWriterViewModel.getReminderWriter().get());
@@ -211,5 +221,17 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         if (reminderWriter!=null && entity!=null){
             getViewModelCommon().redactRemind(entity.getId(),reminderWriter);
         }
+    }
+    public void changeOn(){
+        reminderWriterViewModel.changedOn();
+    }
+    public void changeOff(){
+        reminderWriterViewModel.changedOn();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        changeOff();
     }
 }

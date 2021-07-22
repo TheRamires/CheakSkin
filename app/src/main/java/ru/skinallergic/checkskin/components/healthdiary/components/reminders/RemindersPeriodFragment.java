@@ -84,6 +84,13 @@ public class RemindersPeriodFragment extends BaseRemindersFragment {
                 position=REMIND_IN_AN_HOUR;
                 break;
         }
+        changeOn();
         return position;
+    }
+    public void changeOn(){
+        reminderWriterViewModel.changedOn();
+    }
+    public void changeOff(){
+        reminderWriterViewModel.changedOn();
     }
 }

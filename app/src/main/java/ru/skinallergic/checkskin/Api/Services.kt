@@ -6,6 +6,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
@@ -113,5 +114,47 @@ interface NotificationService {
     @Headers("Content-Type: application/json", "Connection: close")
     fun deleteReminder(@Path("id") id: Int,@Query("timestamp")date: String ,@Header("Authorization") key: String): Observable<BaseResponse<Any>>
 
+}
+
+interface FoodService{
+    @GET("/allergens/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getAllergens(@Query("page")page: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @POST("/allergens/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun addAllergens(@Header("Authorization") key: String, name: Map<String,String> ) : Observable<ResponseBody>
+
+    @POST("/allergens/{id}/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun deleteAllergens(@Path("id") id: Int,@Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @GET("/journals/meal/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getFoodDiaryByDate(@Query("created")created: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @GET("/journals/meal/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getFoodDiarySearch(@Query("created")search: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @GET("/journals/meal/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getFoodDiarySearchByDate(@Query("created")created: String, @Query("created")search: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @GET("/journals/meal/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getFoodDiaryAll(@Header("Authorization") key: String) : Observable<ResponseBody>
+
+    @POST("/journals/meal/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun addMeal(@Header("Authorization") key: String, @Body foodWrite: FoodWriter) : Observable<ResponseBody>
+
+    @PATCH("/journals/meal/{id}/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun redactMeal(@Path("id") id: Int,@Header("Authorization") key: String, @Body foodWrite: FoodWriter): Observable<ResponseBody>
+
+    @DELETE("/journals/meal/{id}/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun deleteMeal(@Path("id") id: Int,@Header("Authorization") key: String): Observable<ResponseBody>
 }
 

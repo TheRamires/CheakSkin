@@ -1,10 +1,7 @@
-package ru.skinallergic.checkskin.components.fooddiary.view_models
+package ru.skinallergic.checkskin.components.fooddiary.viewModels
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.skinallergic.checkskin.Loger
-import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerProductAdapter_UNUSED
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import javax.inject.Inject
 import kotlin.collections.ArrayList

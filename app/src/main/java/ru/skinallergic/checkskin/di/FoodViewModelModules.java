@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import dagger.Binds;
 import dagger.Module;
 import dagger.multibindings.IntoMap;
-import ru.skinallergic.checkskin.components.fooddiary.view_models.AddingFoodViewModel;
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.AddingFoodViewModel;
 @Module
 abstract public class FoodViewModelModules {
     @Binds
