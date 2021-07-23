@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import ru.skinallergic.checkskin.R
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.MealViewModel
 import ru.skinallergic.checkskin.databinding.FragmentFoodDiary2Binding
 
 class FoodDiaryFragment : BaseFoodFragment() {
@@ -17,6 +20,7 @@ class FoodDiaryFragment : BaseFoodFragment() {
     lateinit var buttonDate: ImageButton
     lateinit var buttonAllergy: ImageButton
     lateinit var buttonAdd: ViewGroup
+    val foodDiaryViewModel by lazy { ViewModelProvider(this,viewModelFactory).get(FoodDiaryViewModel::class.java) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -29,7 +33,6 @@ class FoodDiaryFragment : BaseFoodFragment() {
             buttonAllergy = allergyBtn
             buttonAdd = addBtn
         }
-
         return view
     }
 
@@ -40,5 +43,7 @@ class FoodDiaryFragment : BaseFoodFragment() {
         buttonDate.setOnClickListener { Navigation.findNavController(it).navigate(R.id.action_foodDiaryFragment_to_foodCalendarFragment)}
         buttonAllergy.setOnClickListener { Navigation.findNavController(it).navigate(R.id.action_foodDiaryFragment_to_allergicListFragment)}
         buttonAdd.setOnClickListener { Navigation.findNavController(it).navigate(R.id.action_foodDiaryFragment_to_addFoodFragment2) }
+
+        foodDiaryViewModel.getFoodDiaryByDate(dateViewModel.dateUnix)
     }
 }

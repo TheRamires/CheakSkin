@@ -115,15 +115,23 @@ class EntranceActivity : AppCompatActivity() {
         }
     }
     fun getFireBaseDeviceToken(){
+
+        //**
+        val token=NotificationService.getToken(this)
+        //Toast.makeText(this,"token $token", Toast.LENGTH_LONG).show()
+        //***
+
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
 
+                //Toast.makeText(this, "not device Id  ((((((((((((", Toast.LENGTH_LONG).show()
                 return@OnCompleteListener
             }
 
             // Get new FCM registration token
             val token = task.result
             Loger.log("getFireBaseDeviceToken $token")
+            //Toast.makeText(this, "☺☺☺ deviceId "+token, Toast.LENGTH_LONG).show()
             accountViewModel.firebaseDeviceTokenModel.save(token?:"")
 
         })

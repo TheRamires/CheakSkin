@@ -1,34 +1,50 @@
 {
   "project_info": {
-    "project_number": "555626878432",
-    "project_id": "cheakskin",
-    "storage_bucket": "cheakskin.appspot.com"
+    "project_number": "426516279465",
+    "project_id": "checkskin",
+    "storage_bucket": "checkskin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:555626878432:android:0443c9888b3c07f91c8785",
+        "mobilesdk_app_id": "1:426516279465:android:00c25750e315ee28d9f9b8",
         "android_client_info": {
           "package_name": "ru.skinallergic.checkskin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "555626878432-f20jin0ksuou7jto0trf8rfo8vgnmjlj.apps.googleusercontent.com",
+          "client_id": "426516279465-92cf5kld3i6h8g0tg5f1mjrr82gh25fq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.skinallergic.checkskin",
+            "certificate_hash": "77ae65dcc26d0ecc95a318c88aa6565cdf512c33"
+          }
+        },
+        {
+          "client_id": "426516279465-gdaavv22guo6c88pftk5hsvd6btg55vf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAheGmDDDjWNcv75NIDjIx82m8hby8DLNA"
+          "current_key": "AIzaSyCvVPt3V3fSE7INH3vOu9K6VP7dSOj29aM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "555626878432-f20jin0ksuou7jto0trf8rfo8vgnmjlj.apps.googleusercontent.com",
+              "client_id": "426516279465-gdaavv22guo6c88pftk5hsvd6btg55vf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "426516279465-frbnnbo09oh00b01rnnf9cui7p9da9in.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.skinallergic.CheckSkin",
+                "app_store_id": "1513421463"
+              }
             }
           ]
         }

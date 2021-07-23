@@ -147,7 +147,7 @@ interface FoodService{
 
     @POST("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun addMeal(@Header("Authorization") key: String, @Body foodWrite: FoodWriter) : Observable<ResponseBody>
+    fun addMeal(@Header("Authorization") key: String, @Body foodWrite: FoodWriter) : Observable<BaseResponse<Any>>
 
     @PATCH("/journals/meal/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")

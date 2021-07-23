@@ -1,6 +1,7 @@
 package ru.skinallergic.checkskin.components.fooddiary.viewModels
 
 import androidx.lifecycle.MutableLiveData
+import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.fooddiary.repositories.FoodRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel
@@ -16,6 +17,7 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
     val foodDiaryList = MutableLiveData<List<Any>>()
 
     fun getFoodDiaryByDate(date: Long){
+        Loger.log("getFoodDiaryByDate FoodDiaryViewModel")
         repository.getFoodDiaryByDate((date/1000).toString())
     }
     fun getFoodDiarySearch(search: String){

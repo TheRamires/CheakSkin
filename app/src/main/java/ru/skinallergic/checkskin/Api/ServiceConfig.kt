@@ -1,8 +1,8 @@
 package ru.skinallergic.checkskin.Api
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
-import okhttp3.OkHttp
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit
 
 object ServiceConfig {
     private const val isDebug: Boolean=true
-    private val gson: Gson= Gson()
     private const val BASE_URL ="http://217.25.94.101:5000/"
 
     private fun makeServiceConfig(): OkHttpClient {
@@ -23,11 +22,15 @@ object ServiceConfig {
         )
     }
 
+    private fun createGson(): Gson{
+        return Gson()
+    }
+
     fun makeService( ): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(makeServiceConfig())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create(createGson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
     }

@@ -1,5 +1,6 @@
 package ru.skinallergic.checkskin.splash_screen
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,6 +24,7 @@ import ru.skinallergic.checkskin.utils.SPLASH_BUNDLE
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
+
 //Ramires------------/////////
 class SplashActivity : AppCompatActivity() {
     private var newsComplite=false
@@ -37,13 +39,13 @@ class SplashActivity : AppCompatActivity() {
             for (signature in info.signatures) {
                 val md: MessageDigest = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
-                Loger.log( "KeyHash: " + Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                Loger.log("KeyHash: " + Base64.encodeToString(md.digest(), Base64.DEFAULT))
             }
         } catch (e: PackageManager.NameNotFoundException) {
-            Loger.log( "KeyHash: " + e)
+            Loger.log("KeyHash: " + e)
             e.printStackTrace()
         } catch (e: NoSuchAlgorithmException) {
-            Loger.log( "KeyHash: " + e)
+            Loger.log("KeyHash: " + e)
             e.printStackTrace()
         }
     }
@@ -52,6 +54,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         val binding=DataBindingUtil.setContentView<ActivitySplashBinding>(this, R.layout.activity_splash)
+
+        Loger.log("☻☻☻☻♥♥♥♥♥♥♥♥33♥♥♥♥ " + packageName)
 
                                         //**********************************************************************
                                         /*val intent=Intent(this,MainActivity::class.java)
@@ -181,16 +185,25 @@ class SplashActivity : AppCompatActivity() {
     }
 
     fun getFireBaseDeviceToken(){
+        //*****
+        val token=NotificationService.getToken(this)
+        //Toast.makeText(this, "token $token", Toast.LENGTH_LONG).show()
+        //******
+
+        Loger.log("getFireBaseDeviceToken ____________________________ 1")
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
 
+                //Toast.makeText(this, "not device Id  ((((((((((((", Toast.LENGTH_LONG).show()
                 return@OnCompleteListener
             }
 
             // Get new FCM registration token
             val token = task.result
-            Loger.log("getFireBaseDeviceToken $token")
-            viewModel.firebaseDeviceTokenModel.save(token?:"")
+            //Toast.makeText(this, token, Toast.LENGTH_LONG).show()
+            Loger.log("getFireBaseDeviceToken ____________________________ $token")
+            //Toast.makeText(this, "☺☺☺ deviceId " + token, Toast.LENGTH_LONG).show()
+            viewModel.firebaseDeviceTokenModel.save(token ?: "")
         })
     }
 }

@@ -167,14 +167,15 @@ public class SwipeRecyclerAdapterReminder extends RecyclerSwipeAdapter<SwipeRecy
         ActionFunction positive1= ()-> {
             deleteFunction(holder, item, position, item.getId());
         };
-        ActionFunction positive2= ()-> {
+       /* ActionFunction positive2= ()-> {
             offFunction(holder, item, position, item.getId());
-        };
+        };*/
         ActionFunction negative= ()-> {
 
         };
         NavigationFunction stump=()->{};
-        DialogThreeDeleteFunctionFragment dialog=new DialogThreeDeleteFunctionFragment("Удалить",negative,positive1,positive2,stump);
+        //DialogThreeDeleteFunctionFragment dialog=new DialogThreeDeleteFunctionFragment("Удалить",negative,positive1,positive2,stump);
+        DialogTwoFunctionFragment dialog=new DialogTwoFunctionFragment("Удалить",negative,positive1,stump);
         dialog.show(fragmentManager,"dialog");
     }
 

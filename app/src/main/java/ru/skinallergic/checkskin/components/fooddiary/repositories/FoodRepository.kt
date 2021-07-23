@@ -2,13 +2,16 @@ package ru.skinallergic.checkskin.components.fooddiary.repositories
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import ru.skinallergic.checkskin.Api.FoodService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWr
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
+import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
@@ -91,6 +94,7 @@ class FoodRepository @Inject constructor(
     }
 
     fun getFoodDiaryByDate(date: String) {
+        Loger.log("getFoodDiaryByDate by Repo")
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
         accesToken?.let { token ->{
@@ -105,10 +109,14 @@ class FoodRepository @Inject constructor(
                                 refreshToken { getFoodDiaryByDate(date) }
                             }
                         }
-                        .subscribe { Loger.log("getFoodDiaryByDate ${it.string()}") }
+                        .subscribe (
+                                {Loger.log("getFoodDiaryByDate ${it.string()}") },
+                                {Loger.log("throwable $it")
+                        })
             }
         }
     }
+
     fun getFoodDiarySearch(search: String) {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
@@ -128,6 +136,7 @@ class FoodRepository @Inject constructor(
             }
         }
     }
+
     fun getFoodDiarySearchByDate(date: String, search: String) {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
@@ -164,11 +173,14 @@ class FoodRepository @Inject constructor(
                     .subscribe { Loger.log("getFoodDiaryAll ${it.string()}") }
         }}
     }
-    fun addMeal(bodyWrite: FoodWriter) {
+    fun addMeal(bodyWrite: FoodWriter):Observable<String>{
+        Loger.log("addMeal by Repo 1")
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->{
-            service.addMeal(token,bodyWrite)
+        Loger.log("addMeal by Repo 2 $accesToken")
+        return accesToken?.let {
+            Loger.log("addMeal by Repo 3")
+            service.addMeal(it,bodyWrite)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
@@ -179,8 +191,9 @@ class FoodRepository @Inject constructor(
                             refreshToken { addMeal(bodyWrite) }
                         }
                     }
-                    .subscribe { Loger.log("addMeal ${it.string()}") }
-        }}
+                    .map { it.message!! }
+
+        }!!
     }
     fun redactMeal(id: Int, bodyWrite: FoodWriter) {
         networkHandler.check()
