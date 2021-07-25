@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="entity"
+            type="ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity" />
+    </data>
 
     <FrameLayout
         android:layout_width="360dp"
@@ -54,8 +59,6 @@
             </FrameLayout>
 
             <com.dd.ShadowLayout
-                android:clickable="true"
-                android:focusable="true"
                 app:sl_cornerRadius="80dp"
                 android:layout_gravity="center"
                 app:sl_shadowRadius="20dp"
@@ -64,12 +67,15 @@
                 android:layout_height="140dp">
 
                 <LinearLayout
+                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:id="@+id/container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:focusable="true">
                     <TextView
+                        android:text="@{entity.meal.toString()}"
                         android:hint="Завтрак"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

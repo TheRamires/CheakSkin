@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import ru.skinallergic.checkskin.Api.FoodService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWr
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
@@ -93,28 +94,24 @@ class FoodRepository @Inject constructor(
         }
     }
 
-    fun getFoodDiaryByDate(date: String) {
-        Loger.log("getFoodDiaryByDate by Repo")
+    fun getFoodDiaryByDate(date: String): Observable<List<FoodEntity?>>? {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->{
-                service.getFoodDiaryByDate(date, token)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            Loger.log("OnError " + it)
-                            if (it.message == TOKENEXPIRED) {
-                                toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
-                                Loger.log("Токен устарел, ошибка 401, идет обновление")
-                                refreshToken { getFoodDiaryByDate(date) }
-                            }
+        return accesToken?.let { token ->
+            service.getFoodDiaryByDate(date, token)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError " + it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { getFoodDiaryByDate(date) }
                         }
-                        .subscribe (
-                                {Loger.log("getFoodDiaryByDate ${it.string()}") },
-                                {Loger.log("throwable $it")
-                        })
-            }
-        }
+                    }
+                    .map {
+                        it.data!! }
+        }!!
     }
 
     fun getFoodDiarySearch(search: String) {

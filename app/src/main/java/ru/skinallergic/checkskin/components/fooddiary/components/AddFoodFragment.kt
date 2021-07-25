@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.Loger
@@ -48,6 +49,7 @@ class AddFoodFragment : BaseFoodFragment(){
             addButton=buttonAdd
             fragment=this@AddFoodFragment
             recyclerView=recycler
+            baseViewModel=mealViewModel
         }
         recyclerView.adapter=adapter
 
@@ -110,17 +112,18 @@ class AddFoodFragment : BaseFoodFragment(){
                 mealViewModel.quitSaveCondition() }, {
                 popBack(it) }, {
                 //viewModel.backSave(adapter.getData())
-                save()
+                save(mealViewModel.isBackSaved)
                 })
         }
 
-        viewModel.isBackSaved.observe(viewLifecycleOwner,{ isSaved->
+        /*viewModel.isBackSaved.observe(viewLifecycleOwner,{ isSaved->
             if (isSaved){popBack(thisView)}
-        })
+        })*/
 
-        mealViewModel.isAdded.observe(viewLifecycleOwner,{ complete->
-            if (complete){
-                //popBack(thisView) // view ??????????????????????????????????
+        mealViewModel.isBackSaved.observe(viewLifecycleOwner,{ isSaved->
+            if (isSaved){
+                mealViewModel.isBackSaved.value=false
+                popBack(thisView) // view ??????????????????????????????????
             }
         })
     }
@@ -147,7 +150,7 @@ class AddFoodFragment : BaseFoodFragment(){
         return adapter.getData()
     }
 
-    fun save(){
+    fun save(backSaved: MutableLiveData<Boolean>?=null){
         Loger.log("save")
         val list: List<ProductEntity> =adapter.getData()
         mealViewModel.productList.value
@@ -155,7 +158,8 @@ class AddFoodFragment : BaseFoodFragment(){
             mealViewModel.addMealsAndConvert(
                     dateViewModel.dateUnix,
                     mealViewModel.meal!!,
-                    list
+                    list,
+                    backSaved
             )
         }
     }

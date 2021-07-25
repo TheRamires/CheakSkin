@@ -24,7 +24,7 @@ class MealViewModel @Inject constructor(
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
     val isLoaded = MutableLiveData<Any>()
-    val isAdded = MutableLiveData<Boolean>()
+    val isBackSaved = MutableLiveData<Boolean>()
     val isDeleted = MutableLiveData<Boolean>()
 
     var meal: Int?=null
@@ -53,7 +53,7 @@ class MealViewModel @Inject constructor(
         return boolean
     }
 
-    fun addMealsAndConvert(date: Long, meal: Int, productList: List<ProductEntity>){
+    fun addMealsAndConvert(date: Long, meal: Int, productList: List<ProductEntity>, backSaved: MutableLiveData<Boolean>?=null){
         println("addMealsAndConvert")
         for (product in productList){
             if(product.isSavedOnServer){continue}
@@ -63,11 +63,11 @@ class MealViewModel @Inject constructor(
             )
             var finalWeight : Int?=null
             if (product.weight!=null){finalWeight= product.weight!!.toInt()}
-            addMeal(product.id, date, meal, product.name,finalWeight)
+            addMeal(product.id, date, meal, product.name,finalWeight, backSaved)
         }
     }
 
-    fun addMeal(internalId:Int, date : Long, meal:Int, name: String?, weight: Int?){
+    fun addMeal(internalId:Int, date : Long, meal:Int, name: String?, weight: Int?, backSaved: MutableLiveData<Boolean>?){
         println("addMeal")
         val finalWeight=weight?:0
         val foodWr = FoodWr(name,finalWeight)
@@ -79,6 +79,7 @@ class MealViewModel @Inject constructor(
                         .subscribe ({
                             if (it=="Ok"){
                                 productList.markSavedPosition(internalId)
+                                backSaved?.let { backSaved.value=true }
                             }
                         },{})
         )

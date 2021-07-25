@@ -6,6 +6,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity
@@ -131,7 +132,7 @@ interface FoodService{
 
     @GET("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getFoodDiaryByDate(@Query("created")created: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+    fun getFoodDiaryByDate(@Query("created")created: String, @Header("Authorization") key: String) : Observable<BaseResponse<List<FoodEntity?>>>
 
     @GET("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
