@@ -1,7 +1,7 @@
 package ru.skinallergic.checkskin.components.fooddiary.data
 
 data class FoodEntity(
-        val id: Int,
+        var id: Int,
         val created : Long?,
         val meal : Int?,
         val food: Food?

@@ -17,21 +17,22 @@ import java.util.ArrayList;
 
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity;
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain;
 import ru.skinallergic.checkskin.components.profile.ActionFunction;
 import ru.skinallergic.checkskin.components.profile.DialogTwoFunctionFragment;
 import ru.skinallergic.checkskin.components.profile.NavigationFunction;
 import ru.skinallergic.checkskin.databinding.ItemFoodBinding;
 
-public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecyclerAdapterFood.Item> implements BaseAdapterForDiff<FoodEntity> {
+public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecyclerAdapterFood.Item> implements BaseAdapterForDiff<FoodMealForMain> {
     private final SwipeRecyclerAdapterFood.RecyclerCallback bindingInterface;
-    ArrayList<FoodEntity> list;
+    ArrayList<FoodMealForMain> list;
     FragmentManager fragmentManager;
     SwipeRecyclerAdapterFood.OnSwipeItemClickListener onItemClickListener;
     SwipeRecyclerAdapterFood.DeleteItemClickListener deleteItemClickListener;
 
     public SwipeRecyclerAdapterFood(
             FragmentManager fragmentManager,
-            ArrayList<FoodEntity> list,
+            ArrayList<FoodMealForMain> list,
             SwipeRecyclerAdapterFood.RecyclerCallback bindingInterface){
         this.bindingInterface = bindingInterface;
         this.list=list;
@@ -56,7 +57,7 @@ public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecycler
 
     @Override
     public void onBindViewHolder(@NonNull SwipeRecyclerAdapterFood.Item holder, int position) {
-        FoodEntity item=list.get(position);
+        FoodMealForMain item=list.get(position);
         holder.bindData(item);
 
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -128,23 +129,23 @@ public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecycler
 
     @NotNull
     @Override
-    public ArrayList<FoodEntity> getList() {
+    public ArrayList<FoodMealForMain> getList() {
         return list;
     }
 
     @Override
-    public void setList(@NotNull ArrayList<FoodEntity> list) {
+    public void setList(@NotNull ArrayList<FoodMealForMain> list) {
         this.list=list;
     }
 
     @Override
-    public void addData(FoodEntity myData) {
+    public void addData(FoodMealForMain myData) {
         this.list.add(myData);
         notifyItemInserted(list.indexOf(myData));
     }
 
     @Override
-    public void removeData(FoodEntity myData) {
+    public void removeData(FoodMealForMain myData) {
         int index=list.indexOf(myData);
         list.remove(index);
         notifyItemRemoved(index);
@@ -159,17 +160,17 @@ public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecycler
             binding= DataBindingUtil.bind(itemView);
             swipeLayout=binding.swipe;
         }
-        public void bindData(FoodEntity entity){
+        public void bindData(FoodMealForMain entity){
             bindingInterface.bind(binding,entity);
             binding.executePendingBindings();
         }
     }
 
     public interface RecyclerCallback{
-        void bind(ItemFoodBinding binder, FoodEntity entity);
+        void bind(ItemFoodBinding binder, FoodMealForMain entity);
     }
 
-    public void deleteDialog(SwipeRecyclerAdapterFood.Item holder, FoodEntity item, int position, int id){
+    public void deleteDialog(SwipeRecyclerAdapterFood.Item holder, FoodMealForMain item, int position, int id){
         ActionFunction positive1= ()-> {
             deleteFunction(holder, item, position, item.getId());
         };
@@ -185,7 +186,7 @@ public class SwipeRecyclerAdapterFood extends RecyclerSwipeAdapter<SwipeRecycler
         dialog.show(fragmentManager,"dialog");
     }
 
-    public void deleteFunction(SwipeRecyclerAdapterFood.Item viewHolder, FoodEntity entity, int position, int id){
+    public void deleteFunction(SwipeRecyclerAdapterFood.Item viewHolder, FoodMealForMain entity, int position, int id){
         mItemManger.removeShownLayouts(viewHolder.swipeLayout);
         if (position<list.size()){
             list.remove(position);

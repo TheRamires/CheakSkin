@@ -1,6 +1,7 @@
 package ru.skinallergic.checkskin.components.fooddiary.viewModels
 
 import androidx.lifecycle.MutableLiveData
+import ru.skinallergic.checkskin.components.fooddiary.data.Food
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWr
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
@@ -105,6 +106,7 @@ fun <T>MutableLiveData<ArrayList<T>>.add(position: T){
 }
 fun <T>MutableLiveData<ArrayList<T>>.delete(position: T){
     var newList  =this.value
+    println("newList $newList, posotopn $position")
     if (newList!=null && newList.contains(position)){
         newList.remove(position)
     }else {

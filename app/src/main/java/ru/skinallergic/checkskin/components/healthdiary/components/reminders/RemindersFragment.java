@@ -27,10 +27,11 @@ import ru.skinallergic.checkskin.databinding.SwipeLayoutBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+
 public class RemindersFragment extends BaseRemindersFragment implements SwipeRecyclerAdapterReminder.OnSwipeItemClickListener, SwipeRecyclerAdapterReminder.DeleteItemClickListener,
         SwipeRecyclerAdapterReminder.OffItemClickListener {
 
-    public static String BUNDLE_ID_OF_REMIND="idOfRemind";
     private TextView tvEmptyTextView;
     private RecyclerView mRecyclerView;
     private Bundle bundle;

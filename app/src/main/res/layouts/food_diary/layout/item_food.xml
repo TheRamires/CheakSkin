@@ -4,7 +4,7 @@
     <data>
         <variable
             name="entity"
-            type="ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity" />
+            type="ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain" />
     </data>
 
     <FrameLayout
@@ -66,24 +66,39 @@
                 android:layout_width="360dp"
                 android:layout_height="140dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center_vertical"
                     android:id="@+id/container_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:focusable="true">
+                    android:orientation="vertical">
+
                     <TextView
-                        android:text="@{entity.meal.toString()}"
+                        android:text="@{String.valueOf(entity.meal)}"
                         android:hint="Завтрак"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:id="@+id/name"
-                        />
+                        android:id="@+id/name" />
 
-                </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_below="@+id/name"
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/recycler"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
+                    <View
+                        android:focusable="true"
+                        android:clickable="true"
+                        android:id="@+id/clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
             </com.dd.ShadowLayout>
         </com.daimajia.swipe.SwipeLayout>
     </FrameLayout>

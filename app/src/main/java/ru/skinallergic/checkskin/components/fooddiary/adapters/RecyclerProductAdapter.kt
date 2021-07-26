@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableField
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
@@ -19,7 +19,7 @@ class RecyclerProductAdapter : RecyclerView.Adapter<RecyclerProductAdapter.Item>
     lateinit var binder : (item: Item, entity: ProductEntity)->Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Item {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_product, parent, false)
         return Item(view)
     }
 
@@ -28,12 +28,12 @@ class RecyclerProductAdapter : RecyclerView.Adapter<RecyclerProductAdapter.Item>
         binder(holder, item)
     }
 
-    override fun addData( myData: ProductEntity){
+    override fun addData(myData: ProductEntity){
         this.list.add(myData)
         notifyItemInserted(list.indexOf(myData))
     }
 
-    override fun removeData( myData: ProductEntity){
+    override fun removeData(myData: ProductEntity){
         val index=list.indexOf(myData)
         list.removeAt(index)
         notifyItemRemoved(index)
@@ -43,11 +43,11 @@ class RecyclerProductAdapter : RecyclerView.Adapter<RecyclerProductAdapter.Item>
         return list
     }
 
-    fun bind(binder : (item: Item, entity: ProductEntity)->Unit){
+    fun bind(binder: (item: Item, entity: ProductEntity) -> Unit){
         this.binder=binder
     }
 
-    fun setDeletingFunction(function: (entity: ProductEntity)->Unit){
+    fun setDeletingFunction(function: (entity: ProductEntity) -> Unit){
         deletingFun=function
     }
 
@@ -65,4 +65,5 @@ class RecyclerProductAdapter : RecyclerView.Adapter<RecyclerProductAdapter.Item>
             binding.buttonVisible=this
         }
     }
+
 }

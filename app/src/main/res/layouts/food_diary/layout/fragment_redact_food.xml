@@ -83,12 +83,16 @@
                     android:layout_height="wrap_content">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:layout_marginBottom="40dp"
+                    android:id="@+id/add_btn"
                     android:layout_below="@+id/linear"
                     android:layout_marginHorizontal="@dimen/margin_normal"
                     android:layout_marginTop="20dp"

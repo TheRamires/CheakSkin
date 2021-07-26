@@ -1,6 +1,8 @@
 package ru.skinallergic.checkskin.components.fooddiary.adapters
 
-class DiffUtilFromMySelf <T> (val oldList :List<T>, val newList :List<T>) {
+import ru.skinallergic.checkskin.components.fooddiary.data.Food
+
+class DiffUtilFromMySelf <T>(val oldList:List<T>, val newList: List<T>) {
     fun findAddPositions(): List<T>{
         val newPositions  = arrayListOf<T>()
         for (position in newList){

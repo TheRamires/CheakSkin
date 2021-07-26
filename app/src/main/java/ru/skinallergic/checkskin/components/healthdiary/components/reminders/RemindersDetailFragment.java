@@ -2,9 +2,7 @@ package ru.skinallergic.checkskin.components.healthdiary.components.reminders;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -19,20 +17,15 @@ import android.widget.Spinner;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity;
-import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetailViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.RemindersViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersDetailBinding;
 
-import ru.skinallergic.checkskin.view_models.DateViewModel;
-import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersFragment.BUNDLE_ID_OF_REMIND;
+import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+
 
 public class RemindersDetailFragment extends BaseRemindersFragment {
     private Bundle bundle;

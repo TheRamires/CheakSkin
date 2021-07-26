@@ -33,7 +33,8 @@ import ru.skinallergic.checkskin.databinding.FragmentReminderRedactBinding;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
 
-import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.RemindersFragment.BUNDLE_ID_OF_REMIND;
+import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+
 
 public class RemindersRedactFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener {
     private int positionId;
