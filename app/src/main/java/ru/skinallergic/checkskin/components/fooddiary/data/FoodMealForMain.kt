@@ -7,5 +7,5 @@ data class FoodMealForMain(
         val id: Int= Random().nextInt(10000),
         val meal: Int,
         val created: Long,
-        val list: List<Food>
+        val list: List<FoodEntity>
 )

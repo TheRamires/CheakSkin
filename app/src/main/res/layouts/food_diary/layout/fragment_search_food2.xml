@@ -59,6 +59,7 @@
             app:sl_shadowColor="@color/shadow_color1">
 
             <EditText
+                android:id="@+id/edit_text"
                 android:layout_gravity="center_vertical"
                 android:padding="@dimen/margin_min"
                 android:backgroundTint="@android:color/transparent"
@@ -105,7 +106,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/recycler"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
     </LinearLayout>

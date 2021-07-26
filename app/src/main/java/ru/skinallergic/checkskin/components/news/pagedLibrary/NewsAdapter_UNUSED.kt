@@ -1,5 +1,4 @@
 package ru.skinallergic.checkskin.components.news.pagedLibrary
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

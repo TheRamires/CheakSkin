@@ -140,9 +140,10 @@
                         android:background="@drawable/ic_food_background"/>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:layout_centerHorizontal="true"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                     <com.dd.ShadowLayout

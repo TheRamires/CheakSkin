@@ -1,10 +1,8 @@
 package ru.skinallergic.checkskin.components.news.pagedLibrary
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.paging.DataSource
 import io.reactivex.disposables.CompositeDisposable
-import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.news.NewsRepositoriy
 import ru.skinallergic.checkskin.components.news.pojo.Datum
 import ru.skinallergic.checkskin.components.news.pojo.QueryParamNews

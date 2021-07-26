@@ -114,10 +114,10 @@ class FoodRepository @Inject constructor(
         }!!
     }
 
-    fun getFoodDiarySearch(search: String) {
+    fun getFoodDiarySearch(search: String): Observable<List<FoodEntity?>>?  {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->{
+        return accesToken?.let { token ->
                 service.getFoodDiarySearch(search, token)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -129,15 +129,15 @@ class FoodRepository @Inject constructor(
                                 refreshToken { getFoodDiarySearch(search) }
                             }
                         }
-                        .subscribe { Loger.log("getFoodDiarySearch ${it.string()}") }
-            }
-        }
+                        .map { it.data!! }
+
+        }!!
     }
 
-    fun getFoodDiarySearchByDate(date: String, search: String) {
+    fun getFoodDiarySearchByDate(date: String, search: String): Observable<List<FoodEntity?>>?  {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->{
+        return accesToken?.let { token ->
             service.getFoodDiarySearchByDate(date, search, token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -149,8 +149,8 @@ class FoodRepository @Inject constructor(
                             refreshToken { getFoodDiarySearchByDate(date, search) }
                         }
                     }
-                    .subscribe { Loger.log("getFoodDiarySearchByDate ${it.string()}") }
-        }}
+                    .map { it.data!! }
+        }!!
     }
     fun getFoodDiaryAll() {
         networkHandler.check()
@@ -192,10 +192,10 @@ class FoodRepository @Inject constructor(
 
         }!!
     }
-    fun redactMeal(id: Int, bodyWrite: FoodWriter) {
+    fun redactMeal(id: Int, bodyWrite: FoodWriter):Observable<String> {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token->
+        return accesToken?.let { token->
             service.redactMeal(id,token,bodyWrite)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -207,13 +207,13 @@ class FoodRepository @Inject constructor(
                             refreshToken { redactMeal(id, bodyWrite) }
                         }
                     }
-                    .subscribe { Loger.log("redactMeal ${it.string()}") }
-        }
+                    .map { it.message!! }
+        }!!
     }
-    fun deleteMeal(id: Int) {
+    fun deleteMeal(id: Int):Observable<String> {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token->
+        return accesToken?.let { token->
             service.deleteMeal(id,token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -225,7 +225,7 @@ class FoodRepository @Inject constructor(
                             refreshToken { deleteMeal(id) }
                         }
                     }
-                    .subscribe { Loger.log("deleteMeal ${it.string()}") }
-        }
+                    .map { it.message!! }
+        }!!
     }
 }

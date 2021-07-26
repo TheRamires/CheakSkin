@@ -9,6 +9,7 @@ import ru.skinallergic.checkskin.components.fooddiary.viewModels.AddingFoodViewM
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.AllergenesViewModel;
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel;
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.MealViewModel;
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.RedactFoodViewModel;
 
 @Module
 abstract public class FoodViewModelModules {
@@ -31,4 +32,10 @@ abstract public class FoodViewModelModules {
     @IntoMap
     @ViewModelKey(AllergenesViewModel.class)
     abstract ViewModel allergenesViewModel(AllergenesViewModel allergenesViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RedactFoodViewModel.class)
+    abstract ViewModel redactFoodViewModel(RedactFoodViewModel redactFoodViewModel);
+
 }

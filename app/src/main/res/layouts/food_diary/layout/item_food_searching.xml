@@ -35,29 +35,6 @@
 
         </RelativeLayout>
 
-        <com.daimajia.swipe.SwipeLayout
-            android:id="@+id/swipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <FrameLayout
-                android:background="@android:color/transparent"
-                android:id="@+id/bottom_wraper"
-                android:layout_width="80dp"
-                android:weightSum="3"
-                android:orientation="horizontal"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:background="@android:color/transparent"
-                    android:layout_marginEnd="9dp"
-                    android:id="@+id/delete_reminder"
-                    android:layout_gravity="center"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"/>
-
-            </FrameLayout>
-
             <com.dd.ShadowLayout
                 app:sl_cornerRadius="80dp"
                 android:layout_gravity="center"
@@ -108,6 +85,5 @@
 
                 </RelativeLayout>
             </com.dd.ShadowLayout>
-        </com.daimajia.swipe.SwipeLayout>
     </FrameLayout>
 </layout>

@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <EditText
+                android:id="@+id/name_edit_text"
                 android:maxLines="1"
                 android:text="@{food.name}"
                 android:layout_marginHorizontal="5dp"
@@ -38,6 +39,7 @@
                 />
 
             <EditText
+                android:id="@+id/weight_edit_text"
                 android:inputType="number"
                 android:text="@{String.valueOf(food.weight)}"
                 android:layout_width="wrap_content"

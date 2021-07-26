@@ -136,12 +136,11 @@ interface FoodService{
 
     @GET("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getFoodDiarySearch(@Query("created")search: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+    fun getFoodDiarySearch(@Query("search")search: String, @Header("Authorization") key: String) : Observable<BaseResponse<List<FoodEntity?>>>
 
     @GET("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getFoodDiarySearchByDate(@Query("created")created: String, @Query("created")search: String, @Header("Authorization") key: String) : Observable<ResponseBody>
-
+    fun getFoodDiarySearchByDate(@Query("created")created: String, @Query("search")search: String, @Header("Authorization") key: String) : Observable<BaseResponse<List<FoodEntity?>>>
     @GET("/journals/meal/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun getFoodDiaryAll(@Header("Authorization") key: String) : Observable<ResponseBody>
@@ -152,10 +151,10 @@ interface FoodService{
 
     @PATCH("/journals/meal/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun redactMeal(@Path("id") id: Int,@Header("Authorization") key: String, @Body foodWrite: FoodWriter): Observable<ResponseBody>
+    fun redactMeal(@Path("id") id: Int,@Header("Authorization") key: String, @Body foodWrite: FoodWriter): Observable<BaseResponse<Any>>
 
     @DELETE("/journals/meal/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun deleteMeal(@Path("id") id: Int,@Header("Authorization") key: String): Observable<ResponseBody>
+    fun deleteMeal(@Path("id") id: Int,@Header("Authorization") key: String): Observable<BaseResponse<Any>>
 }
 

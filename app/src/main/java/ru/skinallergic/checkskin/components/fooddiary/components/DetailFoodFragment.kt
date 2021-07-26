@@ -14,6 +14,7 @@ import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.adapters.FoodPositionAdapter
 import ru.skinallergic.checkskin.components.fooddiary.adapters.FoodPositionAdapter2
 import ru.skinallergic.checkskin.components.fooddiary.data.Food
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel
 import ru.skinallergic.checkskin.databinding.FragmentDetailFoodBinding
@@ -21,10 +22,12 @@ import ru.skinallergic.checkskin.databinding.ItemOneEat2Binding
 import ru.skinallergic.checkskin.databinding.ItemOneEatBinding
 
 const val BUNDLE_ID_OF_REMIND = "idOfRemind"
+const val FROM_SEARCHING="fromSearching"
 class DetailFoodFragment : BaseFoodFragment() {
     lateinit var backStack: ImageButton
     lateinit var redactButton: ImageView
     var idPostion: Int?= null
+    var fromSearching =false
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: FoodPositionAdapter2
     lateinit var binding: FragmentDetailFoodBinding
@@ -33,7 +36,8 @@ class DetailFoodFragment : BaseFoodFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idPostion=arguments?.getInt(BUNDLE_ID_OF_REMIND)
-        Loger.log("idPostion $idPostion")
+        fromSearching = arguments?.getBoolean(FROM_SEARCHING) == true
+        Loger.log("idPostion $idPostion \n fromSearching$fromSearching")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +58,20 @@ class DetailFoodFragment : BaseFoodFragment() {
         redactButton.setOnClickListener {
             val bundle = Bundle()
             idPostion?.let { it1 -> bundle.putInt(BUNDLE_ID_OF_REMIND, it1) }
+            if (fromSearching){bundle.putBoolean(FROM_SEARCHING, true)}
             navFunction(it, R.id.action_detailFoodFragment_to_redactFoodFragment,bundle )
         }
         subscribeDate()
 
         idPostion?.let {
-            val list: List<FoodMealForMain?>? =foodDiaryViewModel.foodDiaryList.value
+            var list: List<FoodMealForMain?>?=null
+            if (fromSearching){
+                list=foodDiaryViewModel.searchingDiaryList.value
+            } else {
+                list =foodDiaryViewModel.foodDiaryList.value
+            }
             list?.let {
+                Loger.log("list      ------------------- $it")
                 binding.title.text= it[0]?.meal.toString()
                 for (foodEntity in list){
                     if (foodEntity?.id == idPostion){
@@ -73,8 +84,8 @@ class DetailFoodFragment : BaseFoodFragment() {
     }
     fun displayPosition(foodEntity: FoodMealForMain?){
         foodEntity?.let {
-            adapter= FoodPositionAdapter2(it.list as ArrayList<Food>, object : FoodPositionAdapter2.RecyclerCallback<ItemOneEat2Binding, Food>{
-                override fun bind(binder: ItemOneEat2Binding, food: Food) {
+            adapter= FoodPositionAdapter2(it.list as ArrayList<FoodEntity>, object : FoodPositionAdapter2.RecyclerCallback<ItemOneEat2Binding, FoodEntity>{
+                override fun bind(binder: ItemOneEat2Binding, food: FoodEntity) {
                     binder.food=food
                 }
             })

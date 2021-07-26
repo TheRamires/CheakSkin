@@ -26,6 +26,9 @@ class MealViewModel @Inject constructor(
     }
     val isLoaded = MutableLiveData<Any>()
     val isBackSaved = MutableLiveData<Boolean>()
+
+    val isSaved=MutableLiveData<Boolean>()
+    val isRedacted=MutableLiveData<Boolean>()
     val isDeleted = MutableLiveData<Boolean>()
 
     var meal: Int?=null
@@ -81,18 +84,44 @@ class MealViewModel @Inject constructor(
                             if (it=="Ok"){
                                 productList.markSavedPosition(internalId)
                                 backSaved?.let { backSaved.value=true }
+                                isSaved.value=true
                             }
                         },{})
         )
+    }
+    fun redactMealAndConvert(date: Long, meal: Int, list: List<ProductEntity>){
+        for (entity in list){
+            redactMeal(entity.id,date,meal, entity.name,entity.weight.toInt())
+        }
     }
 
     fun redactMeal(id: Int,date : Long, meal:Int, name: String, weight: Int){
         val foodWr = FoodWr(name,weight)
         val foodWriter = FoodWriter(date/1000, meal,foodWr)
-        repository.redactMeal(id,foodWriter)
+        compositeDisposable.add(
+                repository.redactMeal(id,foodWriter)
+                        .doOnSubscribe { progressBar.set(true) }
+                        .doOnComplete { progressBar.set(false) }
+                        .subscribe ({
+                            if (it=="Ok"){
+                                isRedacted.value=true
+                            }
+                        },{})
+        )
     }
-    fun deleteMeal(id: Int){
-        repository.deleteMeal(id)
+    fun deleteMeal(idList: List<Int>){
+        for (id in idList){
+            compositeDisposable.add(
+                    repository.deleteMeal(id)
+                            .doOnSubscribe { progressBar.set(true) }
+                            .doOnComplete { progressBar.set(false) }
+                            .subscribe ({
+                                if (it=="Ok"){
+                                    isDeleted.value=true
+                                }
+                            },{})
+            )
+        }
     }
 }
 fun <T>MutableLiveData<ArrayList<T>>.add(position: T){

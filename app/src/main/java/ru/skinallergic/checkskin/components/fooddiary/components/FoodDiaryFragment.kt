@@ -13,6 +13,7 @@ import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.adapters.FoodPositionAdapter
 import ru.skinallergic.checkskin.components.fooddiary.adapters.SwipeRecyclerAdapterFood
 import ru.skinallergic.checkskin.components.fooddiary.data.Food
+import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel
 import ru.skinallergic.checkskin.databinding.FragmentFoodDiary2Binding
@@ -88,7 +89,7 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
                     navFunction(view, R.id.action_foodDiaryFragment_to_detailFoodFragment, bundle)
                 }
                 val innerRecycler=binder.recycler
-                createInnerAdapter(innerRecycler, entity.list as ArrayList<Food>)
+                createInnerAdapter(innerRecycler, entity.list as ArrayList<FoodEntity>)
             }
 
             adapter .apply {
@@ -112,9 +113,9 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
         Loger.log("onItemDelete, id $id")
     }
 
-    fun createInnerAdapter(recyclerView: RecyclerView, list: ArrayList<Food>){
-        val adapter=FoodPositionAdapter(list,object : FoodPositionAdapter.RecyclerCallback<ItemOneEatBinding, Food>{
-            override fun bind(binder: ItemOneEatBinding, food: Food) {
+    fun createInnerAdapter(recyclerView: RecyclerView, list: ArrayList<FoodEntity>){
+        val adapter=FoodPositionAdapter(list,object : FoodPositionAdapter.RecyclerCallback<ItemOneEatBinding, FoodEntity>{
+            override fun bind(binder: ItemOneEatBinding, food: FoodEntity) {
                 binder.food=food
             }
         })

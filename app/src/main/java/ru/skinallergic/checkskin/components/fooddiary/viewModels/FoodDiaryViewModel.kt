@@ -18,6 +18,7 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
     val foodDiaryList = MutableLiveData<List<FoodMealForMain?>>()
+    val searchingDiaryList = MutableLiveData<List<FoodMealForMain?>>()
 
     fun getFoodDiaryByDate(date: Long) : MutableLiveData<List<FoodMealForMain?>>{
         Loger.log("getFoodDiaryByDate FoodDiaryViewModel")
@@ -35,10 +36,12 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
 
                     }
                     for (meal in setMeal){
-                        val foodList= mutableListOf<Food>()
+                        val foodList= mutableListOf<FoodEntity>()
                         for (entity in it){
                             if (entity?.meal==meal){
-                                foodList.add(Food(entity.food?.name, entity.food!!.weight, entity.food.is_allergen))
+                                val food = Food(entity.food?.name, entity.food!!.weight, entity.food.is_allergen)
+                                val foodEntity = FoodEntity(entity.id, entity.created,entity.meal,food)
+                                foodList.add(foodEntity)
                             }
                         }
 
@@ -52,8 +55,42 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
         return foodDiaryList
     }
 
-    fun getFoodDiarySearch(search: String){
-        repository.getFoodDiarySearch(search)
-    }
+    fun getFoodDiarySearchByDate(date: Long, search: String): MutableLiveData<List<FoodMealForMain?>>{
+        compositeDisposable.add(
+                repository.getFoodDiarySearchByDate((date/1000).toString(),search)
+                        ?.doOnSubscribe { splashScreenOn.set(true) }
+                        ?.doOnComplete { splashScreenOn.set(false) }
+                        ?.subscribe ({
+                            val setDate: MutableSet<Long> = mutableSetOf()
+                            val setMeal: MutableSet<Int> = mutableSetOf()
+                            val finalList = mutableListOf<FoodMealForMain>()
+                            for(entity in it){
+                                entity?.created.let { date-> setDate.add(date!!) }
+                                entity?.meal?.let { meal -> setMeal.add(meal) }
+                                //entity?.created?.let { date -> setCreatedData.add(date) }
 
+                            }
+                            for (date in setDate){
+                                for (meal in setMeal){
+                                    val foodList= mutableListOf<FoodEntity>()
+                                    for (entity in it){
+                                        if (entity?.created==date && entity?.meal==meal){
+                                            val food = Food(entity.food?.name, entity.food!!.weight, entity.food.is_allergen)
+                                            val foodEntity = FoodEntity(entity.id, entity.created,entity.meal,food)
+                                            foodList.add(foodEntity)
+                                        }
+                                    }
+                                    if (foodList.isNotEmpty()){
+                                        finalList.add(FoodMealForMain(meal = meal, list = foodList,created = date))
+                                    }
+                                }
+                            }
+                            searchingDiaryList.value=finalList
+
+                        },{
+
+                        })
+        )
+        return searchingDiaryList
+    }
 }

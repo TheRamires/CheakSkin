@@ -34,7 +34,7 @@ abstract class BaseFoodFragment : Fragment(){
         }
     }
 
-    fun popBack(view: View){
+    open fun popBack(view: View){
         Navigation.findNavController(view).popBackStack()
     }
 
