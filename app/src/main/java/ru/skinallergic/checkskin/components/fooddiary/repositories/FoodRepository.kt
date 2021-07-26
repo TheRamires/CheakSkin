@@ -54,12 +54,12 @@ class FoodRepository @Inject constructor(
         }
     }
 
-    fun addAllergens(name: String) {
+    fun addAllergens(name: String): Observable<String>? {
         val NAME = "name"
         val map = mapOf(NAME to name)
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->
+        return accesToken?.let { token ->
             service.addAllergens(token, map)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -71,7 +71,7 @@ class FoodRepository @Inject constructor(
                             refreshToken { addAllergens(name) }
                         }
                     }
-                    .subscribe { Loger.log("addAllergens ${it.string()}") }
+                    .map { it.message!! }
         }
     }
 

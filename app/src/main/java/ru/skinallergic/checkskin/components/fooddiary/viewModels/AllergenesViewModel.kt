@@ -1,6 +1,8 @@
 package ru.skinallergic.checkskin.components.fooddiary.viewModels
 
 import androidx.lifecycle.MutableLiveData
+import ru.skinallergic.checkskin.components.fooddiary.data.AllergicWriter
+import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.components.fooddiary.repositories.FoodRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel
@@ -13,21 +15,78 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
         baseRepository.compositeDisposable = this.compositeDisposable
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
+    val productList = MutableLiveData<ArrayList<AllergicWriter>>(arrayListOf())
 
     val isLoaded = MutableLiveData<Any>()
     val isAdded = MutableLiveData<Boolean>()
     val isDeleted = MutableLiveData<Boolean>()
 
+    val backSave = MutableLiveData<Boolean>()
+
     fun getAllergens(){
         repository.getAllergens(1) //Сделать пагинацию
     }
-    fun addAllergens(name: String){
-        repository.addAllergens(name)
-
+    fun saveCondition(): Boolean{
+        return true
     }
+
+    fun addAllergens(list: List<AllergicWriter>, backSave: MutableLiveData<Boolean>?=null){
+        for (entity in list){
+            compositeDisposable.add(
+                    repository.addAllergens(entity.name)
+                            ?.subscribe ({
+                                         if (it=="Ok"){
+                                             backSave?.value=true
+                                         }
+                            },{})
+            )
+        }
+    }
+
     fun deleteAllergens(id: Int){
         repository.deleteAllergens(id)
 
     }
+    fun conditionOfAdding(list: List<AllergicWriter>): Boolean{
+        println("list $list")
+        if (list.isEmpty()){return true}
+        val isFully=list[list.size-1].isFully()
+        return isFully
+    }
+}
 
+fun MutableLiveData<ArrayList<AllergicWriter>>.changeName(name: String, id: AllergicWriter){
+
+}
+
+fun MutableLiveData<ArrayList<AllergicWriter>>.add(position: AllergicWriter){
+    var newList  =this.value
+    if (newList!=null){
+        newList.add(position)
+    }else {
+        newList= arrayListOf(position)
+    }
+    this.value=newList
+}
+
+fun MutableLiveData<ArrayList<AllergicWriter>>.delete(position: AllergicWriter){
+    var newList  =this.value
+    println("newList $newList, posotopn $position")
+    if (newList!=null && newList.contains(position)){
+        newList.remove(position)
+    }else {
+        newList= arrayListOf(position)
+    }
+    this.value=newList
+}
+fun MutableLiveData<ArrayList<AllergicWriter>>.markSavedPosition(id: Int){
+    var newList  =this.value
+    if (newList != null) {
+        for (position in newList){
+            if (position.id==id){
+                position.alreadySaved=true
+            }
+        }
+    }
+    this.value=newList
 }

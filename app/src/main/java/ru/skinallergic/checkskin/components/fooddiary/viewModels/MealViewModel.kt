@@ -24,6 +24,7 @@ class MealViewModel @Inject constructor(
         baseRepository.compositeDisposable = this.compositeDisposable
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
+
     val isLoaded = MutableLiveData<Any>()
     val isBackSaved = MutableLiveData<Boolean>()
 

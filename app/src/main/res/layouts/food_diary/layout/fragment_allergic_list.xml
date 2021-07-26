@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -43,12 +43,16 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginBottom="40dp"
+            android:id="@+id/add_btn"
             android:layout_marginHorizontal="@dimen/margin_normal"
             android:layout_marginTop="20dp"
             android:gravity="center_vertical"

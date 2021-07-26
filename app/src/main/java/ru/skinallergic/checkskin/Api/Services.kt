@@ -124,7 +124,7 @@ interface FoodService{
 
     @POST("/allergens/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun addAllergens(@Header("Authorization") key: String, name: Map<String,String> ) : Observable<ResponseBody>
+    fun addAllergens(@Header("Authorization") key: String, @Body name: Map<String,String> ) : Observable<BaseResponse<Any>>
 
     @POST("/allergens/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
