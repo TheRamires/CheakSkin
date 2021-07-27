@@ -171,24 +171,7 @@ public class HealthDiaryFragment extends Fragment {
         if (dateUnix!=null){
             viewModel.data(dateViewModel.getDateUnix());
         }
-/*
-        viewModel.isLoadedAndCalculated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean){
-                    viewModel.isLoadedAndCalculated().setValue(false);
-                    int sum = viewModel.getSumaryPercent();
-                    binding.sum.setText(sum+"%");
-                    if (sum>0){
-                        binding.view.setBackground(AppCompatResources.getDrawable(requireContext(),R.drawable.hexagon_3));
-                        binding.sum.setTextColor(AppCompatResources.getColorStateList(requireContext(),R.color.white));
-                    } else {
-                        binding.view.setBackground(AppCompatResources.getDrawable(requireContext(),R.drawable.hexagon_2));
-                        binding.sum.setTextColor(AppCompatResources.getColorStateList(requireContext(),R.color.gray_dark));
-                    }
-                }
-            }
-        });*/
+
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {

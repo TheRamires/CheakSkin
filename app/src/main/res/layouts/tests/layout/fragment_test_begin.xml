@@ -133,7 +133,7 @@
                             <TextView
                                 android:paddingTop="15dp"
                                 android:paddingBottom="5dp"
-                                android:id="@+id/textView"
+                                android:id="@+id/textView1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Выберите свой вариант ответа"
@@ -142,10 +142,11 @@
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent" />
 
+
                             <LinearLayout
                                 android:layout_marginVertical="@dimen/margin_min"
                                 android:id="@+id/count_layout"
-                                android:layout_below="@+id/textView"
+                                android:layout_below="@+id/textView1"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -153,13 +154,32 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <TextView
-                                    android:layout_marginTop="@dimen/margin_normal"
-                                    android:visibility="gone"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/seek_bar_count"
-                                    />
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_marginTop="@dimen/margin_normal"
+                                        android:visibility="gone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/seek_bar_count"
+                                        />
+                                    <Space
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        />
+                                    <TextView
+                                        android:text="10"
+                                        android:layout_marginTop="@dimen/margin_normal"
+                                        android:visibility="gone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/seek_bar_count_max"
+                                        />
+
+                                </LinearLayout>
 
                                 <SeekBar
                                     android:visibility="gone"

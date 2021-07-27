@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit
 
 object ServiceConfig {
     private const val isDebug: Boolean=true
-    private const val BASE_URL ="http://217.25.94.101:5000/"
+    private const val BASE_URL ="http://217.25.94.101:5000/"   //OLD
+    //private const val BASE_URL ="http://188.225.77.74:5000"  //NEW
 
     private fun makeServiceConfig(): OkHttpClient {
         return makeOkHttpClient(

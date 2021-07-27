@@ -47,6 +47,8 @@ class AllergicListFragment : BaseFoodFragment() {
         thisView= binding.root
         backStack=binding.backBtn
 
+        allergenesViewModel.getAllergens()
+
         return thisView
     }
 
@@ -94,10 +96,12 @@ class AllergicListFragment : BaseFoodFragment() {
 
     fun add(position: AllergicWriter){
         allergenesViewModel.productList.add(position)
+        allergenesViewModel.newList.add(position)
     }
 
     fun delete(position: AllergicWriter){
         allergenesViewModel.productList.delete(position)
+        allergenesViewModel.newList.remove(position)
     }
 
     fun getData():List<AllergicWriter>{

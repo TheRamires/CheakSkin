@@ -38,7 +38,7 @@ class FoodRepository @Inject constructor(
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
         accesToken?.let { token ->
-            service.getAllergens(page.toString(), token)
+            service.getAllergens(page, token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {

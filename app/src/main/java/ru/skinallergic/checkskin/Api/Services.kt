@@ -120,7 +120,7 @@ interface NotificationService {
 interface FoodService{
     @GET("/allergens/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getAllergens(@Query("page")page: String, @Header("Authorization") key: String) : Observable<ResponseBody>
+    fun getAllergens(@Query("page")page: Int, @Header("Authorization") key: String) : Observable<ResponseBody>
 
     @POST("/allergens/")
     @Headers("Content-Type: application/json", "Connection: close")

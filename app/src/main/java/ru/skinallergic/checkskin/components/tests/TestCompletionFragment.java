@@ -12,11 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +104,11 @@ public class TestCompletionFragment extends Fragment {
         /*resultViewModel.sendResult(
                 String.valueOf(entityTest.getId()),
                 String.valueOf(sum));*/
+
+        if (entityTest.getId()==4){
+            TextView mLink=binding.link;
+            mLink.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }

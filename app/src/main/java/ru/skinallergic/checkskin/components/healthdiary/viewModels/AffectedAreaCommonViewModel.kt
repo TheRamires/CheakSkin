@@ -17,7 +17,7 @@ import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото \nи добавьте описание."
+const val MESSAGE ="Выберите зоны, на которых есть сыпь, \nсделайте хотя бы одно фото."
 const val FILE_NAME_01="photo_1"; const val FILE_NAME_02="photo_2"; const val FILE_NAME_03="photo_3"
 
 class AffectedAreaCommonViewModel@Inject constructor(
@@ -138,7 +138,8 @@ class AffectedAreaCommonViewModel@Inject constructor(
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
+                if (files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
+                //if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}  //Убрали проверку kind
                 Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date, area, view, kind, files)
@@ -155,7 +156,8 @@ class AffectedAreaCommonViewModel@Inject constructor(
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return false}
+                if (files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return false}
+                //if (kind==null || kind.isEmpty() ||files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return false} //Убрали проверку kind
 
             }
         }
@@ -172,7 +174,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
         return boolean
     }
 
-    private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>, files: List<File?>?){
+    private fun addReport(date: Long, area: Int, view: Int, kinds: List<Int>?, files: List<File?>?){
         val fieldsIsEmpty=!checkReportField(files, area, view, kinds)
         if (fieldsIsEmpty) {
             toastyManager.toastyyyy(MESSAGE, true);return}

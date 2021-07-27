@@ -86,6 +86,9 @@ public class TestBeginFragment extends Fragment {
             seekBar.setProgress(0);
             allAnswers.add(0);
             seekBarCount.setVisibility(View.VISIBLE);
+            binding.textView1.setText("Выберите свой вариант ответа, \n где 0 - отсутствие, 10- максимальная выраженность");
+            binding.seekBarCountMax.setVisibility(View.VISIBLE);
+
         } else {radioGroup.setVisibility(View.VISIBLE);}
 
         viewModel.getQuestionId().observe(getViewLifecycleOwner(), (Integer id)-> {

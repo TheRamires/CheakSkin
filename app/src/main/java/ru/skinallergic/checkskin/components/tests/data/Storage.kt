@@ -246,7 +246,7 @@ class Storage @Inject constructor(){
     }
     object TEST_4{
         val id: Long=4
-        val name ="Дневник симптоматики псориаза"
+        val name ="Дневник симптоматики псориаза (PSSD)"
         val image= R.mipmap.test_image_04
 
         private val answers0: List<Answer> = arrayListOf(
@@ -279,7 +279,8 @@ class Storage @Inject constructor(){
         private val result0 = Result(0, 0, 100,"",
                 "Заполняя ежедневно дневник, Вы сможете отлеживать эффект от проводимого лечения. Снижении количества набранных баллов по сравнению с " +
                         "предыдущими днями указывает на положительный эффект от лечения, увеличение или отсутствие значительной динамики – может указывать на низкую эффективность " +
-                        "проводимого лечения." )
+                        "проводимого лечения. \n " +
+                        "За любой информацией об использовании Дневника симптоматики псориаза (PSSD) обращайтесь в Mapi Research Trust, Lyon, France." )
 
         private val results : List<Result> = arrayListOf(result0)
 

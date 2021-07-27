@@ -17,14 +17,46 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
     }
     val productList = MutableLiveData<ArrayList<AllergicWriter>>(arrayListOf())
 
+    var oldList = ArrayList<AllergicWriter>(arrayListOf())
+    var newList =ArrayList<AllergicWriter>(arrayListOf())
+
     val isLoaded = MutableLiveData<Any>()
     val isAdded = MutableLiveData<Boolean>()
     val isDeleted = MutableLiveData<Boolean>()
 
     val backSave = MutableLiveData<Boolean>()
 
+    fun getAddingList(): List<AllergicWriter>{
+        val addList = mutableListOf<AllergicWriter>()
+        for (new in newList){
+            var isNew =true
+            for (old in oldList){
+                if (old.id==new.id){
+                    isNew=false
+                }
+            }
+            if (isNew){addList.add(new)}
+        }
+        return addList
+    }
+    fun getDeleteList( ): List<AllergicWriter>{
+        val removeList = mutableListOf<AllergicWriter>()
+        for (old in oldList){
+            var deleted=true
+            for (new in newList){
+                if (old.id==new.id){
+                    deleted=false
+                }
+            }
+            if (deleted){removeList.add(old)}
+        }
+        return removeList
+    }
+
     fun getAllergens(){
         repository.getAllergens(1) //Сделать пагинацию
+        oldList= arrayListOf()
+        newList=oldList
     }
     fun saveCondition(): Boolean{
         return true
@@ -36,7 +68,7 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
                     repository.addAllergens(entity.name)
                             ?.subscribe ({
                                          if (it=="Ok"){
-                                             backSave?.value=true
+                                             //backSave?.value=true
                                          }
                             },{})
             )
