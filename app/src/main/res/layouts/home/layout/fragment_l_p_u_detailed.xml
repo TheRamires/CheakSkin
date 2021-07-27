@@ -9,7 +9,7 @@
             type="ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment" />
         <variable
             name="entity"
-            type="ru.skinallergic.checkskin.components.home.data.LPU" />
+            type="ru.skinallergic.checkskin.components.home.data.LpuOneEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

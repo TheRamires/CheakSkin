@@ -15,6 +15,8 @@ import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
+import ru.skinallergic.checkskin.components.home.data.LpuEntity
+import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
 import ru.skinallergic.checkskin.components.home.data.ReviewWriter
 import ru.skinallergic.checkskin.components.tests.data.PostResponse
 import ru.skinallergic.checkskin.components.tests.data.TestResponse
@@ -174,15 +176,15 @@ interface DocService{
 interface LpuService{
     @GET("/health-facilities/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun allLpu(@Header("Authorization") key: String): Observable<ResponseBody>
+    fun allLpu(@Header("Authorization") key: String): Observable<BaseResponse<List<LpuEntity>>>
 
     @GET("/health-facilities/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun oneLpu(@Path ("id") id: Int,@Header("Authorization") key: String): Observable<ResponseBody>
+    fun oneLpu(@Path ("id") id: Int,@Header("Authorization") key: String): Observable<BaseResponse<LpuOneEntity>>
 
     @GET("/health-facilities/favorites/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getFavorites(@Header("Authorization") key: String): Observable<ResponseBody>
+    fun getFavorites(@Header("Authorization") key: String): Observable<BaseResponse<List<LpuEntity>>>
 
     @PUT("/health-facilities/{id}/is-favorite/")
     @Headers("Content-Type: application/json", "Connection: close")

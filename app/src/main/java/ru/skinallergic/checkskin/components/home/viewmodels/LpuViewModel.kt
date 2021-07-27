@@ -1,32 +1,60 @@
 package ru.skinallergic.checkskin.components.home.viewmodels
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.skinallergic.checkskin.Loger
-import ru.skinallergic.checkskin.components.home.data.LPU
-import ru.skinallergic.checkskin.components.home.interactors.LpuListCase
+import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
+import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel
+import ru.skinallergic.checkskin.components.home.data.LpuEntity
+import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
 import ru.skinallergic.checkskin.components.home.repositories.LpuRepository
-import ru.skinallergic.checkskin.type.Failure
 import javax.inject.Inject
 
-class LpuViewModel @Inject constructor(val lpuListCase: LpuListCase): BaseHomeViewModel() {
-    val lpuData=MutableLiveData<List<LPU>>()
+class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel() {
+    override var baseRepository: BaseHealthyRepository = repo
 
-    fun getLpuList(){
-        lpuListCase(0){
-            it.subscribe ({
-                it.either({
-                    when(it){
-                        is Failure.NetworkConnectionError->handleFailure(it)
-                        is Failure.ServerError->handleFailure(it)
-                        is Failure.AccessTokenExpired->handleFailure(it)
-                    }
-                    handleFailure(it)
-                },{
-                    //lpuData.value=it
-                })
-            },{Loger.log("unexpected exception, getLpuList =  "+it.message)
-            })
-        }
+    init {
+        baseRepository.compositeDisposable = this.compositeDisposable
+        baseRepository.expiredRefreshToken = this.expiredRefreshToken
+    }
+    val lpuData=MutableLiveData<List<LpuEntity>>()
+    val favorites=MutableLiveData<List<LpuEntity>>()
+    val oneLpu=MutableLiveData<LpuOneEntity>()
+
+    fun getLpuList():MutableLiveData<List<LpuEntity>> {
+        compositeDisposable.add(
+                repo.getLpuList()
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe {
+                            lpuData.value=it
+                        }
+        )
+        return lpuData
+    }
+    fun getLpuFavorites() : MutableLiveData<List<LpuEntity>> {
+        compositeDisposable.add(
+                repo.getLpuFavorites()
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe {
+                            Loger.log("-------------------favorites Lpu ${it}")
+                            favorites.value=it
+                        }
+        )
+        return favorites
+    }
+    fun getOneLpu(id: Int): MutableLiveData<LpuOneEntity>{
+        compositeDisposable.add(
+                repo.getOneLpu(id)
+                        ?.doOnSubscribe { progressBar.set(true) }
+                        ?.doOnComplete { progressBar.set(false) }
+                        ?.subscribe {
+                            Loger.log("-------------------getOneLpu Lpu ${it}")
+                            oneLpu.value=it
+                        }
+
+
+        )
+        return oneLpu
     }
 }

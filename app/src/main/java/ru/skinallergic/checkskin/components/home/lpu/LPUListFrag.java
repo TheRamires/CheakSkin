@@ -23,6 +23,7 @@ import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
 import ru.skinallergic.checkskin.components.home.adapters.RecyclerCallback;
 import ru.skinallergic.checkskin.components.home.data.LPU;
+import ru.skinallergic.checkskin.components.home.data.LpuEntity;
 import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentLPUListBinding;
@@ -63,29 +64,13 @@ public class LPUListFrag extends Fragment implements MyRecyclerAdapter.OnItemCli
 
         recyclerView=binding.recycler;
 
-        subscribeLPU(viewModel.lpuLive);
 
         //-------------------NEW--------------------------------------------------------
 
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         LpuViewModel lpuViewModel=new ViewModelProvider(this,viewModelFactory).get(LpuViewModel.class);
         lpuViewModel.getLpuList();
-        lpuViewModel.getLpuData().observe(getViewLifecycleOwner(), new Observer<List<LPU>>() {
-            @Override
-            public void onChanged(List<LPU> lpus) {
-
-            }
-        });
-        lpuViewModel.getFailureData().observe(getViewLifecycleOwner(), new Observer<HandleOnce<Failure>>() {
-            @Override
-            public void onChanged(HandleOnce<Failure> failureHandleOnce) {
-                Failure failure=failureHandleOnce.getContentIfNotHandled();
-                if (failure==null){
-                } else {
-                    Toast.makeText(requireContext(),failure.getMessage(),Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        subscribeLPU(lpuViewModel.getLpuList());
         //------------------------------------------------------------------------------
 
         return view;
@@ -93,14 +78,14 @@ public class LPUListFrag extends Fragment implements MyRecyclerAdapter.OnItemCli
     public void toLpuDocument (View view){
         Navigation.findNavController(view).navigate(R.id.LPUDocumentsFrag);
     }
-    private void subscribeLPU(LiveData<List<LPU>> liveData){
+    private void subscribeLPU(LiveData<List<LpuEntity>> liveData){
         liveData.observe(getViewLifecycleOwner(),list->{
 
-            MyRecyclerAdapter<LPU, ItemLpuBinding> adapter=new MyRecyclerAdapter<>(
-                    list, R.layout.item_lpu, new RecyclerCallback<ItemLpuBinding, LPU>() {
+            MyRecyclerAdapter<LpuEntity, ItemLpuBinding> adapter=new MyRecyclerAdapter<>(
+                    list, R.layout.item_lpu, new RecyclerCallback<ItemLpuBinding, LpuEntity>() {
 
                 @Override
-                public void bind(ItemLpuBinding binder, LPU entity) {
+                public void bind(ItemLpuBinding binder, LpuEntity entity) {
                     binder.setEntity(entity);
                 }
 

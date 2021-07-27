@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable
             name="entity"
-            type="ru.skinallergic.checkskin.components.home.data.LPU" />
+            type="ru.skinallergic.checkskin.components.home.data.LpuOneEntity" />
         <variable
             name="fragment"
             type="ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment" />
@@ -32,6 +33,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto">
 
             <ImageButton
+                android:visibility="@{entity.is_favorite() ? View.VISIBLE : View.INVISIBLE , default = invisible}"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="8dp"
                 android:layout_alignParentRight="true"
@@ -41,6 +43,7 @@
 
 
             <RatingBar
+                android:rating="@{entity.ratingFloat}"
                 android:isIndicator="true"
                 android:layout_marginLeft="@dimen/margin_min"
                 android:layout_marginTop="14dp"
@@ -60,9 +63,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="4.8"
-                android:hint="4.8"
+                android:text="@{String.valueOf(entity.ratingFloat)}"
                 />
 
             <TextView
@@ -78,7 +79,7 @@
                 android:hint="ГБУЗ Поликлиника кожных заболеваний"/>
             <TextView
                 android:layout_marginHorizontal="@dimen/margin_min"
-                android:text="@{entity.city}"
+                android:text="@{entity.address}"
                 android:layout_marginTop="5dp"
                 android:layout_below="@+id/name"
                 android:id="@+id/city"
@@ -88,7 +89,6 @@
                 android:hint="г. Горно-Алтайск, ул. Мира 1"/>
             <TextView
                 android:layout_marginHorizontal="@dimen/margin_min"
-                android:text="@{entity.description}"
                 android:textColor="@color/purple_300"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/city"
@@ -118,10 +118,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="График раюоты: "/>
+                    android:text="@{entity.schedule}"/>
 
                 <TextView
-                    android:text="@{entity.schedule}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
@@ -144,24 +143,45 @@
                         android:textSize="14sp"
                         android:text="email: "/>
                     <TextView
-                        android:text="@{entity.mail}"
+                        android:autoLink="web"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@{entity.email}"
                         android:textSize="14sp"
                         android:hint="example@mail.ru"/>
                     <Space
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         />
-
+<!--
                     <TextView
                         android:textColor="@color/black"
                         android:textSize="14sp"
                         android:text="веб-сайт: "/>
                     <TextView
-                        android:text="@{entity.website}"
+                        android:autoLink="web"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@{entity.url}"
                         android:textColor="@color/red"
                         android:textSize="14sp"
                         android:hint="polkhozab.ru"/>
+                        -->
 
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:text="веб-сайт: "/>
+                    <TextView
+                        android:autoLink="web"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:text="@{entity.url}"
+                        android:textColor="@color/red"
+                        android:textSize="14sp"
+                        android:hint="polkhozab.ru"/>
                 </TableRow>
                 <TableRow
                     android:layout_marginTop="5dp"
@@ -172,7 +192,7 @@
                         android:textSize="14sp"
                         android:text="тел: "/>
                     <TextView
-                        android:text="@{entity.number}"
+                        android:text="@{entity.phones}"
                         android:textColor="@color/red"
                         android:textSize="14sp"
                         android:hint="8(800)2500550"/>

@@ -3,7 +3,6 @@ package ru.skinallergic.checkskin.components.home;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +20,9 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.skinallergic.checkskin.App;
-import ru.skinallergic.checkskin.BuildConfig;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.home.data.LpuEntity;
+import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.components.news.adapters.SpaceItemDecoration;
 import ru.skinallergic.checkskin.components.tests.data.EntityTest;
 import ru.skinallergic.checkskin.components.tests.viewModels.TestsViewModel;
@@ -33,7 +33,6 @@ import ru.skinallergic.checkskin.databinding.ItemTestBinding;
 import ru.skinallergic.checkskin.entrance.data.UserEntity;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
 import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
-import ru.skinallergic.checkskin.components.home.adapters.RecyclerAdapter_lpu_UNUSED;
 import ru.skinallergic.checkskin.components.home.adapters.RecyclerCallback;
 import ru.skinallergic.checkskin.components.home.data.LPU;
 import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
@@ -55,6 +54,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
     private NewsViewModel newsViewModel;
     private DateViewModel dateViewModel;
     private AccountViewModel accountViewModel;
+    private LpuViewModel lpuViewModel;
 
     private RecyclerView recyclerNews;
     private RecyclerView recyclerTests;
@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         newsViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(NewsViewModel.class);
         accountViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AccountViewModelImpl.class);
         homeViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(HomeViewModel.class);
+        lpuViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(LpuViewModel.class);
 
         FragmentHomeBinding binding= FragmentHomeBinding.inflate(inflater);
         View view=binding.getRoot();
@@ -130,7 +131,7 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
 
         subscribeNews(newsViewModel.newsListLive);
         subscribeTests(testsViewModel.getTestsLive());
-        subscribeLPU(homeViewModel.lpuLive);
+        subscribeLPU(lpuViewModel.getLpuFavorites());
 
         accountViewModel.logInSave();
 
@@ -206,16 +207,19 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
             //recyclerTests.addItemDecoration(new SpaceItemDecoration(list.size()-1,false,true));
         });
     }
-    private void subscribeLPU(LiveData<List<LPU>> liveData){
+    private void subscribeLPU(LiveData<List<LpuEntity>> liveData){
         liveData.observe(getViewLifecycleOwner(),list->{
-            List<LPU> listLpu= list;
-            List<LPU> listLpuPreview=new ArrayList<>(listLpu.subList(0,3));
+            List<LpuEntity> listLpu= list;
+            List<LpuEntity> listLpuPreview=listLpu;
+            if (listLpu.size()>2){
+                listLpuPreview=new ArrayList<>(listLpu.subList(0,3));
+            }
 
-            MyRecyclerAdapter<LPU, ItemLpuBinding> adapter=new MyRecyclerAdapter<>(
-                    listLpuPreview, R.layout.item_lpu, new RecyclerCallback<ItemLpuBinding, LPU>() {
+            MyRecyclerAdapter<LpuEntity, ItemLpuBinding> adapter=new MyRecyclerAdapter<>(
+                    listLpuPreview, R.layout.item_lpu, new RecyclerCallback<ItemLpuBinding, LpuEntity>() {
 
                 @Override
-                public void bind(ItemLpuBinding binder, LPU entity) {
+                public void bind(ItemLpuBinding binder, LpuEntity entity) {
                     binder.setEntity(entity);
                 }
 

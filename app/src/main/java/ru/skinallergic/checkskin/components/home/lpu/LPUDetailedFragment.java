@@ -19,12 +19,16 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
 import ru.skinallergic.checkskin.components.home.adapters.RecyclerCallback;
 import ru.skinallergic.checkskin.components.home.data.LPU;
+import ru.skinallergic.checkskin.components.home.data.LpuEntity;
+import ru.skinallergic.checkskin.components.home.data.LpuOneEntity;
 import ru.skinallergic.checkskin.components.home.data.ReviewEntity;
 import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
+import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.MapViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentLPUDetailedBinding;
 import ru.skinallergic.checkskin.databinding.ItemReviewBinding;
@@ -59,19 +63,22 @@ public class LPUDetailedFragment extends Fragment implements OnMapReadyCallback 
 
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         MapViewModel mapViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(MapViewModel.class);
-        HomeViewModel homeViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(HomeViewModel.class);
+        LpuViewModel lpuViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(LpuViewModel.class);
 
         binding.setFragment(this);
         View view=binding.getRoot();
         int idPosition=getArguments().getInt("idPosition");
-        LPU lpuEntity= homeViewModel.lpuLive.getValue().get(idPosition);
-        binding.setEntity(lpuEntity);
+        Loger.log("-----------------------------idPosition "+idPosition);
+        lpuViewModel.getOneLpu(idPosition).observe(getViewLifecycleOwner(),(entity)->{
+            LpuOneEntity lpuEntity= entity;
+            binding.setEntity(lpuEntity);
+        });
 
-        homeViewModel.getReviews();
+      /*  homeViewModel.getReviews();
 
         recyclerView=binding.include.recyclerReviews;
         subscribeReview(homeViewModel.reviewsLive);
-
+*/
         initializeMap(this);
         initMapTrue.observe(getViewLifecycleOwner(), new Observer<SupportMapFragment>() {
             @Override
