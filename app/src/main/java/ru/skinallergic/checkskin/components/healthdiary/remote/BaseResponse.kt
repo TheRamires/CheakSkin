@@ -13,6 +13,10 @@ data class BaseResponse <T>(
         @Expose
         var meta: Meta? = null,
 
+        @SerializedName("pagination")
+        @Expose
+        var pagination: Pagination? = null,
+
         @SerializedName("data")
         @Expose
         var data: T? = null,
@@ -26,3 +30,21 @@ data class BaseResponse <T>(
         var description: String? = null
 
         )
+data class Pagination(
+
+        @SerializedName("page")
+        @Expose
+        val page: Int,
+
+        @SerializedName("total")
+        @Expose
+        val total: Int,
+
+        @SerializedName("has_prev")
+        @Expose
+        val has_prev: Boolean,
+
+        @SerializedName("has_next")
+        @Expose
+        val has_next: Boolean
+)

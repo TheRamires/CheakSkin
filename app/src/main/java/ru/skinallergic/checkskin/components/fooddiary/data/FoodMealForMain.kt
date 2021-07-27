@@ -8,4 +8,16 @@ data class FoodMealForMain(
         val meal: Int,
         val created: Long,
         val list: List<FoodEntity>
-)
+){
+    fun getMealString(): String{
+        var str=""
+        when(meal){
+            0-> str="Завтрак"
+            1-> str="Обед"
+            2-> str="Ужин"
+            3-> str="Перекус"
+
+        }
+        return str
+    }
+}

@@ -72,7 +72,7 @@ class DetailFoodFragment : BaseFoodFragment() {
             }
             list?.let {
                 Loger.log("list      ------------------- $it")
-                binding.title.text= it[0]?.meal.toString()
+                binding.title.text= it[0]?.getMealString()
                 for (foodEntity in list){
                     if (foodEntity?.id == idPostion){
                         displayPosition(foodEntity)

@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import ru.skinallergic.checkskin.Api.FoodService
 import ru.skinallergic.checkskin.Api.TokenService
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.fooddiary.data.AllergicEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWr
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
@@ -34,10 +35,10 @@ class FoodRepository @Inject constructor(
 
     override fun getData(date: String, liveData: MutableLiveData<GettingData?>, splashScreenOn: ObservableField<Boolean>?) {}
 
-    fun getAllergens(page: Int) {
+    fun getAllergens(page: Int):  Observable<BaseResponse<List<AllergicEntity>>> {
         networkHandler.check()
         val accesToken = tokenModel_.loadAccesToken()
-        accesToken?.let { token ->
+        return accesToken?.let { token ->
             service.getAllergens(page, token)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -49,9 +50,8 @@ class FoodRepository @Inject constructor(
                             refreshToken { getAllergens(page) }
                         }
                     }
-                    .subscribe { Loger.log("getAllergens ${it.string()}") }
 
-        }
+        }!!
     }
 
     fun addAllergens(name: String): Observable<String>? {

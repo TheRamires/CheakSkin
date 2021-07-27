@@ -26,6 +26,9 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
                 ?.doOnSubscribe { splashScreenOn.set(true) }
                 ?.doOnComplete { splashScreenOn.set(false) }
                 ?.subscribe ({
+                    Loger.log("//////// getFoodDiaryByDate + $it")
+                    if(it.isEmpty()){foodDiaryList.value= listOf(); return@subscribe}
+
                     val created=it[0]?.created?:date
                     val setMeal: MutableSet<Int> = mutableSetOf()
                     val finalList = mutableListOf<FoodMealForMain>()
@@ -49,7 +52,6 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
                     }
 
                     foodDiaryList.value=finalList
-                    Loger.log("getFoodDiaryByDate + $it")
                 },{})
         )
         return foodDiaryList

@@ -140,13 +140,14 @@
                         android:background="@drawable/ic_food_background"/>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:id="@+id/recycler_view"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                     <com.dd.ShadowLayout
+                        android:layout_marginHorizontal="5dp"
                         android:layout_below="@+id/recycler_view"
                         android:layout_marginTop="8dp"
                         android:layout_centerHorizontal="true"
@@ -156,7 +157,7 @@
                         android:layout_gravity="center"
                         app:sl_shadowRadius="20dp"
                         app:sl_shadowColor="@color/shadow_color1"
-                        android:layout_width="360dp"
+                        android:layout_width="match_parent"
                         android:layout_height="140dp"
                         android:id="@+id/add_btn"
                         android:layout_marginBottom="40dp">

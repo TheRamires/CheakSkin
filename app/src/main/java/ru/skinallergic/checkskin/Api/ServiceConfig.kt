@@ -9,13 +9,14 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.skinallergic.checkskin.Api.ApiService.Companion.BASE_URL
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object ServiceConfig {
     private const val isDebug: Boolean=true
-    private const val BASE_URL ="http://217.25.94.101:5000/"   //OLD
-    //private const val BASE_URL ="http://188.225.77.74:5000"  //NEW
+    //private const val BASE_URL ="http://217.25.94.101:5000/"   //OLD
+    //private const val BASE_URL ="http://188.225.77.74:5000/"  //NEW
 
     private fun makeServiceConfig(): OkHttpClient {
         return makeOkHttpClient(

@@ -1,28 +1,42 @@
 package ru.skinallergic.checkskin.components.fooddiary.viewModels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
+import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.components.fooddiary.data.AllergicEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.AllergicWriter
-import ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity
 import ru.skinallergic.checkskin.components.fooddiary.repositories.FoodRepository
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel
+import ru.skinallergic.checkskin.shared_pref_model.TokenModelImpls
 import javax.inject.Inject
 
-class AllergenesViewModel @Inject constructor(val repository: FoodRepository): BaseViewModel() {
+class AllergenesViewModel @Inject constructor(val repository: FoodRepository,
+                                              val tokenModel: TokenModelImpls
+): BaseViewModel() {
     override var baseRepository: BaseHealthyRepository = repository
 
     init {
         baseRepository.compositeDisposable = this.compositeDisposable
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
-    val productList = MutableLiveData<ArrayList<AllergicWriter>>(arrayListOf())
 
-    var oldList = ArrayList<AllergicWriter>(arrayListOf())
-    var newList =ArrayList<AllergicWriter>(arrayListOf())
+    lateinit var productList : MutableLiveData<ArrayList<AllergicWriter>>
+
+    lateinit var oldList :ArrayList<AllergicWriter>
+    lateinit var newList :ArrayList<AllergicWriter>
 
     val isLoaded = MutableLiveData<Any>()
     val isAdded = MutableLiveData<Boolean>()
     val isDeleted = MutableLiveData<Boolean>()
+
+    fun initAndClear(){
+        oldList =arrayListOf()
+        newList =arrayListOf()
+        productList = MutableLiveData<ArrayList<AllergicWriter>>(arrayListOf())
+    }
+
 
     val backSave = MutableLiveData<Boolean>()
 
@@ -36,11 +50,16 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
                 }
             }
             if (isNew){addList.add(new)}
+            //check DeleteList Contains
+            if (getDeleteList().contains(new)){
+                addList.remove(new)
+            }
         }
         return addList
     }
-    fun getDeleteList( ): List<AllergicWriter>{
+    fun getDeleteList( ): List<Int>{
         val removeList = mutableListOf<AllergicWriter>()
+
         for (old in oldList){
             var deleted=true
             for (new in newList){
@@ -50,27 +69,67 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
             }
             if (deleted){removeList.add(old)}
         }
-        return removeList
+
+        val finalListId= mutableListOf<Int>()
+        for (position in removeList){
+            finalListId.add(position.id)
+        }
+
+        return finalListId
     }
 
     fun getAllergens(){
-        repository.getAllergens(1) //Сделать пагинацию
+        compositeDisposable.add(
+                repository.getAllergens(1) //Сделать пагинацию
+                        ?.subscribe {
+                            val list=it.data
+                            if (list != null) {
+                                val finalList=convertToAllergicWriter(list)
+                                productList.value=finalList
+                                for (position in finalList){
+                                    oldList.add(position)
+                                    newList.add(position)
+                                }
+                            }
+                        }
+        )
+    }
+
+
+   /* fun getAllergens(){
+        compositeDisposable.add(
+                repository.getAllergens(1) //Сделать пагинацию
+                        ?.subscribe { }
+        )
         oldList= arrayListOf()
         newList=oldList
     }
-    fun saveCondition(): Boolean{
+*/
+
+    fun saveAll(): Boolean{
+        val addingList=getAddingList()
+        if (addingList.isNotEmpty()){
+            addAllergens(addingList)
+        }
+
+        val deleteList=getDeleteList()
+        if (deleteList.isNotEmpty()){
+            for (id in deleteList){
+                deleteAllergens(id)
+            }
+        }
         return true
     }
 
-    fun addAllergens(list: List<AllergicWriter>, backSave: MutableLiveData<Boolean>?=null){
+    fun addAllergens(list: List<AllergicWriter>, backSave: MutableLiveData<Boolean>? = null){
         for (entity in list){
             compositeDisposable.add(
                     repository.addAllergens(entity.name)
-                            ?.subscribe ({
-                                         if (it=="Ok"){
-                                             //backSave?.value=true
-                                         }
-                            },{})
+                            ?.subscribe({
+                                if (it == "Ok") {
+                                    //backSave?.value=true
+                                }
+                            }, {})
             )
         }
     }
@@ -82,7 +141,7 @@ class AllergenesViewModel @Inject constructor(val repository: FoodRepository): B
     fun conditionOfAdding(list: List<AllergicWriter>): Boolean{
         println("list $list")
         if (list.isEmpty()){return true}
-        val isFully=list[list.size-1].isFully()
+        val isFully=list[list.size - 1].isFully()
         return isFully
     }
 }
@@ -121,4 +180,16 @@ fun MutableLiveData<ArrayList<AllergicWriter>>.markSavedPosition(id: Int){
         }
     }
     this.value=newList
+}
+
+fun convertToAllergicWriter(list: List<AllergicEntity?>): ArrayList<AllergicWriter>{
+    Loger.log("-------------------------------------convertToAllergicWriter")
+    val allergicWriterList= arrayListOf<AllergicWriter>()
+    for (allergicEntity in list){
+        allergicWriterList.add(
+                AllergicWriter(id = allergicEntity!!.id, name = allergicEntity.name.toString())
+        )
+    }
+    Loger.log("-------------------------------------allergicWriterList $allergicWriterList")
+    return allergicWriterList
 }

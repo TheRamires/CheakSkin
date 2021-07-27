@@ -23,6 +23,10 @@ public class MultipartManager {
     }
     @NonNull
     public RequestBody createPartFromString(List<Integer> value) {
+        if (value==null||value.isEmpty()){  //если придет null
+            String str="";
+            return RequestBody.create(str, MediaType.parse(""));
+        }
         StringBuilder sb = new StringBuilder();
         for (Integer integer : value){
             sb.append(integer);

@@ -12,4 +12,12 @@ data class ProductEntity (
     fun isFully():Boolean{
         return name!=""
     }
+    fun getWeightString():String{
+        if (weight=="0"){
+            return ""
+        } else return weight
+    }
+    fun notEmptyWeight():Boolean{
+        return weight!="0"
+    }
 }

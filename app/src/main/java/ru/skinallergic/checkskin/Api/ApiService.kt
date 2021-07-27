@@ -80,8 +80,8 @@ interface ApiService {
     fun getOneNews(@Path("Param") id:String): Observable<OneNewsEntity>
 
     companion object  {
-        private const val BASE_URL = "http://192.168.0.119:5000"
-        private const val BASE_URL_NEW ="http://217.25.94.101:5000/"
+        //private const val BASE_URL ="http://217.25.94.101:5000/"   //OLD
+        public const val BASE_URL ="http://188.225.77.74:5000/"  //NEW
 
         fun create(): ApiService {
             val logger = HttpLoggingInterceptor().apply { level = Level.BASIC }
@@ -105,7 +105,7 @@ interface ApiService {
                     .build()
 
             return Retrofit.Builder()
-                    .baseUrl(BASE_URL_NEW)
+                    .baseUrl(BASE_URL)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

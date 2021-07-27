@@ -25,4 +25,11 @@ object ServiceFactory {
     fun makeFoodService(isDebug: Boolean): FoodService{
         return ServiceConfig.makeService().create(FoodService::class.java)
     }
+
+    fun makeDocService(isDebug: Boolean): DocService{
+        return ServiceConfig.makeService().create(DocService::class.java)
+    }
+    fun makeLpuService(isDebug: Boolean): LpuService{
+        return ServiceConfig.makeService().create(LpuService::class.java)
+    }
 }

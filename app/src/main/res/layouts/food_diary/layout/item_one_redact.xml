@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="food"
             type="ru.skinallergic.checkskin.components.fooddiary.data.ProductEntity" />
     </data>
     <LinearLayout
         android:paddingHorizontal="10dp"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,6 +27,7 @@
                 android:textColor="@color/black"/>
 
             <ImageView
+                android:visibility="@{food.allergic ? View.VISIBLE : View.INVISIBLE , default=invisible}"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,13 +43,13 @@
             <EditText
                 android:id="@+id/weight_edit_text"
                 android:inputType="number"
-                android:text="@{String.valueOf(food.weight)}"
+                android:text="@{food.weightString}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
                 />
             <TextView
-                android:visibility="invisible"
+                android:visibility="@{food.notEmptyWeight() ? View.VISIBLE : View.INVISIBLE, default=invisible}"
                 android:layout_marginStart="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

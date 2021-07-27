@@ -121,7 +121,8 @@ class AffectedAreaCommonViewModel@Inject constructor(
     }
     fun checkReportField(files: List<File?>?, area: Int?, view: Int?, kinds: List<Int?>?): Boolean{
         Loger.log("checkReportField. getNewArea ${area}; getNewView ${view}; getNewKind ${kinds}; files $files")
-        return (area!=null && view!=null && kinds!=null && kinds.isNotEmpty() && files!=null && files?.isNotEmpty())
+        return (area!=null && view!=null /*&& kinds!=null && kinds.isNotEmpty()*/ && files!=null && files?.isNotEmpty())
+        //---------------------------------kinds убрали из обязательного списка проверки
     }
 
     fun addReport(date: Long){
@@ -138,8 +139,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
                 val areaEntity= newMap[area]!![view]
                 val kind=areaEntity?.kind
                 val files=areaEntity?.photos
-                if (files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
-                //if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}  //Убрали проверку kind
+                //if (kind==null || files.isEmpty()){toastyManager.toastyyyy(MESSAGE, true);return}
                 Loger.log("***********☺ files 0 //************************************ $files")
 
                 addReport(date, area, view, kind, files)
@@ -213,6 +213,7 @@ class AffectedAreaCommonViewModel@Inject constructor(
             redactPosition(id, newArea, newView, newKinds, multiParts)
         }
     }
+
 
     private fun addPosition(date: Long,
                             newArea: RequestBody,

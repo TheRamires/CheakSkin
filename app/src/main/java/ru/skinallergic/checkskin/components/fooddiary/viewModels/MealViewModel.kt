@@ -124,6 +124,18 @@ class MealViewModel @Inject constructor(
             )
         }
     }
+    fun deleteMeal(id: Int){
+        compositeDisposable.add(
+                repository.deleteMeal(id)
+                        .doOnSubscribe { progressBar.set(true) }
+                        .doOnComplete { progressBar.set(false) }
+                        .subscribe ({
+                            if (it=="Ok"){
+                                isDeleted.value=true
+                            }
+                        },{})
+        )
+    }
 }
 fun <T>MutableLiveData<ArrayList<T>>.add(position: T){
     var newList  =this.value

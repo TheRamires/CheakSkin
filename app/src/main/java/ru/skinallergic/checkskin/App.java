@@ -2,11 +2,9 @@ package ru.skinallergic.checkskin;
 import android.app.Application;
 
 import androidx.room.Room;
-
 import ru.skinallergic.checkskin.components.fooddiary.data_unused.AppDatabase;
 import ru.skinallergic.checkskin.di.AppComponent;
 import ru.skinallergic.checkskin.di.DaggerAppComponent;
-
 import com.vk.api.sdk.VK;
 import com.vk.api.sdk.VKTokenExpiredHandler;
 

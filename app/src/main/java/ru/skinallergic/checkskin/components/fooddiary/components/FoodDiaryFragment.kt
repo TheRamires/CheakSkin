@@ -16,6 +16,7 @@ import ru.skinallergic.checkskin.components.fooddiary.data.Food
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel
+import ru.skinallergic.checkskin.components.fooddiary.viewModels.MealViewModel
 import ru.skinallergic.checkskin.databinding.FragmentFoodDiary2Binding
 import ru.skinallergic.checkskin.databinding.ItemFoodBinding
 import ru.skinallergic.checkskin.databinding.ItemOneEatBinding
@@ -29,6 +30,7 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
     lateinit var adapter :SwipeRecyclerAdapterFood
     ////////////////////////////////////////////////// it was "this"  = owner
     val foodDiaryViewModel by lazy { ViewModelProvider(requireActivity(), viewModelFactory).get(FoodDiaryViewModel::class.java) }
+    val mealViewModel by lazy { ViewModelProvider(this,viewModelFactory).get(MealViewModel::class.java) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -79,26 +81,34 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
             /*val diffUtil = list?.let { DiffUtilFromMySelf<FoodMealForMain?>(adapter.list, it) }
             diffUtil?.calculate(adapter)*/
 
-            adapter = SwipeRecyclerAdapterFood( parentFragmentManager, list as java.util.ArrayList<FoodMealForMain>?
-            ) { binder: ItemFoodBinding, entity: FoodMealForMain ->
-                binder.entity = entity
-                binder.clickable.setOnClickListener { view: View ->
-                    val bundle = Bundle()
-                    bundle.putInt(BUNDLE_ID_OF_REMIND, entity.id)
-                    Loger.log("positionId for bundle " + entity.id)
-                    navFunction(view, R.id.action_foodDiaryFragment_to_detailFoodFragment, bundle)
-                }
-                val innerRecycler=binder.recycler
-                createInnerAdapter(innerRecycler, entity.list as ArrayList<FoodEntity>)
-            }
-
-            adapter .apply {
-                setOnItemClickListener(this@FoodDiaryFragment)
-                setDeleteItemClickListener(this@FoodDiaryFragment)
-                recycler.adapter = this
-            }
+            Loger.log("foodDiaryViewModel.getFoodDiaryByDate $list")
+            if (list.isEmpty()){
+                createAdapter(arrayListOf())
+            } else createAdapter(list as ArrayList<FoodMealForMain>?)
 
         })
+    }
+
+    private fun createAdapter(list: ArrayList<FoodMealForMain>?){
+        adapter = SwipeRecyclerAdapterFood( parentFragmentManager, list as java.util.ArrayList<FoodMealForMain>?
+        ) { binder: ItemFoodBinding, entity: FoodMealForMain ->
+            binder.entity = entity
+            binder.clickable.setOnClickListener { view: View ->
+                val bundle = Bundle()
+                bundle.putInt(BUNDLE_ID_OF_REMIND, entity.id)
+                Loger.log("positionId for bundle " + entity.id)
+                navFunction(view, R.id.action_foodDiaryFragment_to_detailFoodFragment, bundle)
+            }
+            val innerRecycler=binder.recycler
+            createInnerAdapter(innerRecycler, entity.list as ArrayList<FoodEntity>)
+        }
+
+        adapter .apply {
+            setOnItemClickListener(this@FoodDiaryFragment)
+            setDeleteItemClickListener(this@FoodDiaryFragment)
+            recycler.adapter = this
+        }
+
     }
 
     fun navFunction(view: View, fragmentId: Int, bundle: Bundle){
@@ -110,6 +120,7 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
     }
 
     override fun onItemDelete(id: Int) {
+        mealViewModel.deleteMeal(id)
         Loger.log("onItemDelete, id $id")
     }
 

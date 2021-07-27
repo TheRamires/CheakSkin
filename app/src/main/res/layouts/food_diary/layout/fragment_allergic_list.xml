@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout android:orientation="vertical"
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="baseViewModel"
+            type="ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -43,6 +51,7 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/title_layout"
             android:id="@+id/recycler"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
@@ -51,6 +60,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:layout_below="@id/recycler"
             android:layout_marginBottom="40dp"
             android:id="@+id/add_btn"
             android:layout_marginHorizontal="@dimen/margin_normal"
@@ -59,6 +69,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_food_button_add" />
-    </LinearLayout>
+
+        <FrameLayout
+            android:visibility="@{baseViewModel.splashScreenOn ? View.VISIBLE : View.GONE, default=gone}"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="148dp"
+                android:layout_gravity="bottom|center_horizontal"/>
+        </FrameLayout>
+        <ProgressBar
+            android:visibility="@{baseViewModel.progressBar ? View.VISIBLE : View.GONE, default=gone}"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="148dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </RelativeLayout>
 </layout>
 

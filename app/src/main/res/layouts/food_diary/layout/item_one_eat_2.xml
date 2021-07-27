@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="food"
             type="ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity" />
     </data>
     <LinearLayout
-        android:paddingHorizontal="10dp"
-        android:paddingTop="10dp"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="15dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -17,15 +18,17 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
         <TextView
+            android:textStyle="bold"
             android:maxLines="1"
             android:text="@{food.food.name}"
             android:layout_marginHorizontal="5dp"
-            android:layout_width="150dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:hint="Хлопья"/>
 
         <ImageView
+            android:visibility="@{food.food._allergen ? View.VISIBLE : View.INVISIBLE , default=invisible}"
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,26 +42,27 @@
             />
 
         <TextView
-            android:text="@{String.valueOf(food.food.weight)}"
+            android:text="@{String.valueOf(food.food.weightString)}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
-            android:hint="200"
             />
         <TextView
-            android:visibility="invisible"
+            android:visibility="@{food.food.notEmptyWeight() ? View.VISIBLE : View.INVISIBLE, default=invisible}"
             android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/red"
             android:text="гр"/>
-
+<!--
         <ImageView
             android:layout_marginHorizontal="10dp"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_right_red"/>
+            -->
 
         </LinearLayout>
 

@@ -6,6 +6,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import ru.skinallergic.checkskin.components.fooddiary.data.AllergicEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodWriter
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityStatistic
@@ -14,6 +15,7 @@ import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
+import ru.skinallergic.checkskin.components.home.data.ReviewWriter
 import ru.skinallergic.checkskin.components.tests.data.PostResponse
 import ru.skinallergic.checkskin.components.tests.data.TestResponse
 import ru.skinallergic.checkskin.entrance.pojo.RefreshTokenResponse
@@ -71,10 +73,8 @@ interface HealthyService {
                       @Part("view") view: RequestBody,
                       @Part("kinds") kinds: RequestBody,
                       @Part vararg  file: MultipartBody.Part
-                     /* @Part file1: MultipartBody.Part,
-                      @Part file2: MultipartBody.Part,
-                      @Part file3: MultipartBody.Part*/
     ):Observable<ResponseBody>
+
 
     @Multipart
     @PUT("/journals/health/rashes/{id}/")
@@ -87,6 +87,7 @@ interface HealthyService {
             @Part("kinds") kinds: RequestBody,
             @Part vararg  file: MultipartBody.Part
     ):Observable<ResponseBody>
+
 
     @DELETE("/journals/health/rashes/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
@@ -120,13 +121,13 @@ interface NotificationService {
 interface FoodService{
     @GET("/allergens/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getAllergens(@Query("page")page: Int, @Header("Authorization") key: String) : Observable<ResponseBody>
+    fun getAllergens(@Query("page")page: Int, @Header("Authorization") key: String) : Observable<BaseResponse<List<AllergicEntity>>>
 
     @POST("/allergens/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun addAllergens(@Header("Authorization") key: String, @Body name: Map<String,String> ) : Observable<BaseResponse<Any>>
 
-    @POST("/allergens/{id}/")
+    @DELETE("/allergens/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun deleteAllergens(@Path("id") id: Int,@Header("Authorization") key: String) : Observable<ResponseBody>
 
@@ -156,5 +157,43 @@ interface FoodService{
     @DELETE("/journals/meal/{id}/")
     @Headers("Content-Type: application/json", "Connection: close")
     fun deleteMeal(@Path("id") id: Int,@Header("Authorization") key: String): Observable<BaseResponse<Any>>
+}
+interface DocService{
+    @GET("/packages/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getDocs(): Observable<ResponseBody>
+
+    @GET ("/packages/{package_id}/docs/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getDocPackage(@Path ("package_id") id: Int): Observable<ResponseBody>
+
+    @GET("/docs/:doc_id/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun oneDoc(@Path ("doc_id") id: Int, @Query("fmt") fmt: String): Observable<ResponseBody>
+}
+interface LpuService{
+    @GET("/health-facilities/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun allLpu(@Header("Authorization") key: String): Observable<ResponseBody>
+
+    @GET("/health-facilities/{id}/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun oneLpu(@Path ("id") id: Int,@Header("Authorization") key: String): Observable<ResponseBody>
+
+    @GET("/health-facilities/favorites/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getFavorites(@Header("Authorization") key: String): Observable<ResponseBody>
+
+    @PUT("/health-facilities/{id}/is-favorite/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun addFavorite (@Path ("id") id: Int, @Header("Authorization") key: String, @Body is_favorite: Map<String,Boolean>): Observable<ResponseBody>
+
+    @GET("/health-facilities/{id}/feedback/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun getReviews(@Path ("id") id: Int ,@Header("Authorization") key: String): Observable<ResponseBody>
+
+    @POST("/health-facilities/1/feedback/")
+    @Headers("Content-Type: application/json", "Connection: close")
+    fun addReviews(@Header("Authorization") key: String, @Body reviewWriter: ReviewWriter): Observable<ResponseBody>
 }
 
