@@ -17,6 +17,8 @@ import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
 import ru.skinallergic.checkskin.components.healthdiary.repositories.BaseHealthyRepository
 import ru.skinallergic.checkskin.components.home.data.LpuEntity
 import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
+import ru.skinallergic.checkskin.components.home.data.ReviewEntity
+import ru.skinallergic.checkskin.components.home.data.ReviewWriter
 import ru.skinallergic.checkskin.handlers.NetworkHandler
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import ru.skinallergic.checkskin.shared_pref_model.TokenModelImpls
@@ -89,6 +91,43 @@ class LpuRepository  @Inject constructor(
                         }
                     }
                     .map { it.data!! }
+        }
+    }
+
+    fun getReviews(id: Int) : Observable<List<ReviewEntity>>?{
+        networkHandler.check()
+        val accesToken = tokenModel_.loadAccesToken()
+        return accesToken?.let {token ->
+            service.getReviews(id,token)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError " + it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { getReviews(id) }
+                        }
+                    }
+                    .map { it.data!! }
+        }
+    }
+    fun addReviews(id: Int, reviewWriter: ReviewWriter) : Observable<String>? {
+        networkHandler.check()
+        val accesToken = tokenModel_.loadAccesToken()
+        return accesToken?.let {token ->
+            service.addReviews(id,token,reviewWriter)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError " + it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { addReviews(id,reviewWriter) }
+                        }
+                    }
+                    .map { it.message!! }
         }
     }
 

@@ -8,8 +8,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import ru.skinallergic.checkskin.components.home.data.LPU;
-import ru.skinallergic.checkskin.components.home.data.ReviewEntity;
 
 public class HomeRepositoriy {
     @Inject
@@ -26,7 +24,7 @@ public class HomeRepositoriy {
         list.add(lpu);
         list.add(lpu);
         return Single.just(list);
-    }
+    }/*
     public Single<List<ReviewEntity>> getReviews(){
         //example
         ReviewEntity review=new ReviewEntity(1, 4,"Алена",
@@ -52,5 +50,5 @@ public class HomeRepositoriy {
             }
         });
         return Single.just(list);
-    }
+    }*/
 }

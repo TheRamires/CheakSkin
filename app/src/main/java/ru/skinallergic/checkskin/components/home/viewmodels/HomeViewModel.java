@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel;
 import io.reactivex.disposables.CompositeDisposable;
 import ru.skinallergic.checkskin.components.home.data.HomeRepositoriy;
 import ru.skinallergic.checkskin.components.home.data.LPU;
-import ru.skinallergic.checkskin.components.home.data.ReviewEntity;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
+import ru.skinallergic.checkskin.components.home.data.ReviewEntity;
 
 public class HomeViewModel extends ViewModel {
     private HomeRepositoriy repo;
@@ -28,14 +28,6 @@ public class HomeViewModel extends ViewModel {
     public void getLPUList(){
         compositeDisposable.add(repo.getLPU().subscribe((List<LPU> lpus)-> {
             lpuLive.setValue(lpus);
-        }));
-    }
-    public void getReviews(){
-        compositeDisposable.add(repo.getReviews().subscribe(new Consumer<List<ReviewEntity>>() {
-            @Override
-            public void accept(List<ReviewEntity> reviewEntities) throws Exception {
-                reviewsLive.setValue(reviewEntities);
-            }
         }));
     }
 

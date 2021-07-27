@@ -6,7 +6,7 @@
             type="ru.skinallergic.checkskin.components.home.components.LPUFragment" />
         <variable
             name="entity"
-            type="ru.skinallergic.checkskin.components.home.data.LPU" />
+            type="ru.skinallergic.checkskin.components.home.data.LpuOneEntity" />
     </data>
 <RelativeLayout
     android:onClick="@{fragment::toDetail}"
@@ -20,6 +20,7 @@
     >
 
     <RatingBar
+        android:rating="@{entity.ratingFloat}"
         android:isIndicator="true"
         android:layout_marginTop="@dimen/margin_min"
         android:layout_below="@+id/view"
@@ -39,8 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:text="4.8"
-        android:hint="4.8"
+        android:text="@{String.valueOf(entity.ratingFloat)}"
         />
 
     <TextView
@@ -49,8 +49,7 @@
         android:layout_below="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="г. Южно-Алтайск"
-        android:hint="г. Южно-Алтайск"/>
+        android:text="@{entity.address}"/>
     <TextView
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -58,8 +57,7 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ГБУЗ поликлиника"
-        android:hint="ГБУЗ поликлиника"/>
+        android:text="@{entity.name}"/>
     <TextView
         android:textColor="@color/red"
         android:textSize="10sp"
@@ -67,8 +65,7 @@
         android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="+000022200"
-        android:hint="+000022200"/>
+        android:text="@{entity.phones}"/>
     <ImageButton
         android:id="@+id/further"
         android:layout_margin="@dimen/margin_min"

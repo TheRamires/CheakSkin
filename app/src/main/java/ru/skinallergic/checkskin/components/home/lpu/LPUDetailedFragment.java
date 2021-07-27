@@ -23,13 +23,11 @@ import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.Adapters.MyRecyclerAdapter;
 import ru.skinallergic.checkskin.components.home.adapters.RecyclerCallback;
-import ru.skinallergic.checkskin.components.home.data.LPU;
-import ru.skinallergic.checkskin.components.home.data.LpuEntity;
 import ru.skinallergic.checkskin.components.home.data.LpuOneEntity;
 import ru.skinallergic.checkskin.components.home.data.ReviewEntity;
-import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.MapViewModel;
+import ru.skinallergic.checkskin.components.home.viewmodels.ReviesViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentLPUDetailedBinding;
 import ru.skinallergic.checkskin.databinding.ItemReviewBinding;
 
@@ -64,6 +62,7 @@ public class LPUDetailedFragment extends Fragment implements OnMapReadyCallback 
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         MapViewModel mapViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(MapViewModel.class);
         LpuViewModel lpuViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(LpuViewModel.class);
+        ReviesViewModel reviesViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(ReviesViewModel.class);
 
         binding.setFragment(this);
         View view=binding.getRoot();
@@ -74,11 +73,11 @@ public class LPUDetailedFragment extends Fragment implements OnMapReadyCallback 
             binding.setEntity(lpuEntity);
         });
 
-      /*  homeViewModel.getReviews();
+        reviesViewModel.getReviews(idPosition);
 
         recyclerView=binding.include.recyclerReviews;
-        subscribeReview(homeViewModel.reviewsLive);
-*/
+        subscribeReview(reviesViewModel.getReviewList());
+
         initializeMap(this);
         initMapTrue.observe(getViewLifecycleOwner(), new Observer<SupportMapFragment>() {
             @Override
@@ -141,7 +140,7 @@ public class LPUDetailedFragment extends Fragment implements OnMapReadyCallback 
                     binder.clickableLayout.setClickable(false);
                     binder.setEntity(entity);
                     RatingBar rating=binder.ratingBar;
-                    rating.setRating(entity.getPoint());
+                    rating.setRating((float) entity.getVote());
                 }
             });
             recyclerView.setAdapter(adapter);

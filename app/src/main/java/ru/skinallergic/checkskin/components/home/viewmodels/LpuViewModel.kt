@@ -25,9 +25,9 @@ class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel()
                 repo.getLpuList()
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
-                        ?.subscribe {
+                        ?.subscribe ({
                             lpuData.value=it
-                        }
+                        },{})
         )
         return lpuData
     }
@@ -36,10 +36,10 @@ class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel()
                 repo.getLpuFavorites()
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
-                        ?.subscribe {
+                        ?.subscribe ({
                             Loger.log("-------------------favorites Lpu ${it}")
                             favorites.value=it
-                        }
+                        },{})
         )
         return favorites
     }
@@ -48,10 +48,10 @@ class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel()
                 repo.getOneLpu(id)
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
-                        ?.subscribe {
+                        ?.subscribe ({
                             Loger.log("-------------------getOneLpu Lpu ${it}")
                             oneLpu.value=it
-                        }
+                        },{})
 
 
         )

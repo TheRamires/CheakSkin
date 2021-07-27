@@ -84,7 +84,7 @@
 
         <TextView
             android:layout_below="@+id/ratingBar"
-            android:hint="description LPU"
+            android:hint="Оказывает высококачественную медицинскую помощь"
             android:id="@+id/title"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
@@ -99,6 +99,7 @@
             android:background="@color/gray"/>
         <EditText
 
+            android:onTextChanged="@{fragment::textChanged}"
             android:textSize="12sp"
             android:hint="20-200 символов"
             android:background="@null"
@@ -110,6 +111,7 @@
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addReview"
             android:background="@drawable/button_pressed_blue"
             android:layout_marginHorizontal="@dimen/norm_button_margin"
             android:textAllCaps="false"

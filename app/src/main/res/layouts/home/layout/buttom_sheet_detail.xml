@@ -9,245 +9,245 @@
             name="fragment"
             type="ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment" />
     </data>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="300dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-    <ScrollView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="300dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <RelativeLayout android:paddingHorizontal="5dp"
-            android:background="@color/white"
-            android:orientation="vertical"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:layout_height="match_parent">
 
-            <ImageButton
-                android:visibility="@{entity.is_favorite() ? View.VISIBLE : View.INVISIBLE , default = invisible}"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="8dp"
-                android:layout_alignParentRight="true"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/my_icon_heart"/>
-
-
-            <RatingBar
-                android:rating="@{entity.ratingFloat}"
-                android:isIndicator="true"
-                android:layout_marginLeft="@dimen/margin_min"
-                android:layout_marginTop="14dp"
-                android:layout_below="@+id/view"
-                android:layout_width="wrap_content"
-                android:layout_height="26dp"
-                android:progressDrawable="@drawable/rating_small_custom"
-                android:id="@+id/ratingBar"
-                />
-
-            <TextView
-                android:layout_marginTop="14dp"
-                android:layout_toRightOf="@+id/ratingBar"
-                android:textColor="@color/black"
-                android:id="@+id/rating"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{String.valueOf(entity.ratingFloat)}"
-                />
-
-            <TextView
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:textColor="@color/black"
-                android:text="@{entity.name}"
-                android:layout_marginTop="14dp"
-                android:layout_below="@+id/ratingBar"
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:hint="ГБУЗ Поликлиника кожных заболеваний"/>
-            <TextView
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:text="@{entity.address}"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/name"
-                android:id="@+id/city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:hint="г. Горно-Алтайск, ул. Мира 1"/>
-            <TextView
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:textColor="@color/purple_300"
-                android:layout_marginTop="8dp"
-                android:layout_below="@+id/city"
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:hint="Оказывает высококачественную медицинскую помощь"/>
-
-            <View
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/description"
-                android:id="@+id/line2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"/>
-            <TableRow
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:id="@+id/schedule"
-                android:layout_below="@id/line2"
-                android:layout_marginTop="10dp"
+            <RelativeLayout android:paddingHorizontal="5dp"
+                android:background="@color/white"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+                <ImageButton
+                    android:visibility="@{entity.is_favorite() ? View.VISIBLE : View.INVISIBLE , default = invisible}"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/my_icon_heart"/>
+
+
+                <RatingBar
+                    android:rating="@{entity.ratingFloat}"
+                    android:isIndicator="true"
+                    android:layout_marginLeft="@dimen/margin_min"
+                    android:layout_marginTop="14dp"
+                    android:layout_below="@+id/view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:progressDrawable="@drawable/rating_small_custom"
+                    android:id="@+id/ratingBar"
+                    />
+
+                <TextView
+                    android:layout_marginTop="14dp"
+                    android:layout_toRightOf="@+id/ratingBar"
+                    android:textColor="@color/black"
+                    android:id="@+id/rating"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(entity.ratingFloat)}"
+                    />
+
+                <TextView
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:textColor="@color/black"
+                    android:text="@{entity.name}"
+                    android:layout_marginTop="14dp"
+                    android:layout_below="@+id/ratingBar"
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:hint="ГБУЗ Поликлиника кожных заболеваний"/>
+                <TextView
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:text="@{entity.address}"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/name"
+                    android:id="@+id/city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:hint="г. Горно-Алтайск, ул. Мира 1"/>
+                <TextView
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:textColor="@color/purple_300"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/city"
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:hint="Оказывает высококачественную медицинскую помощь"/>
+
+                <View
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/description"
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
+                <TableRow
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:id="@+id/schedule"
+                    android:layout_below="@id/line2"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="@{entity.schedule}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:hint="Пн-Пт 9:00-18:00"/>
+                </TableRow>
+
+                <TableLayout
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:layout_below="@id/schedule"
+                    android:id="@+id/date"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+                        <TextView
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:text="email: "/>
+                        <TextView
+                            android:autoLink="web"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@{entity.email}"
+                            android:textSize="14sp"
+                            android:hint="example@mail.ru"/>
+                        <Space
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            />
+                        <!--
+                                            <TextView
+                                                android:textColor="@color/black"
+                                                android:textSize="14sp"
+                                                android:text="веб-сайт: "/>
+                                            <TextView
+                                                android:autoLink="web"
+                                                android:clickable="true"
+                                                android:focusable="true"
+                                                android:text="@{entity.url}"
+                                                android:textColor="@color/red"
+                                                android:textSize="14sp"
+                                                android:hint="polkhozab.ru"/>
+                                                -->
+
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:text="веб-сайт: "/>
+                        <TextView
+                            android:autoLink="web"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="@{entity.url}"
+                            android:textColor="@color/red"
+                            android:textSize="14sp"
+                            android:hint="polkhozab.ru"/>
+                    </TableRow>
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:text="тел: "/>
+                        <TextView
+                            android:text="@{entity.phones}"
+                            android:textColor="@color/red"
+                            android:textSize="14sp"
+                            android:hint="8(800)2500550"/>
+
+                    </TableRow>
+                </TableLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:background="@drawable/button_pressed_blue"
+                    android:layout_marginHorizontal="@dimen/norm_button_margin"
+                    android:textAllCaps="false"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="2dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="15sp"
+                    android:text="Добавить отзыв"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="24dp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@+id/date"
+                    android:id="@+id/to_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/to_review"
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray"/>
                 <TextView
                     android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    android:text="Отзывы"
+                    android:layout_below="@+id/line"
+                    android:id="@+id/rewiew"
                     android:textSize="14sp"
-                    android:text="@{entity.schedule}"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:hint="Пн-Пт 9:00-18:00"/>
-            </TableRow>
-
-            <TableLayout
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:layout_below="@id/schedule"
-                android:id="@+id/date"
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TableRow
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="email: "/>
-                    <TextView
-                        android:autoLink="web"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@{entity.email}"
-                        android:textSize="14sp"
-                        android:hint="example@mail.ru"/>
-                    <Space
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        />
-<!--
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="веб-сайт: "/>
-                    <TextView
-                        android:autoLink="web"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@{entity.url}"
-                        android:textColor="@color/red"
-                        android:textSize="14sp"
-                        android:hint="polkhozab.ru"/>
-                        -->
+                    android:layout_height="wrap_content"/>
 
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="веб-сайт: "/>
-                    <TextView
-                        android:autoLink="web"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="@{entity.url}"
-                        android:textColor="@color/red"
-                        android:textSize="14sp"
-                        android:hint="polkhozab.ru"/>
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="5dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginHorizontal="@dimen/margin_min"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="@dimen/margin_min"
+                    android:layout_below="@+id/rewiew"
+                    android:id="@+id/recycler_reviews"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:text="тел: "/>
-                    <TextView
-                        android:text="@{entity.phones}"
-                        android:textColor="@color/red"
-                        android:textSize="14sp"
-                        android:hint="8(800)2500550"/>
+                    android:layout_height="wrap_content"/>
 
-                </TableRow>
-            </TableLayout>
+            </RelativeLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:background="@drawable/button_pressed_blue"
-                android:layout_marginHorizontal="@dimen/norm_button_margin"
-                android:textAllCaps="false"
-                android:paddingTop="0dp"
-                android:paddingBottom="2dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:textSize="15sp"
-                android:text="Добавить отзыв"
-                android:textColor="@color/white"
-                android:layout_marginTop="24dp"
-                android:layout_centerInParent="true"
-                android:layout_below="@+id/date"
-                android:id="@+id/to_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:layout_marginTop="20dp"
-                android:layout_below="@+id/to_review"
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray"/>
-            <TextView
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="@dimen/margin_min"
-                android:text="Отзывы"
-                android:layout_below="@+id/line"
-                android:id="@+id/rewiew"
-                android:textSize="14sp"
-                android:layout_marginTop="6dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginHorizontal="@dimen/margin_min"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:layout_marginBottom="@dimen/margin_normal"
-                android:nestedScrollingEnabled="false"
-                android:layout_marginTop="@dimen/margin_min"
-                android:layout_below="@+id/rewiew"
-                android:id="@+id/recycler_reviews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </RelativeLayout>
-
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </layout>

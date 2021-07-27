@@ -17,6 +17,7 @@ import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
 import ru.skinallergic.checkskin.components.home.data.LpuEntity
 import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
+import ru.skinallergic.checkskin.components.home.data.ReviewEntity
 import ru.skinallergic.checkskin.components.home.data.ReviewWriter
 import ru.skinallergic.checkskin.components.tests.data.PostResponse
 import ru.skinallergic.checkskin.components.tests.data.TestResponse
@@ -192,10 +193,10 @@ interface LpuService{
 
     @GET("/health-facilities/{id}/feedback/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getReviews(@Path ("id") id: Int ,@Header("Authorization") key: String): Observable<ResponseBody>
+    fun getReviews(@Path ("id") id: Int ,@Header("Authorization") key: String): Observable<BaseResponse<List<ReviewEntity>>>
 
-    @POST("/health-facilities/1/feedback/")
+    @POST("/health-facilities/{id}/feedback/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun addReviews(@Header("Authorization") key: String, @Body reviewWriter: ReviewWriter): Observable<ResponseBody>
+    fun addReviews(@Path ("id") id: Int ,@Header("Authorization") key: String, @Body reviewWriter: ReviewWriter): Observable<BaseResponse<Any>>
 }
 

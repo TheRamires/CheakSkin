@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.home.data.LpuEntity;
+import ru.skinallergic.checkskin.components.home.data.LpuOneEntity;
+import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentLpuBinding;
 
 import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
@@ -23,6 +26,7 @@ import java.util.List;
 public class LPUFragment extends Fragment {
     private FragmentLpuBinding binding;
     private Bundle bundle;
+    private int id=1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,10 +36,12 @@ public class LPUFragment extends Fragment {
         View view=binding.getRoot();
         bundle=new Bundle();
         HomeViewModel viewModel=new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
-        viewModel.lpuLive.observe(getViewLifecycleOwner(), new Observer<List<LPU>>() {
+        LpuViewModel lpuViewModel =new ViewModelProvider(requireActivity()).get(LpuViewModel.class);
+
+        lpuViewModel.getOneLpu(id).observe(getViewLifecycleOwner(), new Observer<LpuOneEntity>() {
             @Override
-            public void onChanged(List<LPU> lpus) {
-                LPU entity=lpus.get(0);
+            public void onChanged(LpuOneEntity lpuOneEntity) {
+                LpuOneEntity entity=lpuOneEntity;
                 binding.setEntity(entity);
                 binding.further.setBackground(ContextCompat.getDrawable(requireActivity(),R.drawable.ic_further_orange));
                 bundle.putInt("id",entity.getId());

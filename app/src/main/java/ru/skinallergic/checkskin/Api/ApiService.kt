@@ -88,9 +88,9 @@ interface ApiService {
 
             val client = OkHttpClient.Builder()
                     //время ожидания
-                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
                     .writeTimeout(20, TimeUnit.SECONDS)
-                    .readTimeout(20, TimeUnit.SECONDS)
 
                     .retryOnConnectionFailure(true)
                     .addInterceptor(logger)
