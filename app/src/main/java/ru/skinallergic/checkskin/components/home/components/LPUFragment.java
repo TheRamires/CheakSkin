@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.home.data.LpuEntity;
 import ru.skinallergic.checkskin.components.home.data.LpuOneEntity;
@@ -22,6 +23,8 @@ import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
 import ru.skinallergic.checkskin.components.home.data.LPU;
 
 import java.util.List;
+
+import static ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment.LPU_ID;
 
 public class LPUFragment extends Fragment {
     private FragmentLpuBinding binding;
@@ -44,14 +47,14 @@ public class LPUFragment extends Fragment {
                 LpuOneEntity entity=lpuOneEntity;
                 binding.setEntity(entity);
                 binding.further.setBackground(ContextCompat.getDrawable(requireActivity(),R.drawable.ic_further_orange));
-                bundle.putInt("id",entity.getId());
+                bundle.putInt(LPU_ID,entity.getId());
             }
         });
 
         return view;
     }
     public void toDetail(View view){
-
+        Loger.log("");
         Navigation.findNavController(view).navigate(R.id.LPUDetailedFragment,bundle);
     }
 }

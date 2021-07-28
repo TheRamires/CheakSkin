@@ -48,4 +48,11 @@
         <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
     </style>
 
+
+    <style name="Favorite.Toggle" parent="android:Widget">
+        <item name="android:textOn">""</item>
+        <item name="android:textOff">""</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
+    </style>
+
 </resources>

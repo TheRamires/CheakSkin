@@ -189,7 +189,7 @@ interface LpuService{
 
     @PUT("/health-facilities/{id}/is-favorite/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun addFavorite (@Path ("id") id: Int, @Header("Authorization") key: String, @Body is_favorite: Map<String,Boolean>): Observable<ResponseBody>
+    fun addFavorite (@Path ("id") id: Int, @Header("Authorization") key: String, @Body is_favorite: Map<String,Boolean>): Observable<BaseResponse<Any>>
 
     @GET("/health-facilities/{id}/feedback/")
     @Headers("Content-Type: application/json", "Connection: close")

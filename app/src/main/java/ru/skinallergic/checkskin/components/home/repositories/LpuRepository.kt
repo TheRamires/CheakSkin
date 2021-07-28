@@ -131,6 +131,26 @@ class LpuRepository  @Inject constructor(
         }
     }
 
+    fun addFavorite(id: Int, isFavorite: Boolean) : Observable<String>? {
+        val map = mapOf("is_favorite" to isFavorite)
+        networkHandler.check()
+        val accesToken = tokenModel_.loadAccesToken()
+        return accesToken?.let {token ->
+            service.addFavorite(id,token,map)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Loger.log("OnError " + it)
+                        if (it.message == TOKENEXPIRED) {
+                            toastyManager.toastyyyy("Токен устарел, ошибка 401, идет обновление")
+                            Loger.log("Токен устарел, ошибка 401, идет обновление")
+                            refreshToken { addFavorite(id,isFavorite) }
+                        }
+                    }
+                    .map { it.message!! }
+        }
+    }
+
     override fun redact(date: String, data: WritingData, saved: MutableLiveData<Boolean>, progressBar: ObservableField<Boolean>) {}
     override fun getData(date: String, liveData: MutableLiveData<GettingData?>, splashScreenOn: ObservableField<Boolean>?) {}
 }

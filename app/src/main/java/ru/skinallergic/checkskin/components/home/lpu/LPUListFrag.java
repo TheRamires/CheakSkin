@@ -34,6 +34,8 @@ import ru.skinallergic.checkskin.type.HandleOnce;
 
 import java.util.List;
 
+import static ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment.LPU_ID;
+
 public class LPUListFrag extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     private ViewPager2 viewPager;
@@ -98,7 +100,7 @@ public class LPUListFrag extends Fragment implements MyRecyclerAdapter.OnItemCli
     @Override
     public void onItemClick(View view, int id, int toLayout) {
         Bundle bundle=new Bundle();
-        bundle.putInt("idPosition",id);
+        bundle.putInt(LPU_ID,id);
         Navigation.findNavController(view).navigate(toLayout, bundle);
     }
 }

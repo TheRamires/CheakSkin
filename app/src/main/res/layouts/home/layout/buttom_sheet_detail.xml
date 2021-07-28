@@ -32,15 +32,17 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
 
-                <ImageButton
-                    android:visibility="@{entity.is_favorite() ? View.VISIBLE : View.INVISIBLE , default = invisible}"
+                <ToggleButton
+                    android:id="@+id/favorite_btn"
+                    android:checked="@{entity.is_favorite()}"
                     android:layout_marginHorizontal="5dp"
                     android:layout_marginTop="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/my_icon_heart"/>
-
+                    android:theme="@style/Favorite.Toggle"
+                    android:background="@android:color/transparent"
+                    android:button="@drawable/favorite_toggle_selector"/>
 
                 <RatingBar
                     android:rating="@{entity.ratingFloat}"
@@ -120,11 +122,6 @@
                         android:textSize="14sp"
                         android:text="@{entity.schedule}"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:hint="Пн-Пт 9:00-18:00"/>
                 </TableRow>
 
                 <TableLayout
@@ -147,8 +144,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:text="@{entity.email}"
-                            android:textSize="14sp"
-                            android:hint="example@mail.ru"/>
+                            android:textSize="14sp"/>
                         <Space
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -180,8 +176,7 @@
                             android:focusable="true"
                             android:text="@{entity.url}"
                             android:textColor="@color/red"
-                            android:textSize="14sp"
-                            android:hint="polkhozab.ru"/>
+                            android:textSize="14sp"/>
                     </TableRow>
                     <TableRow
                         android:layout_marginTop="5dp"
@@ -194,8 +189,7 @@
                         <TextView
                             android:text="@{entity.phones}"
                             android:textColor="@color/red"
-                            android:textSize="14sp"
-                            android:hint="8(800)2500550"/>
+                            android:textSize="14sp"/>
 
                     </TableRow>
                 </TableLayout>

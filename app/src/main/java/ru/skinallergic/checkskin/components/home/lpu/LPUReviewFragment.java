@@ -14,24 +14,33 @@ import android.widget.RatingBar;
 import java.util.Objects;
 
 import ru.skinallergic.checkskin.components.home.data.LPU;
+import ru.skinallergic.checkskin.components.home.data.LpuEntity;
+import ru.skinallergic.checkskin.components.home.data.LpuOneEntity;
 import ru.skinallergic.checkskin.components.home.viewmodels.HomeViewModel;
+import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.ReviesViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentLPUReviewBinding;
 
+import static ru.skinallergic.checkskin.components.home.lpu.LPUDetailedFragment.LPU_ID;
+
 public class LPUReviewFragment extends Fragment {
     private ReviesViewModel reviesViewModel;
+    private LpuViewModel lpuViewModel;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentLPUReviewBinding binding=FragmentLPUReviewBinding.inflate(inflater);
-        binding.setFragment(this);
-        View view=binding.getRoot();
-
         HomeViewModel homeViewModel=new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
         reviesViewModel=new ViewModelProvider(requireActivity()).get(ReviesViewModel.class);
-        int idPosition=getArguments().getInt("idPosition");
-        LPU lpuEntity= homeViewModel.lpuLive.getValue().get(idPosition);
+        lpuViewModel=new ViewModelProvider(requireActivity()).get(LpuViewModel.class);
+        FragmentLPUReviewBinding binding=FragmentLPUReviewBinding.inflate(inflater);
+        binding.setFragment(this);
+        binding.setBaseViewModel(reviesViewModel);
+        view=binding.getRoot();
+
+        int idPosition=getArguments().getInt(LPU_ID);
+        LpuOneEntity lpuEntity= lpuViewModel.getOneLpu().getValue();
         binding.setEntity(lpuEntity);
         binding.title.setText(lpuEntity.getName());
 
@@ -51,8 +60,13 @@ public class LPUReviewFragment extends Fragment {
                             Objects.requireNonNull(reviesViewModel.getDescription()),
                             Objects.requireNonNull(reviesViewModel.getVote())
                             );
-                    backstack(v);
                 }
+            }
+        });
+        reviesViewModel.getSent().observe(getViewLifecycleOwner(),(sent)->{
+            if (sent){
+                reviesViewModel.getSent().setValue(false);
+                backstack(view);
             }
         });
 

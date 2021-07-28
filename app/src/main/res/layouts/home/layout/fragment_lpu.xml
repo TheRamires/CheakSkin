@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:text="@{entity.name}"/>
     <TextView
+        android:layout_marginBottom="10dp"
         android:textColor="@color/red"
         android:textSize="10sp"
         android:layout_below="@+id/name"

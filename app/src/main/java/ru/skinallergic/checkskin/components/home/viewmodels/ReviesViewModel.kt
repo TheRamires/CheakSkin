@@ -22,7 +22,8 @@ class ReviesViewModel @Inject constructor(val repo: LpuRepository, val toastyMan
         baseRepository.expiredRefreshToken = this.expiredRefreshToken
     }
 
-    val reviewList=MutableLiveData<List<ReviewEntity>>()
+    val reviewList = MutableLiveData<List<ReviewEntity>>()
+    val sent = MutableLiveData<Boolean>()
 
     var vote: Int?=null
     var description: String?=null
@@ -37,12 +38,15 @@ class ReviesViewModel @Inject constructor(val repo: LpuRepository, val toastyMan
     }
 
     fun getReviews(id: Int):MutableLiveData<List<ReviewEntity>>{
+
+        Loger.log("-----------------getReviews id "+id);
         compositeDisposable.add(
                 repo.getReviews(id)
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
                         ?.subscribe({
                                     reviewList.value=it
+                            Loger.log("----------------- repo.getReviews list  "+it);
 
                         },{})
         )
@@ -55,7 +59,10 @@ class ReviesViewModel @Inject constructor(val repo: LpuRepository, val toastyMan
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
                         ?.subscribe({
-                                    Loger.log(it)
+                            Loger.log(it)
+                            if (it=="Ok"){
+                                sent.value=true
+                            }
                         },{})
         )
     }

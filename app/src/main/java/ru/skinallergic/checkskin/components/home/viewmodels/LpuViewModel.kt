@@ -7,9 +7,10 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.BaseViewModel
 import ru.skinallergic.checkskin.components.home.data.LpuEntity
 import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
 import ru.skinallergic.checkskin.components.home.repositories.LpuRepository
+import ru.skinallergic.checkskin.handlers.ToastyManager
 import javax.inject.Inject
 
-class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel() {
+class LpuViewModel @Inject constructor(val repo: LpuRepository, val toastyManager: ToastyManager): BaseViewModel() {
     override var baseRepository: BaseHealthyRepository = repo
 
     init {
@@ -26,6 +27,7 @@ class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel()
                         ?.doOnSubscribe { progressBar.set(true) }
                         ?.doOnComplete { progressBar.set(false) }
                         ?.subscribe ({
+                            Loger.log("lpuList "+it)
                             lpuData.value=it
                         },{})
         )
@@ -56,5 +58,17 @@ class LpuViewModel @Inject constructor(val repo: LpuRepository): BaseViewModel()
 
         )
         return oneLpu
+    }
+    fun addFavorite(id: Int, favorite: Boolean){
+        compositeDisposable.add(
+                repo.addFavorite(id,favorite)
+                        ?.subscribe ({
+                            if (it=="Ok"){
+                                when(favorite){
+                                    true->toastyManager.toastyyyy("Добавлено в избранные")
+                                }
+                            }
+                        },{})
+        )
     }
 }

@@ -1,7 +1,5 @@
 package ru.skinallergic.checkskin.components.home.viewmodels
 
-import android.text.Layout
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.GoogleMap
 import ru.skinallergic.checkskin.components.home.data.MyGoogleMap
 import javax.inject.Inject
