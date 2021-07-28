@@ -21,10 +21,12 @@ import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderDetai
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersDetailBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.DATE_PATTERN;
 
 
 public class RemindersDetailFragment extends BaseRemindersFragment {
@@ -33,6 +35,7 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
     private Spinner typeSpinner;
     private ReminderDetailViewModel reminderDetailViewModel;
     private ReminderWriterViewModel reminderWriterViewModel;
+    private Boolean isDoctor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,11 +62,19 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
         ArrayAdapter<?> adapter =
                 new ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,getTypeList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         typeSpinner.setAdapter(adapter);
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(getTypeList().get(position));
+                if (position==0){
+                    isDoctor=true;
+                    binding.redactDate.setVisibility(View.VISIBLE);
+                } else if (position==1){
+                    isDoctor=false;
+                    binding.redactDate.setVisibility(View.GONE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
@@ -84,6 +95,7 @@ public class RemindersDetailFragment extends BaseRemindersFragment {
                         if(entity.getId()==positionId){
                             reminderDetailViewModel.getReminderDetail().set(entity);
                             typeSpinner.setSelection(entity.getKind());
+                            binding.dateDoctor.setText(new SimpleDateFormat(DATE_PATTERN).format(entity.getStart_at()*1000));
                         }
                     }
                 }

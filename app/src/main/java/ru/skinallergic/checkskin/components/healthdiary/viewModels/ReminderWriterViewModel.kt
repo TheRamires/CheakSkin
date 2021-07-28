@@ -2,6 +2,7 @@ package ru.skinallergic.checkskin.components.healthdiary.viewModels
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.handlers.ToastyManager
 import java.util.*
@@ -32,6 +33,7 @@ class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManag
     }
 
     fun getEntity(): ReminderWriter? {
+        Loger.log("reminderWriter "+reminderWriter.get())
         if (conditionsNotMet()) {
             toastyManager.toastyyyy("Заполните все поля",true)
             return null
@@ -49,6 +51,12 @@ class ReminderWriterViewModel @Inject constructor(val toastyManager: ToastyManag
     fun setStartAt(start: Long) {
         val entity =get()
         entity.start_at=start/1000
+        set(entity)
+    }
+
+    fun setStartAtForHorror(start: Long) {
+        val entity =get()
+        entity.start_at=start
         set(entity)
     }
 

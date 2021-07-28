@@ -38,6 +38,8 @@ class RemindCommonViewModel @Inject constructor(
     }
 
     fun newRemind( reminderWriter:ReminderWriter) :MutableLiveData<Boolean>{
+
+        Loger.log(" time \n\n\n\n\n\n\n\n\n\n\n\n\n reminderWriter.start_at "+reminderWriter.start_at)
         /*val rem=reminderWriter
         rem.start_at= rem.start_at?.div(1000)
         Loger.log("newRemind "+rem)*/

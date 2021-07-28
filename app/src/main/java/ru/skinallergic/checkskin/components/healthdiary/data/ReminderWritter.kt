@@ -18,6 +18,13 @@ data class ReminderWriter(
             return simpleTimeParser.format(Date(start_at!!*1000))
         } else return ""
     }
+    fun getDate():String{
+        println("getTime $start_at")
+        if (start_at!=null){
+            val simpleTimeParser = SimpleDateFormat(DATE_PATTERN)
+            return simpleTimeParser.format(Date(start_at!!*1000))
+        } else return ""
+    }
 
     fun getRepeatMode(): String{
         when(repeat_mode){

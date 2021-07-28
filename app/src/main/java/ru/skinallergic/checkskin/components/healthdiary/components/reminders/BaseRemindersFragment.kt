@@ -16,6 +16,7 @@ import ru.skinallergic.checkskin.components.profile.NavigationFunction
 import ru.skinallergic.checkskin.view_models.DateViewModel
 import java.text.SimpleDateFormat
 const val TIME_PATTERN="HH:mm"
+const val DATE_PATTERN="dd MM yyyy"
 const val REMIND_IN_AN_NEVER=0
 const val REMIND_IN_AN_5_MIN=300
 const val REMIND_IN_AN_30_MIN=1800

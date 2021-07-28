@@ -4,28 +4,25 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.widget.TimePicker;
 
-import androidx.databinding.ObservableField;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.MutableLiveData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import ru.skinallergic.checkskin.Loger;
-import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
-import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
+import ru.skinallergic.checkskin.view_models.DateViewModel;
 
-public class TimePickerDialogTheme extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
-    public TimeClickListener timeClickListener;
-    public TimePickerDialogTheme(){
+public class TimePickerDialogThemeForDoctors extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
+    public DoctorTimeClickListener timeClickListener;
+    private DateViewModel dateViewModel;
+    public TimePickerDialogThemeForDoctors(DateViewModel dateViewModel){
+        this.dateViewModel=dateViewModel;
 
     }
-    public void setTimeClickListener(TimeClickListener timeClickListener){
+    public void setTimeClickListener(DoctorTimeClickListener timeClickListener){
         this.timeClickListener=timeClickListener;
     }
 
@@ -50,14 +47,15 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
         SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
         try {
             Date time = formater.parse(timeStr);
+            dateViewModel.doctorTimeLive.setValue(time);
 
             long millisInDay = 60 * 60 * 24 * 1000;
-            long currentTime = new Date().getTime(); //**************************************** дата для визита к враче может быть другой
+            long currentTime = dateViewModel.doctorDateLive.getValue().getTime();
 
             long dateOnly = (currentTime / millisInDay) * millisInDay;
             Date clearDate = new Date(dateOnly);
 
-            timeClickListener.timeClick(clearDate.getTime()+time.getTime());
+            timeClickListener.doctorTimeClick(clearDate.getTime()+time.getTime());
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -65,7 +63,7 @@ public class TimePickerDialogTheme extends DialogFragment implements TimePickerD
         }
 
     }
-    public interface TimeClickListener {
-        public void timeClick(Long time);
+    public interface DoctorTimeClickListener {
+        public void doctorTimeClick(Long time);
     }
 }

@@ -19,18 +19,23 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogThemeForDoctors;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
 import ru.skinallergic.checkskin.components.healthdiary.viewModels.ReminderWriterViewModel;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
 import ru.skinallergic.checkskin.databinding.FragmentRemindersAddBinding;
 
+import static ru.skinallergic.checkskin.components.healthdiary.components.CalendarFragment.ARE_YOU_DOCTOR;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.DATE_PATTERN;
 import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.TIME_PATTERN;
 
-public class RemindersAddFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener {
+public class RemindersAddFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener , TimePickerDialogThemeForDoctors.DoctorTimeClickListener {
     private  TimePickerDialogTheme dialogfragment;
+    private  TimePickerDialogThemeForDoctors doctorTimeFragment;
     private FragmentRemindersAddBinding binding;
     private Spinner typeSpinner;
     private ReminderWriterViewModel reminderWriterViewModel;
+    private Boolean isDoctor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +48,10 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         changeOff();
 
         dialogfragment = new TimePickerDialogTheme();
-        dialogfragment.setTimeClickListener(this::timeClick);
+        dialogfragment.setTimeClickListener(this);
+        doctorTimeFragment=new TimePickerDialogThemeForDoctors(getDateViewModel());
+        doctorTimeFragment.setTimeClickListener(this);
+        getDateViewModel().clearDoctorDateLive();
     }
 
     @Override
@@ -63,6 +71,9 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         typeSpinner.setAdapter(adapter);
         binding.date.setText(getDateViewModel().getDate(TIME_PATTERN));
 
+        Loger.log("-------------getDateViewModel getDoctorDate "+getDateViewModel().doctorDateLive.getValue());
+        binding.dateDoctor.setText(getDateViewModel().getDoctorDate(DATE_PATTERN));
+
         ReminderWriter reminderWriter=reminderWriterViewModel.getReminderWriter().get();
         if (reminderWriter!=null){
             binding.time.setText(reminderWriter.getTime()); //Почему-то observableField не срабатывает для этого поля
@@ -74,6 +85,13 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(getTypeList().get(position));
                 reminderWriterViewModel.setKind(position);
+                if (position==0){
+                    isDoctor=true;
+                    binding.redactDate.setVisibility(View.VISIBLE);
+                } else if (position==1){
+                    isDoctor=false;
+                    binding.redactDate.setVisibility(View.GONE);
+                }
                 //changeOn();
             }
             @Override
@@ -81,7 +99,11 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         });
 
         binding.redactTime.setOnClickListener((View v)-> {
-            dialogfragment.show(getParentFragmentManager(),"time");
+            if (isDoctor){
+                doctorTimeFragment.show(getParentFragmentManager(),"time");
+            }else {
+                dialogfragment.show(getParentFragmentManager(),"time");
+            }
 
         });
         binding.redactRemind.setOnClickListener((View v)-> {
@@ -91,6 +113,14 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         binding.redactRepeat.setOnClickListener((View v)-> {
             Navigation.findNavController(v).navigate(R.id.remindersRepeatFragment);
 
+        });
+        binding.redactDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle=new Bundle();
+                bundle.putBoolean(ARE_YOU_DOCTOR, true);
+                Navigation.findNavController(v).navigate(R.id.calendarFragment, bundle);
+            }
         });
 
         getDateViewModel().dateLive.observe(getViewLifecycleOwner(),(Date d)-> {
@@ -149,6 +179,23 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
     }
 
     public void add(){
+
+        //************************* специально для визита к врачу
+        Date time=getDateViewModel().doctorTimeLive.getValue();
+
+        long millisInDay = 60 * 60 * 24 * 1000;
+        long currentTime = getDateViewModel().doctorDateLive.getValue().getTime();
+
+        long dateOnly = (currentTime / millisInDay) * millisInDay;
+        Date clearDate = new Date(dateOnly);
+
+        if (isDoctor){
+            reminderWriterViewModel.setStartAt(
+                    clearDate.getTime()+time.getTime()
+            );
+        }
+        //**************
+
         System.out.println(reminderWriterViewModel.getReminderWriter().get());
         ReminderWriter reminderWriter=reminderWriterViewModel.getEntity();
         if (reminderWriter!=null){
@@ -172,6 +219,15 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
         changeOn();
     }
+    @Override
+    public void doctorTimeClick(Long time) {
+        Loger.log("timeClick "+time);
+        reminderWriterViewModel.setStartAt(time);
+        System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+        binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
+        changeOn();
+    }
+
     public void changeOn(){
         reminderWriterViewModel.changedOn();
     }
@@ -184,4 +240,5 @@ public class RemindersAddFragment extends BaseRemindersFragment implements TimeP
         super.onDestroy();
         changeOff();
     }
+
 }

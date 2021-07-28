@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogThemeForDoctors;
 import ru.skinallergic.checkskin.components.healthdiary.data.EntityReminders;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderEntity;
 import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter;
@@ -34,15 +36,18 @@ import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
 
 import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.DATE_PATTERN;
 
 
-public class RemindersRedactFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener {
+public class RemindersRedactFragment extends BaseRemindersFragment implements TimePickerDialogTheme.TimeClickListener, TimePickerDialogThemeForDoctors.DoctorTimeClickListener {
     private int positionId;
     private TimePickerDialogTheme dialogFragment;
+    private  TimePickerDialogThemeForDoctors doctorTimeFragment;
     private Spinner typeSpinner;
     private ReminderDetailViewModel reminderDetailViewModel;
     private ReminderWriterViewModel reminderWriterViewModel;
     private FragmentReminderRedactBinding binding;
+    private Boolean isDoctor;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +60,8 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         //getViewModel().clearCurrent();
         dialogFragment = new TimePickerDialogTheme();
         dialogFragment.setTimeClickListener(this);
+        doctorTimeFragment=new TimePickerDialogThemeForDoctors(getDateViewModel());
+        doctorTimeFragment.setTimeClickListener(this);
         changeOff();
     }
 
@@ -72,11 +79,29 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
 
-        typeSpinner.setSelection(reminderDetailViewModel.getReminderDetail().get().getKind());
+        ReminderEntity reminderEntity=reminderDetailViewModel.getReminderDetail().get();
+        Loger.log("reminderEntity \n\n\n\n\n "+reminderEntity);
+        typeSpinner.setSelection(reminderEntity.getKind());
+        binding.dateDoctor.setText(new SimpleDateFormat(DATE_PATTERN).format(reminderEntity.getStart_at()*1000));
+        getDateViewModel().doctorDateLive.setValue(new Date(reminderEntity.getStart_at()));
+
+        reminderWriterViewModel.setStartAtForHorror(reminderEntity.getStart_at());
+        reminderWriterViewModel.setRepeatMode(reminderEntity.getRepeat_mode());
+        reminderWriterViewModel.setText(reminderEntity.getText());
+        reminderWriterViewModel.setRemind(reminderEntity.getRemind());
+        reminderWriterViewModel.setKind(reminderEntity.getKind());
+
         typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println(getTypeList().get(position));
+                if (position==0){
+                    isDoctor=true;
+                    binding.redactDate.setVisibility(View.VISIBLE);
+                } else if (position==1){
+                    isDoctor=false;
+                    binding.redactDate.setVisibility(View.GONE);
+                }
                 reminderWriterViewModel.setKind(position);
             }
             @Override
@@ -84,8 +109,11 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         });
 
         binding.redactTime.setOnClickListener((View v)-> {
-            System.out.println("redact");
-            dialogFragment.show(getParentFragmentManager(),"time");
+            if (isDoctor){
+                doctorTimeFragment.show(getParentFragmentManager(),"time");
+            }else {
+                dialogFragment.show(getParentFragmentManager(),"time");
+            }
 
 
         });
@@ -105,28 +133,6 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
             binding.date.setText(date);
         });
 
-       /*
-        getViewModel().getTimeLive().observe(getViewLifecycleOwner(), (Date time) ->{
-            binding.time.setText(getSimpleTimeParser().format(time));
-            EntityReminders reminder =getViewModel().getCreatingReminder().getValue();
-            reminder.setTime(time);
-            getViewModel().getCreatingReminder().setValue(reminder);
-        });
-*/
-   /*     getViewModelCommon().getRemindLive().observe(getViewLifecycleOwner(), new Observer<List<ReminderEntity>>() {
-            @Override
-            public void onChanged(List<ReminderEntity> list) {
-                if (list != null) {
-                    for (ReminderEntity entity : list){
-                        if(entity.getId()==positionId){
-                            reminderDetailViewModel.getReminderDetail().set(entity);
-                            typeSpinner.setSelection(entity.getKind());
-                        }
-                    }
-                }
-            }
-        });
-*/
         getViewModel().getCreatingReminder().observe(getViewLifecycleOwner(),(EntityReminders entityReminders)-> {
             getViewModel().getEntity().set(entityReminders);
 
@@ -194,6 +200,9 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         }, new Function0<Unit>() {
             @Override
             public Unit invoke() {
+
+                horror();
+
                 getViewModelCommon().redactRemind(
                         positionId,
                         Objects.requireNonNull(reminderWriterViewModel.getReminderWriter().get())
@@ -215,11 +224,49 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
         changeOn();
     }
+    @Override
+    public void doctorTimeClick(Long time) {
+        reminderWriterViewModel.setStartAt(time);
+        System.out.println("1 "+ reminderWriterViewModel.getReminderWriter().get());
+        binding.time.setText(reminderWriterViewModel.getReminderWriter().get().getTime()); //Почему-то observableField не срабатывает для этого поля
+        changeOn();
+
+    }
+    private void horror() {
+        //************************* специально для визита к врачу
+
+        if (isDoctor) {
+            Date time = getDateViewModel().doctorTimeLive.getValue();
+            if (time==null){
+                return; //значит изменений не было
+            }
+
+            ReminderEntity reminderEntity=reminderDetailViewModel.getReminderDetail().get();
+            Loger.log("reminderWriterViewModel.getEntity()\n\n ------------"+reminderEntity.getStart_at());
+            long millisInDay = 60 * 60 * 24 ;
+            long currentTime = reminderEntity.getStart_at();
+
+            long dateOnly = (currentTime / millisInDay) * millisInDay;
+            Date clearDate = new Date(dateOnly);
+            Loger.log("clearDate.getTime() \n\n ------------"+clearDate.getTime());
+            Loger.log("time.getTime() \n\n ------------"+time.getTime()/1000);
+            reminderWriterViewModel.setStartAtForHorror(
+                    (clearDate.getTime()  + time.getTime()/1000)
+            );
+        }
+        //**************
+    }
+
+
     public void redact(){
+        horror();
+
         System.out.println(reminderWriterViewModel.getReminderWriter().get());
         ReminderWriter reminderWriter=reminderWriterViewModel.getEntity();
+        Loger.log("------------------------ \n reminderWriter \n "+reminderWriter);
         ReminderEntity entity=reminderDetailViewModel.getReminderDetail().get();
         if (reminderWriter!=null && entity!=null){
+
             getViewModelCommon().redactRemind(entity.getId(),reminderWriter);
         }
     }
@@ -235,4 +282,5 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         super.onDestroy();
         changeOff();
     }
+
 }

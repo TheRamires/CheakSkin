@@ -28,10 +28,12 @@ import static ru.skinallergic.checkskin.view_models.DateViewModel.MONTH_FORMAT;
 import static ru.skinallergic.checkskin.view_models.DateViewModel.YEAR_FORMAT;
 
 public class CalendarFragment extends Fragment {
+    public static String ARE_YOU_DOCTOR="isDoctor";
     private DateViewModel dateViewModel;
     private DatePicker datePicker;
     private AffectedAreaCommonViewModel commonViewModel;
     private ToastyManager toastyManager;
+    private Boolean isDoctor=false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class CalendarFragment extends Fragment {
         dateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel.class);
         commonViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         toastyManager=App.getInstance().getAppComponent().getToastyManager();
+        isDoctor=getArguments().getBoolean(ARE_YOU_DOCTOR);
+        Loger.log("CalendarFragment isDoctor "+isDoctor);
     }
 
     @Override
@@ -148,6 +152,11 @@ public class CalendarFragment extends Fragment {
         backStack(view);
     }
     private void setDateLive(Date date){
+        if (isDoctor!=null && isDoctor){
+            dateViewModel.doctorDateLive.setValue(date);
+            return;
+        }
+
         Date realCurrent=new Date();
         if (date.getTime()>realCurrent.getTime()){
             dateViewModel.dateLive.setValue(realCurrent);

@@ -28,6 +28,8 @@ public class DateViewModel extends ViewModel {
     public DateViewModel (){}
     //public MutableLiveData<String> dateLive=new MutableLiveData();
     public MutableLiveData<Date> dateLive=new MutableLiveData();
+    public MutableLiveData<Date> doctorDateLive=new MutableLiveData();
+    public MutableLiveData<Date> doctorTimeLive=new MutableLiveData();
     public ObservableField<Boolean> barVisibility=new ObservableField<>(true);
 
     public String getDate(Date date){
@@ -46,6 +48,13 @@ public class DateViewModel extends ViewModel {
         }
         return formating(dateLive.getValue(),format);
     }
+    public String getDoctorDate(String format){
+        if (dateLive.getValue()==null) {
+            setCurrentDate();
+        }
+        return formating(doctorDateLive.getValue(),format);
+    }
+
 
     public String getDate(SimpleDateFormat sdf){
         if (dateLive.getValue()==null) {
@@ -145,5 +154,9 @@ public class DateViewModel extends ViewModel {
         long currentTimeUnix=getDateUnix()/1000;
         return currentTimeUnix+offsetInSecond;
     }*/
+
+    public void clearDoctorDateLive(){
+        doctorDateLive.setValue(dateLive.getValue());
+    }
 }
 
