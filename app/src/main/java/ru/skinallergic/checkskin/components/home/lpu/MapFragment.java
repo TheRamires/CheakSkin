@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.R;
+import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
 import ru.skinallergic.checkskin.components.home.viewmodels.MapViewModel;
 import ru.skinallergic.checkskin.databinding.FragmentMapBinding;
 import ru.skinallergic.checkskin.di.MyViewModelFactory;
@@ -62,12 +63,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         MapViewModel viewModel=new ViewModelProvider(this,viewModelFactory).get(MapViewModel.class);
+        LpuViewModel lpuViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(LpuViewModel.class);
+        MapViewModel mapViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(MapViewModel.class);
 
         initializeMap(this);
         initMapTrue.observe(getViewLifecycleOwner(), new Observer<SupportMapFragment>() {
             @Override
             public void onChanged(SupportMapFragment supportMapFragment) {
-                viewModel.mapInit(mMap,40);
+                viewModel.mapInit(mMap,40, lpuViewModel.getLpuList().getValue(), mapViewModel.getLatLon().getValue());
             }
         });
         FloatingActionButton zoomPlus=binding.zoomPlus;

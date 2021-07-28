@@ -32,7 +32,7 @@
                 android:background="@color/white"
                 android:src="@drawable/ic_back" />
             <TextView
-                android:text="title"
+                android:text="Список аллергенов"
                 android:layout_toEndOf="@+id/back_btn"
                 android:layout_centerVertical="true"
                 android:textSize="20sp"

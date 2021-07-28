@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private AccountViewModelImpl accountViewModel;
     private NewsViewModel newsViewModel;
     private TestResultViewModel resultViewModel;
+    public static int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
                         toEntrance();
                         accountViewModel.getExpiredRefreshToken().setValue(false);
                     }});
+
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
     }
 
     private void toEntrance(){

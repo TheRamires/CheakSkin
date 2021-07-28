@@ -4,8 +4,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -14,9 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.home.adapters.ExpandableListAdapter;
+import ru.skinallergic.checkskin.components.home.data.DocEntity;
 import ru.skinallergic.checkskin.components.home.data.Document;
+import ru.skinallergic.checkskin.components.home.viewmodels.DocumentViewModel;
+import ru.skinallergic.checkskin.components.home.viewmodels.MapViewModel;
 import ru.skinallergic.checkskin.components.news.adapters.SpaceItemDecoration;
 import ru.skinallergic.checkskin.databinding.FragmentLpuDocumentsBinding;
 
@@ -25,12 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.skinallergic.checkskin.components.home.adapters.ExpandableListAdapter;
+import ru.skinallergic.checkskin.di.MyViewModelFactory;
 
 public class LPUDocumentsFrag extends Fragment {
     private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
-    private List<String> listDataHeader;
-    private HashMap<String, List<Document>> listDataChild;
+    private List<String> listDataHeader = new ArrayList<>();
+    private HashMap<String, List<Document>> listDataChild =new HashMap<>();
     private FragmentLpuDocumentsBinding binding;
 
     @Override
@@ -39,10 +47,22 @@ public class LPUDocumentsFrag extends Fragment {
         binding=FragmentLpuDocumentsBinding.inflate(inflater);
         binding.setFragment(this);
         View view=binding.getRoot();
-
         expListView = binding.lvExp;
+
+        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        DocumentViewModel documentViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DocumentViewModel.class);
+        documentViewModel.requestDocs().observe(getViewLifecycleOwner(),(list -> {
+            Loger.log("requestDocs "+list);
+            fillLists(list);
+            createExpList();
+        }));
+
+        return view;
+    }
+    //------------------------------------------------------------------------------------
+    private void createExpList(){
         //Подготавливаем список данных:
-        prepareListData();
+        //prepareListData();
 
         listAdapter = new ExpandableListAdapter(requireContext(), listDataHeader, listDataChild);
 
@@ -61,9 +81,19 @@ public class LPUDocumentsFrag extends Fragment {
             expListView.setIndicatorBoundsRelative(width-80, width);
         }*/
 
-        return view;
     }
-    //------------------------------------------------------------------------------------
+
+    private void fillLists(List<DocEntity> list){
+        for (DocEntity docEntity : list){
+            listDataHeader.add(docEntity.getName());
+            String [] strings=docEntity.getDocs();
+            List<Document> listDocs= new ArrayList();
+            for (int j=0; j<strings.length; j++){
+                listDocs.add(new Document(j,strings[j]));
+            }
+            listDataChild.put(docEntity.getName(),listDocs);
+        }
+    }
 
     private void prepareListData() {
         Log.d("myLog","prepareListData");

@@ -67,7 +67,6 @@
                     <TextView
                         android:layout_below="@+id/date"
                         android:text="@{String.valueOf(entity.meal)}"
-                        android:hint="Завтрак"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"

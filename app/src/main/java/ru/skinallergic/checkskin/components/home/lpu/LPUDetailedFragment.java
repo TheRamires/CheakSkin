@@ -95,7 +95,7 @@ public class LPUDetailedFragment extends Fragment implements OnMapReadyCallback 
         initMapTrue.observe(getViewLifecycleOwner(), new Observer<SupportMapFragment>() {
             @Override
             public void onChanged(SupportMapFragment supportMapFragment) {
-                mapViewModel.mapInit(mMap,0);
+                mapViewModel.mapInit(mMap,0,lpuViewModel.getLpuList().getValue(), mapViewModel.getLatLon().getValue());
             }
         });
 

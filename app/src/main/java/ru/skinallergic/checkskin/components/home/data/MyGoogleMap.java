@@ -1,9 +1,6 @@
 package ru.skinallergic.checkskin.components.home.data;
 
-import android.text.Layout;
-
 import ru.skinallergic.checkskin.Loger;
-import ru.skinallergic.checkskin.R;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,9 +20,9 @@ public class MyGoogleMap  {
     public MyGoogleMap(){}
 
     public void googlemapsInit(GoogleMap mMap, int i0, int i1 ,int i2,int i3,
-                               List<LpuEntity> allLpu) {
+                               List<LpuEntity> allLpu, Double[] currentLatLon) {
         init(mMap);
-        toMap(mMap,allLpu);
+        toMap(mMap,allLpu, currentLatLon);
         uiSettings(mMap, i0,i1,i2,i3);
     }
     private void uiSettings(GoogleMap mMap, int i0, int i1 ,int i2,int i3){
@@ -64,7 +61,7 @@ public class MyGoogleMap  {
         });
     }
 
-    private void toMap(GoogleMap mMap , List<LpuEntity> allLpu) {  //ex button
+    private void toMap(GoogleMap mMap , List<LpuEntity> allLpu, Double[] currentLatLon) {  //ex button
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL  );
         if (mMap!=null) {
             Loger.log(mMap.toString());
@@ -78,17 +75,21 @@ public class MyGoogleMap  {
         uiSettings.setZoomControlsEnabled(false);
  */
         CameraPosition cameraPosition = new CameraPosition.Builder()
+                //.target(new LatLng(currentLatLon[0],currentLatLon[1]))
                 .target(new LatLng(45.03686300387497,38.97431217133999))
-                .zoom(10)
+                .zoom(18)
                 // .bearing(45)
                 .tilt(20)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         mMap.animateCamera(cameraUpdate);
 
-        for (LpuEntity lpu : allLpu){
-            addMarker(Float.parseFloat(lpu.getLat()),Float.parseFloat(lpu.getLon()),lpu.getName());
-        }
+        if (allLpu != null) {
+            Loger.log("allLpu "+allLpu.size());
+            for (LpuEntity lpu : allLpu){
+                addMarker(mMap, Float.parseFloat(lpu.getLat()),Float.parseFloat(lpu.getLon()),lpu.getName());
+            }
+        } else {Loger.log("------------------allLpu is null");}
 
         //Задать позиции точек ---------------------------------------------------
        /* mMap.addMarker(new MarkerOptions()
@@ -107,7 +108,7 @@ public class MyGoogleMap  {
                 .flat(true)
                 .title("Рис ЮМР"));*/
     }
-    private void addMarker(float lat, float lon, String name){
+    private void addMarker(GoogleMap mMap, float lat, float lon, String name){
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat,lon))
                 .anchor(0.5f,1)

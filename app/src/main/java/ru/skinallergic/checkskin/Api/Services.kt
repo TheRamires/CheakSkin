@@ -15,10 +15,7 @@ import ru.skinallergic.checkskin.components.healthdiary.data.ReminderWriter
 import ru.skinallergic.checkskin.components.healthdiary.remote.BaseResponse
 import ru.skinallergic.checkskin.components.healthdiary.remote.GettingData
 import ru.skinallergic.checkskin.components.healthdiary.remote.WritingData
-import ru.skinallergic.checkskin.components.home.data.LpuEntity
-import ru.skinallergic.checkskin.components.home.data.LpuOneEntity
-import ru.skinallergic.checkskin.components.home.data.ReviewEntity
-import ru.skinallergic.checkskin.components.home.data.ReviewWriter
+import ru.skinallergic.checkskin.components.home.data.*
 import ru.skinallergic.checkskin.components.tests.data.PostResponse
 import ru.skinallergic.checkskin.components.tests.data.TestResponse
 import ru.skinallergic.checkskin.entrance.pojo.RefreshTokenResponse
@@ -164,15 +161,8 @@ interface FoodService{
 interface DocService{
     @GET("/packages/")
     @Headers("Content-Type: application/json", "Connection: close")
-    fun getDocs(): Observable<ResponseBody>
+    fun getDocs(): Observable<BaseResponse<List<DocEntity>>>
 
-    @GET ("/packages/{package_id}/docs/")
-    @Headers("Content-Type: application/json", "Connection: close")
-    fun getDocPackage(@Path ("package_id") id: Int): Observable<ResponseBody>
-
-    @GET("/docs/:doc_id/")
-    @Headers("Content-Type: application/json", "Connection: close")
-    fun oneDoc(@Path ("doc_id") id: Int, @Query("fmt") fmt: String): Observable<ResponseBody>
 }
 interface LpuService{
     @GET("/health-facilities/")

@@ -24,8 +24,7 @@
             android:layout_marginHorizontal="5dp"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:hint="Хлопья"/>
+            android:textColor="@color/black"/>
 
         <ImageView
             android:visibility="@{food.food._allergen ? View.VISIBLE : View.INVISIBLE , default=invisible}"
