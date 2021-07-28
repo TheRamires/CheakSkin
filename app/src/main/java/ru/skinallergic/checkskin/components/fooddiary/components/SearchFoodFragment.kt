@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.Loger
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.adapters.FoodPositionAdapter
+import ru.skinallergic.checkskin.components.fooddiary.adapters.RecyclerSectionItemDecoration
 import ru.skinallergic.checkskin.components.fooddiary.adapters.SearchingRecyclerAdapterFood
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain
@@ -21,7 +22,7 @@ import ru.skinallergic.checkskin.databinding.*
 class SearchFoodFragment : BaseFoodFragment() , SearchingRecyclerAdapterFood.OnItemClickListener {
     lateinit var backStack: ImageButton
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter : SearchingRecyclerAdapterFood
+    lateinit var adapterRecycler : SearchingRecyclerAdapterFood
     val foodDiaryViewModel by lazy { ViewModelProvider(requireActivity(), viewModelFactory).get(FoodDiaryViewModel::class.java) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -48,19 +49,19 @@ class SearchFoodFragment : BaseFoodFragment() , SearchingRecyclerAdapterFood.OnI
         subscribeDate()
     }
     fun search(search :String){
-        foodDiaryViewModel.getFoodDiarySearchByDate(dateViewModel.dateUnix,search).observe(viewLifecycleOwner,{list->
+        foodDiaryViewModel.getFoodDiarySearch(search).observe(viewLifecycleOwner,{list->
             for (pos in list){
                 println("${pos?.created} ${pos?.list}")
             }
+            val recyclerSectionItemDecoration = getDecorForSection1(list as List<FoodMealForMain>)
 
             /*val diffUtil = list?.let { DiffUtilFromMySelf<FoodMealForMain?>(adapter.list, it) }
             diffUtil?.calculate(adapter)*/
 
-            adapter = SearchingRecyclerAdapterFood(list as ArrayList<FoodMealForMain>, this,
+            adapterRecycler = SearchingRecyclerAdapterFood(list as ArrayList<FoodMealForMain>, this,
                    object: SearchingRecyclerAdapterFood.RecyclerCallback{
                        override fun bind(binder: ItemFoodSearchingBinding?, entity: FoodMealForMain?) {
-                           binder?.date?.visibility=View.VISIBLE
-                           binder?.date?.text=entity?.created.toString()
+
                            binder?.entity = entity
                            binder?.clickable?.setOnClickListener { view: View ->
                                val bundle = Bundle()
@@ -76,8 +77,11 @@ class SearchFoodFragment : BaseFoodFragment() , SearchingRecyclerAdapterFood.OnI
                    }
             )
 
-            adapter .apply {
-                recyclerView.adapter = this
+            recyclerView.apply {
+                adapter=adapterRecycler
+                if (recyclerSectionItemDecoration != null) {
+                    addItemDecoration(recyclerSectionItemDecoration)
+                }
             }
 
         })
@@ -97,5 +101,26 @@ class SearchFoodFragment : BaseFoodFragment() , SearchingRecyclerAdapterFood.OnI
             }
         })
         recyclerView.adapter=adapter
+    }
+
+    private fun getDecorForSection1(list: List<FoodMealForMain>): RecyclerSectionItemDecoration? {
+        return RecyclerSectionItemDecoration(
+                requireContext().resources
+                        .getDimensionPixelSize(R.dimen.recycler_section_header_height),
+                true,  // true for sticky, false for not
+                object : RecyclerSectionItemDecoration.SectionCallback {
+                    override fun isSection(position: Int): Boolean {
+
+                        return (position == 0
+                                || list[position] //.getLastName()
+                                .created !== list[position - 1] //.getLastName()
+                                .created)
+                    }
+
+                    override fun getSectionHeader(position: Int): CharSequence {
+                        return list[position]
+                                .created.toString()
+                    }
+                })
     }
 }

@@ -57,9 +57,9 @@ class FoodDiaryViewModel @Inject constructor(val repository: FoodRepository): Ba
         return foodDiaryList
     }
 
-    fun getFoodDiarySearchByDate(date: Long, search: String): MutableLiveData<List<FoodMealForMain?>>{
+    fun getFoodDiarySearch(search: String): MutableLiveData<List<FoodMealForMain?>>{
         compositeDisposable.add(
-                repository.getFoodDiarySearchByDate((date/1000).toString(),search)
+                repository.getFoodDiarySearch(search)
                         ?.doOnSubscribe { splashScreenOn.set(true) }
                         ?.doOnComplete { splashScreenOn.set(false) }
                         ?.subscribe ({

@@ -13,7 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical">
 
-        <RelativeLayout
+   <!--     <RelativeLayout
             android:layout_marginHorizontal="20dp"
             android:focusable="true"
             android:clickable="true"
@@ -35,6 +35,7 @@
                 android:contentDescription="Delete" />
 
         </RelativeLayout>
+                -->
 
             <com.dd.ShadowLayout
                 app:sl_cornerRadius="80dp"
@@ -56,13 +57,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/date"
-                        />
 
                     <TextView
                         android:layout_below="@+id/date"
