@@ -42,7 +42,11 @@ public class CalendarFragment extends Fragment {
         dateViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DateViewModel.class);
         commonViewModel = new ViewModelProvider(requireActivity(),viewModelFactory).get(AffectedAreaCommonViewModel.class);
         toastyManager=App.getInstance().getAppComponent().getToastyManager();
-        isDoctor=getArguments().getBoolean(ARE_YOU_DOCTOR);
+        try {
+            isDoctor=getArguments().getBoolean(ARE_YOU_DOCTOR);
+
+        } catch (Throwable t){
+        }
         Loger.log("CalendarFragment isDoctor "+isDoctor);
     }
 

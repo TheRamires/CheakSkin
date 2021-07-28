@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.OwnerTimeCrutch;
 import ru.skinallergic.checkskin.components.news.adapters.ProductDiffUtilCallback;
 import ru.skinallergic.checkskin.components.news.pagedLibrary.NewsAdapter_UNUSED;
 import ru.skinallergic.checkskin.view_models.DateViewModel;
@@ -76,6 +77,9 @@ public class NewsFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(NewsViewModel.class);
         search="";
         viewModel.getNewsList(search,true);
+
+        dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
+        OwnerTimeCrutch.INSTANCE.crutch(dateViewModel.dateLive);
     }
 
     @Override
@@ -88,7 +92,6 @@ public class NewsFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         searchEdit= binding.searchEditText;
         binding.setViewModel(viewModel);
 
-        dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
         binding.date.setText(dateViewModel.getDate());
 
         recyclerView=binding.recycler;

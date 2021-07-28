@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import ru.skinallergic.checkskin.Loger
+import ru.skinallergic.checkskin.OwnerTimeCrutch.crutch
 import ru.skinallergic.checkskin.R
 import ru.skinallergic.checkskin.components.fooddiary.adapters.FoodPositionAdapter
 import ru.skinallergic.checkskin.components.fooddiary.adapters.SwipeRecyclerAdapterFood
-import ru.skinallergic.checkskin.components.fooddiary.data.Food
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodEntity
 import ru.skinallergic.checkskin.components.fooddiary.data.FoodMealForMain
 import ru.skinallergic.checkskin.components.fooddiary.viewModels.FoodDiaryViewModel
@@ -30,7 +30,13 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
     lateinit var adapter :SwipeRecyclerAdapterFood
     ////////////////////////////////////////////////// it was "this"  = owner
     val foodDiaryViewModel by lazy { ViewModelProvider(requireActivity(), viewModelFactory).get(FoodDiaryViewModel::class.java) }
-    val mealViewModel by lazy { ViewModelProvider(this,viewModelFactory).get(MealViewModel::class.java) }
+    val mealViewModel by lazy { ViewModelProvider(this, viewModelFactory).get(MealViewModel::class.java) }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        crutch(dateViewModel.dateLive)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -73,8 +79,8 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
         buttonAllergy.setOnClickListener { Navigation.findNavController(it).navigate(R.id.action_foodDiaryFragment_to_allergicListFragment)}
         buttonAdd.setOnClickListener { Navigation.findNavController(it).navigate(R.id.action_foodDiaryFragment_to_addFoodFragment2) }
 
-        foodDiaryViewModel.getFoodDiaryByDate(dateViewModel.dateUnix).observe(viewLifecycleOwner, {list->
-            for (pos in list){
+        foodDiaryViewModel.getFoodDiaryByDate(dateViewModel.dateUnix).observe(viewLifecycleOwner, { list ->
+            for (pos in list) {
                 println("${pos?.created} ${pos?.list}")
             }
 
@@ -82,7 +88,7 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
             diffUtil?.calculate(adapter)*/
 
             Loger.log("foodDiaryViewModel.getFoodDiaryByDate $list")
-            if (list.isEmpty()){
+            if (list.isEmpty()) {
                 createAdapter(arrayListOf())
             } else createAdapter(list as ArrayList<FoodMealForMain>?)
 
@@ -90,7 +96,7 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
     }
 
     private fun createAdapter(list: ArrayList<FoodMealForMain>?){
-        adapter = SwipeRecyclerAdapterFood( parentFragmentManager, list as java.util.ArrayList<FoodMealForMain>?
+        adapter = SwipeRecyclerAdapterFood(parentFragmentManager, list as java.util.ArrayList<FoodMealForMain>?
         ) { binder: ItemFoodBinding, entity: FoodMealForMain ->
             binder.entity = entity
             binder.clickable.setOnClickListener { view: View ->
@@ -125,9 +131,9 @@ class FoodDiaryFragment : BaseFoodFragment(), SwipeRecyclerAdapterFood.OnSwipeIt
     }
 
     fun createInnerAdapter(recyclerView: RecyclerView, list: ArrayList<FoodEntity>){
-        val adapter=FoodPositionAdapter(list,object : FoodPositionAdapter.RecyclerCallback<ItemOneEatBinding, FoodEntity>{
+        val adapter=FoodPositionAdapter(list, object : FoodPositionAdapter.RecyclerCallback<ItemOneEatBinding, FoodEntity> {
             override fun bind(binder: ItemOneEatBinding, food: FoodEntity) {
-                binder.food=food
+                binder.food = food
             }
         })
         recyclerView.adapter=adapter

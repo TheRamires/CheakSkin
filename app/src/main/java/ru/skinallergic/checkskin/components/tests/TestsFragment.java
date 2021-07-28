@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.OwnerTimeCrutch;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.tests.data.EntityTest;
 import ru.skinallergic.checkskin.components.tests.viewModels.TestsViewModel;
@@ -31,11 +32,19 @@ import java.util.List;
 public class TestsFragment extends Fragment implements RecyclerAdapter_tests.Binder {
     private TestsFragmentBinding binding;
     private DateViewModel dateViewModel;
+    MyViewModelFactory viewModelFactory;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+         viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
+        OwnerTimeCrutch.INSTANCE.crutch(dateViewModel.dateLive);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         TestsViewModel viewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(TestsViewModel.class);
         binding=TestsFragmentBinding.inflate(inflater);
         binding.setFragment(this);
@@ -43,7 +52,6 @@ public class TestsFragment extends Fragment implements RecyclerAdapter_tests.Bin
 
         viewModel.getDate();
 
-        dateViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
         binding.date.setText(dateViewModel.getDate());
 
         RecyclerView recyclerView=binding.recycler;

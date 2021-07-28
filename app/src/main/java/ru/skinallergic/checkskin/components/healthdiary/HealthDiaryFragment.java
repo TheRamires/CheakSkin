@@ -23,6 +23,7 @@ import java.util.List;
 
 import ru.skinallergic.checkskin.App;
 import ru.skinallergic.checkskin.Loger;
+import ru.skinallergic.checkskin.OwnerTimeCrutch;
 import ru.skinallergic.checkskin.R;
 
 import ru.skinallergic.checkskin.components.healthdiary.remote.Rash;
@@ -53,6 +54,8 @@ public class HealthDiaryFragment extends Fragment {
         MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         viewModel=new ViewModelProvider(this,viewModelFactory).get(HealthyDiaryViewModel.class);
+
+        OwnerTimeCrutch.INSTANCE.crutch(dateViewModel.dateLive);
     }
 
     @Override

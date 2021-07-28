@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.skinallergic.checkskin.App;
+import ru.skinallergic.checkskin.OwnerTimeCrutch;
 import ru.skinallergic.checkskin.R;
 import ru.skinallergic.checkskin.components.home.data.LpuEntity;
 import ru.skinallergic.checkskin.components.home.viewmodels.LpuViewModel;
@@ -59,14 +61,22 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
     private RecyclerView recyclerNews;
     private RecyclerView recyclerTests;
     private RecyclerView recyclerLpu;
+    MyViewModelFactory viewModelFactory;
 
     private Bundle bundle=new Bundle();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
+        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
+        OwnerTimeCrutch.INSTANCE.crutch(dateViewModel.dateLive);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DateViewModel mainViewModel=new ViewModelProvider(requireActivity()).get(DateViewModel.class);
 
-        MyViewModelFactory viewModelFactory= App.getInstance().getAppComponent().getViewModelFactory();
         testsViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(TestsViewModel.class);
         newsViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(NewsViewModel.class);
         accountViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(AccountViewModelImpl.class);
@@ -76,7 +86,6 @@ public class HomeFragment extends Fragment implements MyRecyclerAdapter.OnItemCl
         FragmentHomeBinding binding= FragmentHomeBinding.inflate(inflater);
         View view=binding.getRoot();
 
-        dateViewModel=new ViewModelProvider(requireActivity(),viewModelFactory).get(DateViewModel.class);
         binding.date.setText(dateViewModel.getDate());
         accountViewModel.getCurrentUser().observe(getViewLifecycleOwner(), new Observer<UserEntity>() {
             @Override

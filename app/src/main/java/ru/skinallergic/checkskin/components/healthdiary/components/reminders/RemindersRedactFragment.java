@@ -36,6 +36,7 @@ import ru.skinallergic.checkskin.Loger;
 import ru.skinallergic.checkskin.components.healthdiary.adapters.TimePickerDialogTheme;
 
 import static ru.skinallergic.checkskin.components.fooddiary.components.DetailFoodFragmentKt.BUNDLE_ID_OF_REMIND;
+import static ru.skinallergic.checkskin.components.healthdiary.components.CalendarFragment.ARE_YOU_DOCTOR;
 import static ru.skinallergic.checkskin.components.healthdiary.components.reminders.BaseRemindersFragmentKt.DATE_PATTERN;
 
 
@@ -63,6 +64,7 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
         doctorTimeFragment=new TimePickerDialogThemeForDoctors(getDateViewModel());
         doctorTimeFragment.setTimeClickListener(this);
         changeOff();
+        getDateViewModel().clearDoctorDateLive();
     }
 
     @Override
@@ -154,6 +156,18 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
             redact();
         });
 
+
+        binding.redactDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Loger.log("click lcikclds;lfklclick click click");
+                Bundle bundle=new Bundle();
+                bundle.putBoolean(ARE_YOU_DOCTOR, true);
+                Navigation.findNavController(v).navigate(R.id.calendarFragment, bundle);
+            }
+        });
+
+
         return view;
     }
     public void delete(View view){
@@ -242,9 +256,25 @@ public class RemindersRedactFragment extends BaseRemindersFragment implements Ti
             }
 
             ReminderEntity reminderEntity=reminderDetailViewModel.getReminderDetail().get();
-            Loger.log("reminderWriterViewModel.getEntity()\n\n ------------"+reminderEntity.getStart_at());
-            long millisInDay = 60 * 60 * 24 ;
             long currentTime = reminderEntity.getStart_at();
+            Date time2=getDateViewModel().doctorTimeLive.getValue();
+            if (time2==null){
+
+                long millisInDay2 = 60 * 60 * 24 * 1000;
+                long currentTime2 = getDateViewModel().doctorDateLive.getValue().getTime();
+
+                long dateOnly = (currentTime2 / millisInDay2) * millisInDay2;
+                Date clearDate = new Date(dateOnly);
+
+                reminderWriterViewModel.setStartAt(
+                        clearDate.getTime()+time.getTime()
+                );
+                return;
+            }
+            Loger.log("getDateViewModel().doctorTimeLive.getValue()\n\n ------------"+getDateViewModel().doctorTimeLive.getValue().getTime());
+
+            Loger.log("reminderWriterViewModel.getEntity()\n\n ------------"+reminderEntity.getStart_at());
+            long millisInDay = 60 * 60 * 24;
 
             long dateOnly = (currentTime / millisInDay) * millisInDay;
             Date clearDate = new Date(dateOnly);
